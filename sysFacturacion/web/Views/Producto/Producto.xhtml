@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="./../../Plantilla/Plantilla.xhtml">
+            <ui:define name="content">
+                <h3 class="titulo_gestion"> Gestión de Productos</h3>
+                <h:form id="frmNuevoProducto">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgNuevoProducto" widgetVar="dialogNuevoProducto" resizable="false"
+                              showEffect="explode"
+                              hideEffect="explode" modal="true" header="Crear un nuevo Producto">
+                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
+
+                            <p:outputLabel value="Código de barras"></p:outputLabel>
+                            <p:inputText style="width: 100%; text-transform:uppercase;"  value="#{productoBean.producto.codbarras}"></p:inputText>
+
+                            <p:outputLabel value="Nombre"></p:outputLabel>
+                            <p:inputText style="width: 100%; text-transform:uppercase;"  value="#{productoBean.producto.nombreProducto}"></p:inputText>
+
+                            <p:outputLabel value="Precio Compra $"></p:outputLabel>
+                            <p:inputNumber style="width: 100%;" value="#{productoBean.producto.precioCompra}"></p:inputNumber>
+
+                            <p:outputLabel value="Stock mínimo (U)"></p:outputLabel>
+                            <p:inputNumber style="width: 100%;" value="#{productoBean.producto.stockMinimo}">
+                                <f:convertNumber type="number" pattern="#0" />
+                            </p:inputNumber>
+
+                            <p:outputLabel value="Stock actual (U)"></p:outputLabel>
+                            <p:inputNumber style="width: 100%;"  value="#{productoBean.producto.stockActual}">
+                                <f:convertNumber type="number" pattern="#0" />
+                            </p:inputNumber> 
+                        </p:panelGrid>
+                        <br></br>
+                        <p:commandButton id="btnGuardarProductoNuevo" 
+                                         action="#{productoBean.nuevoProducto()}" 
+                                         update="frmMostrarProductos:tablaProductos, message"
+                                         title="Guardar registro" icon="ui-icon-guardar2">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogNuevoProducto').hide();">
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>
+                <h:form id="frmModificarProducto">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgModificarProducto" widgetVar="dialogModificarProducto" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Modificar producto">
+                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
+
+                            <p:outputLabel value="Nombre"></p:outputLabel>
+                            <p:inputText style="width: 100%; text-transform:uppercase;" value="#{productoBean.producto.nombreProducto}"></p:inputText>
+
+                            <p:outputLabel value="Precio Compra $"></p:outputLabel>
+                            <p:inputNumber style="width: 100%;" value="#{productoBean.producto.precioCompra}"></p:inputNumber>
+
+                            <p:outputLabel value="Stock mínimo (Un)"></p:outputLabel>
+                            <p:inputNumber style="width: 100%;" value="#{productoBean.producto.stockMinimo}">
+                                <f:convertNumber type="number" pattern="#0" />
+                            </p:inputNumber>
+
+                            <p:outputLabel value="Stock actual (Un)"></p:outputLabel>
+                            <p:inputNumber style="width: 100%;"  value="#{productoBean.producto.stockActual}">
+                                <f:convertNumber type="number" pattern="#0" />
+                            </p:inputNumber>
+
+                        </p:panelGrid>
+                        <br></br>
+                        <p:commandButton id="btnGuardarPoductoModificado" 
+                                         action="#{productoBean.modificarProducto()}" 
+                                         update="frmMostrarProductos:tablaProductos, message"
+                                         title="Guardar cambios" icon="ui-icon-guardar2">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogModificarProducto').hide();">
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>          
+                <h:form id="frmEliminarProducto">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgEliminarProducto" widgetVar="dialogEliminarProducto" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Eliminar Producto">
+
+                        <h:outputText value="¿Seguro que desea eliminar este producto?"></h:outputText>
+                        <br></br>
+                        <br></br>
+                        <p:commandButton id="yes"  
+                                         action="#{productoBean.eliminarProducto()}" 
+                                         update="frmMostrarProductos:tablaProductos, message"
+                                         title="Eliminar producto" icon="ui-icon-yes">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogEliminarProducto').hide();">
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>
+                <h:form>
+                    <p:commandButton value="Nuevo Producto" actionListener="#{productoBean.prepararNuevoProdcuto()}" 
+                                     oncomplete="PF('dialogNuevoProducto').show();"
+                                     update=":frmNuevoProducto">
+                    </p:commandButton> 
+                </h:form>  
+                <h:form id="frmAgregarProducto">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgAgregarProducto" widgetVar="dialogAgregarProducto" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Agregar producto">
+                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
+
+                            <p:outputLabel value="Adicionar al Stock actual (U)"></p:outputLabel>
+                            <p:inputNumber style="width: 100%;" value="#{productoBean.adicionarProductos}">
+                                <f:convertNumber type="number" pattern="#0" />
+                            </p:inputNumber>
+
+
+                        </p:panelGrid>
+                        <br></br>
+                        <p:commandButton id="btnGuardarPoductoModificado" 
+                                         action="#{productoBean.adicionarProductosStock()}" 
+                                         update="frmMostrarProductos:tablaProductos, message"
+                                         title="Guardar cambios" icon="ui-icon-guardar2">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar"
+                                         action="#{productoBean.cancelarAdicionarProductosStock()}" 
+                                         update="frmMostrarProductos:tablaProductos, message">
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>  
+                <br></br>
+                <h:form id="frmMostrarProductos">
+                    <p:dataTable id="tablaProductos" var="pr" value="#{productoBean.listaProductos}" rows="10"
+                                 paginator="true" rowsPerPageTemplate="5,10,20,40,80,160,320,640"
+                                 emptyMessage="No hay Productos registrados hasta el momento."
+                                 widgetVar="parametrosTabla" paginatorPosition="bottom"
+                                 filteredValue="#{productoBean.filtroProductos}"  >
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Buscar en cualquier columna: " />
+                                <p:spacer></p:spacer>
+                                <p:inputText id="globalFilter" onkeyup="PF('parametrosTabla').filter()" style="width:150px" placeholder="Buscar..."/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column style="text-align: center;"  filterBy="#{pr.codbarras}" filterMatchMode="contains" headerText="Código barras">
+                            <h:outputText value="#{pr.codbarras}"></h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center;" filterBy="#{pr.nombreProducto}" filterMatchMode="contains"  headerText="Nombre">
+                            <h:outputText value="#{pr.nombreProducto}"></h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center;" filterBy="#{pr.precioCompra}" filterMatchMode="contains" headerText="Precio compra">
+                            <h:outputText value="#{pr.precioCompra}">
+                                <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                            </h:outputText>    
+                        </p:column>
+                        <p:column style="text-align: center;" filterBy="#{pr.precioVenta}" filterMatchMode="contains" headerText="Precio venta">
+                            <h:outputText value="#{pr.precioVenta}">
+                                <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                            </h:outputText>    
+                        </p:column>
+                        <p:column style="width: 200px; text-align: center;" filterBy="#{pr.stockMinimo}" filterMatchMode="contains" headerText="Stock mínimo (U)">
+                            <h:outputText value="#{pr.stockMinimo}"></h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center;" filterBy="#{pr.stockActual}" filterMatchMode="contains" headerText="Stock actual (U)">
+                            <h:outputText value="#{pr.stockActual}"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <p:commandButton title="Modificar registro" oncomplete="PF('dialogModificarProducto').show();"
+                                             update=":frmModificarProducto" icon="ui-icon-modificar" >
+                                <f:setPropertyActionListener target="#{productoBean.producto}" value="#{pr}">
+                                </f:setPropertyActionListener>     
+                            </p:commandButton>
+                            <p:commandButton  title="Eliminar registro" icon="ui-icon-delete2" 
+                                              oncomplete="PF('dialogEliminarProducto').show();" update=":frmEliminarProducto">  
+                                <f:setPropertyActionListener target="#{productoBean.producto}" value="#{pr}">
+                                </f:setPropertyActionListener> 
+                            </p:commandButton> 
+                            <p:commandButton  title="Agregar más productos" icon="ui-icon-agregar" 
+                                              oncomplete="PF('dialogAgregarProducto').show();" update=":frmAgregarProducto">  
+                                <f:setPropertyActionListener target="#{productoBean.producto}" value="#{pr}">
+                                </f:setPropertyActionListener> 
+                            </p:commandButton> 
+                        </p:column> 
+                    </p:dataTable>    
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

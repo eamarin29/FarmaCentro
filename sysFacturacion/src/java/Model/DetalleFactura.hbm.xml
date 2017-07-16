@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-jul-2017 13:53:17 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.DetalleFactura" table="DETALLE_FACTURA" schema="FACTURACION" optimistic-lock="version">
+        <id name="coddetalle" type="big_decimal">
+            <column name="CODDETALLE" precision="22" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="producto" class="Model.Producto" fetch="select">
+            <column name="CODPRODUCTO" length="200" />
+        </many-to-one>
+        <many-to-one name="factura" class="Model.Factura" fetch="select">
+            <column name="CODFACTURA" precision="22" scale="0" />
+        </many-to-one>
+        <many-to-one name="servicio" class="Model.Servicio" fetch="select">
+            <column name="SERVICIO" precision="10" scale="0" />
+        </many-to-one>
+        <property name="cantidad" type="big_decimal">
+            <column name="CANTIDAD" precision="22" scale="0" />
+        </property>
+        <property name="totalDetalle" type="big_decimal">
+            <column name="TOTAL_DETALLE" precision="10" />
+        </property>
+        <property name="precioRealUnidad" type="big_decimal">
+            <column name="PRECIO_REAL_UNIDAD" precision="10" />
+        </property>
+    </class>
+</hibernate-mapping>

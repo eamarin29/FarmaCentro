@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="icon" type="image/gif" href="../../resources/images/favicon.gif" /> 
+        <title>Sistema de Facturación Web</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:700,400&amp;subset=cyrillic,latin,greek,vietnamese"/>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"  />
+        <h:outputStylesheet library="css" name="estilosSlider.css"  />
+        <h:outputStylesheet library="css" name="responsiveslides.css"  />
+        <h:outputStylesheet library="css" name="estilos.css"  />
+        <script src="../resources/js/jquery-3.2.1.min"></script>
+        <script src="../resources/js/responsiveslides.min.js"></script>
+        <!--script slider -->
+        <script>
+            // You can also use "$(window).load(function() {"
+            $(function () {
+
+                // Slideshow 4
+                $("#slider4").responsiveSlides({
+                    auto: true,
+                    pager: false,
+                    nav: true,
+                    speed: 500,
+                    namespace: "callbacks",
+                    before: function () {
+                        $('.events').append("<li>before event fired.</li>");
+                    },
+                    after: function () {
+                        $('.events').append("<li>after event fired.</li>");
+                    }
+                });
+
+            });
+        </script>
+    </h:head>
+    <h:body styleClass="body">
+        <section class="div_header">
+            <div class="div_header_uno">
+                <img class="div_header_logo" src="../../resources/images/logo.png" width="100%" height="100%"></img>
+            </div>
+            <div class="div_header_dos">
+                <p:outputLabel class="div_header_titulo"> #{usuarioBean.nombreApp()}</p:outputLabel>
+            </div>
+            <div class="div_header_tres">
+                <h:form class="div_header_usuario_logueado">
+                    <p:menubar>
+                        <p:submenu  label="#{usuarioBean.nombreUsuarioLogueado}" >
+                            <p:menuitem value="Pagina inicio" outcome="/Views/bienvenido" />
+                            <p:separator />
+                            <p:menuitem value="Cerrar sesión" action="#{usuarioBean.cerrarSesion()}" />
+                        </p:submenu>
+                    </p:menubar>    
+                </h:form>   
+            </div>
+        </section>
+        <div id="divGeneral">
+            <div id="top">
+                    <h:form>  
+                        <p:growl id="messages"/>
+                        <p:menubar>
+                            <p:submenu label="#{usuarioBean.nombreUsuarioLogueado}" >
+                                <p:menuitem value="Pagina inicio" outcome="/Views/bienvenido" />
+                                <p:separator />
+                                <p:menuitem value="Cerrar sesión" action="#{usuarioBean.cerrarSesion()}" />
+                            </p:submenu>
+                            <p:submenu label="Administrar" >
+                                <p:menuitem value="Clientes" outcome="/Views/Cliente/Cliente" />
+                                <p:menuitem value="Vendedores" outcome="/Views/Vendedor/Vendedor" />
+                                <p:menuitem value="Administradores" outcome="/Views/Administrador/Administrador" />
+                                <p:menuitem value="Productos" outcome="/Views/Producto/Producto"  />
+                                <p:menuitem value="Parámetros" outcome="/Views/Parametros/Parametros"  />
+                            </p:submenu>
+                            <p:submenu label="Facturar" >
+                                <p:menuitem value="Nueva venta" outcome="/Views/Venta/Factura"  />
+                                <p:menuitem value="Gestión de facturas" outcome="/Views/Facturas/Facturas"/>
+                            </p:submenu>
+                            <p:submenu label="Reportes" >
+                                <p:menuitem value="Impresión de reportes" outcome="/Views/Reportes/Reportes"  />
+                            </p:submenu>
+                        </p:menubar>
+                    </h:form>
+            </div>
+            <br></br>
+            <div id="content" class="center_content_plantilla_query">
+                <ui:insert name="content">Content
+                </ui:insert>
+            </div>
+        </div> 
+
+                <section class="div_footer">
+                    <div class="div_footer_uno">
+                    </div>
+                    <div class="div_footer_dos">
+                        <p:outputLabel style="font-size: 20px; color: white;">Síguenos en:</p:outputLabel> <p:spacer></p:spacer> <a href="https://www.facebook.com/EduarAlexanderMarin" target="_blank"><img src="../../resources/images/facebook_ico.png"></img></a><p:spacer></p:spacer> <p:spacer></p:spacer>  <a href="https://www.instagram.com/alexander.eduar/" target="_blank"><img src="../../resources/images/instagram_ico.jpg"></img></a>
+                        <br></br> 
+                        <br></br>
+                        <h:form>
+                            <p:commandLink>Politica de privacidad</p:commandLink> <p:spacer> - </p:spacer>
+                            <p:commandLink>Términos de uso</p:commandLink>
+                            <br></br> 
+                            <p:outputLabel style="font-size: 12px; color: white;">&copy; #{usuarioBean.añoActual()} Todos Los Derechos Reservados.</p:outputLabel>
+                            <br></br> 
+                            <br></br>
+                        </h:form>
+                    </div>
+                    <div class="div_footer_tres">
+                    </div>
+                </section>
+
+    </h:body>
+
+</html>

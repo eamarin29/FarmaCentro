@@ -1,0 +1,288 @@
+*{
+    font-size: 20px;
+}
+
+.body {
+
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%), url("#{facesContext.externalContext.request.contextPath}/resources/images/fondo.jpg");
+
+}
+
+
+/*
+estilos header
+*/
+.div_header{
+    width: 100%;
+    height: 100px;
+    background: rgb(72, 97, 123);
+    z-index: 100;
+
+}
+
+.div_header_uno{ 
+    width: 15%;
+    height: 80%;
+    margin-left: 10px;
+    float: left;
+    margin-top: 10px;
+}
+
+.div_header_dos{
+
+    width: 67%;
+    height: 80%;
+    margin-left: 10px;
+    float: left;
+    margin-top: 10px;
+    text-align: center;
+    align-content: center;
+}
+
+.div_header_tres{
+
+    width: 15%;
+    height: 80%;
+    margin-left: 10px;
+    float: left;
+    margin-top: 10px;
+    text-align: center;
+    align-content: center;
+}
+
+.div_header_logo{
+    border-radius: 5px;
+}
+
+.div_header_titulo{
+    color: white;
+    font-size: 35px;
+    margin-top: 20px;
+}
+
+.div_header_usuario_logueado{
+    margin-top: 20px;
+}
+
+
+/*
+estilos nav y contenido
+*/
+#divGeneral{
+    margin: 0 auto;
+    width: 1300px;
+    
+}
+
+#top {
+    border-radius: 10px;
+    padding: 0px;
+    margin: 0 auto;
+    width: 1300px;
+    margin-top: 0px;
+    position: relative;
+    top: 5px; 
+    margin-bottom: 15px;
+    
+
+}
+
+.center_content {
+    border-radius: 10px;
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
+    position: relative;
+    background-color: white;
+    padding: 10px;     
+    min-height: 500px;
+     
+}
+
+.center_content_plantilla_query{
+    border-radius: 10px;
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.5);
+    position: relative;
+    background-color: white;
+    padding: 10px; 
+    margin: 0 auto;
+    margin-top: -25px;
+}
+
+/*
+estilos footer
+*/
+.div_footer{
+    width: 100%;
+    height: 160px;
+    background: rgb(72, 97, 123);
+
+}
+
+.div_footer_uno{
+    width: 15%;
+    height: 90%;
+    margin-left: 10px;
+    float: left;
+    margin-top: 10px;
+
+}
+
+.div_footer_dos{
+
+    width: 67%;
+    height: 90%;
+    margin-left: 10px;
+    float: left;
+    margin-top: 10px;
+    text-align: center;
+    align-content: center;
+
+}
+
+.div_footer_tres{
+
+    width: 15%;
+    height: 90%;
+    margin-left: 10px;
+    float: left;
+    margin-top: 10px;
+    text-align: center;
+    align-content: center;
+
+}
+
+#bottom {
+    position: relative;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 3px;
+    
+}
+
+/*
+estilos menus de navegacion
+*/
+#top a:link, #top a:visited {
+    color: greenyellow;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover  {
+    color: greenyellow;
+    font-weight : bold;
+    text-decoration : underline;
+}
+
+a:link, a:visited {
+    color: greenyellow;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+    color: greenyellow;
+    font-weight : bold;
+    text-decoration : underline;
+}
+
+
+
+/*
+otros estilos paginas
+*/
+h1 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    font-size:  30px;
+    font-weight: bold;
+    margin-top: 5px;
+    align-content: center;
+    padding: 4%;
+    color: black;
+    text-align: center;
+}
+
+h2 {
+    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    font-size:  24px;
+    text-align: center;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    color: black;
+
+}
+
+a:link, a:visited {
+    color: greenyellow;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+    color: greenyellow;
+    font-weight : bold;
+    text-decoration : underline;
+}
+
+.titulo_gestion{
+    align-content: center;
+    text-align: center; 
+    margin: 0 auto;
+    font-size: 27px;
+}
+
+
+
+
+
+/*
+otros estilos paginas
+*/
+.ui-icon-delete2 {
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/delete2.png") !important;
+}
+
+.ui-icon-modificar{
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/modificar.png") !important;
+}
+
+.ui-icon-guardar2{
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/guardar2.png") !important;
+}
+
+.ui-icon-yes{
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/yes.png") !important;
+}
+
+.ui-icon-cerrar2{
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/cerrar.ico") !important;
+}   
+
+.buscar{
+
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/buscar.png") !important;
+} 
+
+.imprimir{
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/imprimirFacturas.png") !important;
+}
+
+.ui-icon-agregar{
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/agregar.png") !important;
+}
+
+
+.tituloCambiarContrasena{
+
+    text-align: center;
+    color: black; 
+    font-size: 25px; 
+    font-weight: bold;
+
+}

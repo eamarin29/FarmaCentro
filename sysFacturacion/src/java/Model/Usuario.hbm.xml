@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 16-jul-2017 13:53:17 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="Model.Usuario" table="USUARIO" schema="FACTURACION" optimistic-lock="version">
+        <id name="cedula" type="string">
+            <column name="CEDULA" length="200" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="tipo" class="Model.Tipo" fetch="select">
+            <column name="TIPO" precision="22" scale="0" />
+        </many-to-one>
+        <property name="password" type="string">
+            <column name="PASSWORD" length="1000" />
+        </property>
+        <property name="email" type="string">
+            <column name="EMAIL" length="200" />
+        </property>
+        <property name="validado" type="string">
+            <column name="VALIDADO" length="4" />
+        </property>
+        <property name="codregistro" type="string">
+            <column name="CODREGISTRO" length="1000" />
+        </property>
+        <one-to-one name="vendedor" class="Model.Vendedor"></one-to-one>
+    </class>
+</hibernate-mapping>

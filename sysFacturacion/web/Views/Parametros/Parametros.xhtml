@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="./../../Plantilla/Plantilla.xhtml">
+            <ui:define name="content">           
+                <h3 class="titulo_gestion"> Gestión de Parámetros</h3>
+                <h:form id="frmNuevoParametro">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgNuevoParametro" widgetVar="dialogNuevoParametro" resizable="false"
+                              showEffect="explode"
+                              hideEffect="explode" modal="true" header="Crear un nuevo Parametro">
+                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
+
+                            <p:outputLabel value="Nombre del parámetro"></p:outputLabel>
+                            <p:inputText style="width: 100%; text-transform:uppercase;"  value="#{parametrosBean.parametros.nombreParametro}"></p:inputText>
+
+                            <p:outputLabel value="Nombre"></p:outputLabel>
+                            <p:inputText style="width: 100%; text-transform:uppercase;"  value="#{parametrosBean.parametros.valorParametro}"></p:inputText>
+
+                        </p:panelGrid>
+                        <br></br>
+                        <p:commandButton id="btnGuardarParametroNuevo" 
+                                         action="#{parametrosBean.nuevoParametro()}" 
+                                         update="frmMostrarParametros:tablaParametros, message"
+                                         title="Guardar registro" icon="ui-icon-guardar2">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogNuevoParametro').hide();">
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>
+                <h:form id="frmModificarParametro">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgModificarParametro" widgetVar="dialogModificarParametro" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Modificar Parametro">
+                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
+
+                            <p:outputLabel value="Valor del parámetro $"></p:outputLabel>
+                            <p:inputText style="width: 100%;" value="#{parametrosBean.parametros.valorParametro}"></p:inputText>
+
+                        </p:panelGrid>
+                        <br></br>
+                        <p:commandButton id="btnGuardarParametroModificado" 
+                                         action="#{parametrosBean.modificarParametro()}" 
+                                         update="frmMostrarParametros:tablaParametros, message"
+                                         title="Guardar cambios" icon="ui-icon-guardar2">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogModificarParametro').hide();">
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>  
+                <h:form>
+                    <p:commandButton value="Nuevo Parametro" actionListener="#{parametrosBean.prepararNuevoParametro()}" 
+                                     oncomplete="PF('dialogNuevoParametro').show();"
+                                     update=":frmNuevoParametro">
+                    </p:commandButton> 
+                </h:form>  
+                <br></br>
+                <!--
+                TABLA MOSTRAR TODOS LOS PARAMETROS
+                --> 
+                <h:form id="frmMostrarParametros">
+                    <p:dataTable id="tablaParametros"  var="pa" value="#{parametrosBean.listaParametros}" rows="10"
+                                 paginator="true" rowsPerPageTemplate="5,10,20,40,80,160,320,640"
+                                 emptyMessage="No hay Parametros registrados hasta el momento."
+                                 widgetVar="parametrosTabla" paginatorPosition="bottom"
+                                 filteredValue="#{parametrosBean.filtroParametros}"  >
+
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Buscar en cualquier columna: " />
+                                <p:spacer></p:spacer>
+                                <p:inputText id="globalFilter" onkeyup="PF('parametrosTabla').filter()" style="width:150px" placeholder="Buscar..."/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column filterBy="#{pa.nombreParametro}" headerText="Nombre del parámetro" filterMatchMode="contains">
+                            <h:outputText value="#{pa.nombreParametro}"></h:outputText>
+                        </p:column>
+                        <p:column filterBy="#{pa.valorParametro}" filterMatchMode="contains" headerText="Valor del Parámetro">
+                            <h:outputText value="#{pa.valorParametro}"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <p:commandButton title="Modificar registro" oncomplete="PF('dialogModificarParametro').show();"
+                                             update=":frmModificarParametro" icon="ui-icon-modificar" >
+                                <f:setPropertyActionListener target="#{parametrosBean.parametros}" value="#{pa}">
+                                </f:setPropertyActionListener>     
+                            </p:commandButton>
+                        </p:column> 
+                    </p:dataTable>    
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+        <ui:composition template="./../../Plantilla/Plantilla.xhtml">
+            <ui:define name="content">   
+                <h3 class="titulo_gestion"> Gestión de Facturas</h3> 
+                <!--
+                DIALOGO ELIMINAR FACTURA
+                -->     
+                <h:form id="frmEliminarFactura">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgEliminarFactura" widgetVar="dialogEliminarFactura" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Eliminar factura">
+
+                        <h:outputText value="¿Seguro que desea eliminar esta factura?"></h:outputText>
+                        <br></br>
+                        <br></br>
+                        <p:commandButton id="yes"
+                                         action="#{facturasBean.eliminarFactura()}" 
+                                         update="frmImprimirFactura, message, frmMostrarFacturas"
+                                         title="Eliminar factura" icon="ui-icon-yes">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogEliminarFactura').hide();">
+
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>     
+                <!--
+              DIALOGO IMPRIMIR FACTURA
+                -->     
+                <h:form id="frmImprimirFactura">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgImprimirFactura" widgetVar="dialogImprimirFactura" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Imprimir Factura">
+
+                        <h:outputText value="¿Seguro que desea Imprimir esta Factura?"></h:outputText>
+                        <br></br>
+                        <br></br>
+                        <h:commandLink  action="#{facturasBean.imprimirFacturaSeleccionada()}" target="_blank"  >
+                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                        </h:commandLink>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogImprimirFactura').hide();">
+
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>  
+                <br></br>
+                <!--
+                TABLA MOSTRAR TODAS LAS FACTUAS
+                --> 
+                <h:form id="frmMostrarFacturas">
+                    <p:dataTable id="tablaFacturas" paginator="true" paginatorPosition="top" var="fa" 
+                                 value="#{facturasBean.listaFactura}"
+                                 emptyMessage="No hay facturas registrados hasta el momento.">
+                        <p:column  headerText="Número de factura">
+                            <h:outputText value="#{fa.codfactura}"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Cédula cliente">
+                            <h:outputText value="#{fa.cliente.codcliente}"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Cédula vendedor">
+                            <h:outputText value="#{fa.vendedor.cedula}"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Total factura">
+                            <h:outputText value="#{fa.totalVenta}">
+                                <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Fecha de registro">
+                            <h:outputText value="#{fa.fechaRegistro}"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <p:commandButton style="margin-left: 15%;" title="Eliminar registro" icon="ui-icon-delete2" 
+                                             oncomplete="PF('dialogEliminarFactura').show();" update=":frmEliminarFactura">  
+                                <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
+                                </f:setPropertyActionListener> 
+                            </p:commandButton> 
+                            <p:commandButton style="margin-left: 15%;" title="Imprimir factura" icon="imprimir" 
+                                             oncomplete="PF('dialogImprimirFactura').show();" update=":frmImprimirFactura">  
+                                <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
+                                </f:setPropertyActionListener> 
+                            </p:commandButton> 
+                        </p:column> 
+                    </p:dataTable>    
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

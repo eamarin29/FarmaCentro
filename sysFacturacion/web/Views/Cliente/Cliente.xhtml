@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="./../../Plantilla/Plantilla.xhtml">
+            <ui:define name="content">           
+                <h3 class="titulo_gestion"> Gestión de Clientes</h3>
+                <br></br>
+                <!--
+                DIALOGO NUEVO CLIENTE
+                -->
+                <h:form id="frmNuevoCliente">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgNuevoCliente" widgetVar="dialogNuevoCliente" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Crear un nuevo cliente">
+                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
+
+                            <p:outputLabel value="Cédula"></p:outputLabel>
+                            <p:inputText style="width: 500px; text-transform:uppercase;" value="#{clienteBean.cliente.codcliente}"></p:inputText>
+
+                            <p:outputLabel value="Nombres"></p:outputLabel>
+                            <p:inputText style="width: 500px; text-transform:uppercase;" value="#{clienteBean.cliente.nombres}"></p:inputText>
+
+                            <p:outputLabel value="Apellidos"></p:outputLabel>
+                            <p:inputText style="width: 500px; text-transform:uppercase;" value="#{clienteBean.cliente.apellidos}"></p:inputText>
+
+                            <p:outputLabel value="Dirección"></p:outputLabel>
+                            <p:inputText style="width: 500px; text-transform:uppercase;" value="#{clienteBean.cliente.direccion}"></p:inputText>
+
+                        </p:panelGrid>
+                        <br></br>
+                        <p:commandButton id="btnGuardarCliente" 
+                                         action="#{clienteBean.nuevoCliente()}" 
+                                         update="frmMostrarClientes:tablaClientes, message"
+                                         title="Guardar registro" icon="ui-icon-guardar2">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogNuevoCliente').hide();">
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>
+                <!--
+                DIALOGO MODIFICAR CLIENTE
+                -->
+                <h:form id="frmModificarCliente">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgModificarCliente" widgetVar="dialogModificarCliente" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Modificar cliente">
+                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
+
+                            <p:outputLabel value="Nombres"></p:outputLabel>
+                            <p:inputText  style="width: 500px; text-transform:uppercase;" value="#{clienteBean.cliente.nombres}"></p:inputText>
+
+                            <p:outputLabel value="Apellidos"></p:outputLabel>
+                            <p:inputText  style="width: 500px; text-transform:uppercase;" value="#{clienteBean.cliente.apellidos}"></p:inputText>
+
+                            <p:outputLabel value="Dirección"></p:outputLabel>
+                            <p:inputText  style="width: 500px; text-transform:uppercase;" value="#{clienteBean.cliente.direccion}"></p:inputText>
+
+                        </p:panelGrid>
+                        <br></br>
+                        <p:commandButton id="btnGuardarCliente"
+                                         action="#{clienteBean.modificarCliente()}" 
+                                         update="frmMostrarClientes:tablaClientes, message"
+                                         title="Guardar cambios" icon="ui-icon-guardar2">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogModificarCliente').hide();">
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>
+                <!--
+                DIALOGO ELIMINAR CLIENTE
+                -->     
+                <h:form id="frmEliminarCliente">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgEliminarCliente" widgetVar="dialogEliminarCliente" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Eliminar cliente">
+
+                        <h:outputText value="¿Seguro que desea eliminar este cliente?"></h:outputText>
+                        <br></br>
+                        <br></br>
+                        <p:commandButton id="yes"
+                                         action="#{clienteBean.eliminarCliente()}" 
+                                         update="frmMostrarClientes:tablaClientes, message"
+                                         title="Eliminar cliente" icon="ui-icon-yes">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogEliminarCliente').hide();">
+
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>  
+                <h:form>
+                    <p:commandButton value="Nuevo Cliente" actionListener="#{clienteBean.prepararNuevoCliente()}" 
+                                     oncomplete="PF('dialogNuevoCliente').show();"
+                                     update=":frmNuevoCliente">
+                    </p:commandButton> 
+                </h:form>      
+                <br></br>
+                <!--
+                TABLA MOSTRAR TODOS LOS CLIENTES
+                --> 
+                <h:form id="frmMostrarClientes">
+                    <p:dataTable id="tablaClientes"  var="ct" value="#{clienteBean.listaCliente}" rows="10"
+                                 paginator="true" rowsPerPageTemplate="5,10,20,40,80,160,320,640"
+                                 emptyMessage="No hay Clientes registrados hasta el momento."
+                                 widgetVar="clientesTabla" paginatorPosition="bottom"
+                                 filteredValue="#{clienteBean.filtroClientes}"  >
+                        
+                        <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar en cualquier columna: " />
+                                    <p:spacer></p:spacer>
+                                    <p:inputText id="globalFilter" onkeyup="PF('clientesTabla').filter()" style="width:150px" placeholder="Buscar..."/>
+                                </p:outputPanel>
+                            </f:facet>
+                        
+                        <p:column style="text-align: center;" filterBy="#{ct.codcliente}" headerText="Cédula" filterMatchMode="contains">
+                            <h:outputText value="#{ct.codcliente}"></h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center;" filterBy="#{ct.nombres} #{ct.apellidos}" filterMatchMode="contains" headerText="Nombres y Apellidos">
+                            <h:outputText value="#{ct.nombres} #{ct.apellidos}"></h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center;" filterBy="#{ct.nombres} #{ct.apellidos}" filterMatchMode="contains" headerText="Dirección">
+                            <h:outputText value="#{ct.direccion}"></h:outputText>
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <p:commandButton title="Modificar registro" oncomplete="PF('dialogModificarCliente').show();"
+                                             update=":frmModificarCliente" icon="ui-icon-modificar" >
+                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{ct}">
+                                </f:setPropertyActionListener>     
+                            </p:commandButton>
+                            <p:commandButton style="margin-left: 15%;" title="Eliminar registro" icon="ui-icon-delete2" 
+                                             oncomplete="PF('dialogEliminarCliente').show();" update=":frmEliminarCliente">  
+                                <f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{ct}">
+                                </f:setPropertyActionListener> 
+                            </p:commandButton> 
+                        </p:column> 
+                    </p:dataTable>    
+                </h:form> 
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

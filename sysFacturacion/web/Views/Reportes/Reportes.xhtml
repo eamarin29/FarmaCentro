@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <body>
+        <ui:composition template="./../../Plantilla/Plantilla.xhtml">
+            <ui:define name="content">           
+                <h3 class="titulo_gestion"> Impresión de Reportes</h3>
+                <br></br>
+                <h:form id="frmReportes">
+                    <p:growl id="message" showDetail="true" />  
+
+                    <!--DIALOGO REPORTE 1  -->
+                    <p:dialog id="dlgReporte1" widgetVar="dialogReporte1" modal="true" resizable="false" 
+                              showEffect="explode" hideEffect="explode" header="Parámetros" >
+
+                        <p:messages id="messageReporte1"  showDetail="true" autoUpdate="true" closable="true"  />
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel>Fecha inicial: </p:outputLabel> 
+                                </td>
+                                <td>
+                                    <p:calendar id="fechainicial" value="#{reporteBean.fechaInicial}" showOn="button" />
+                                </td>
+                            </tr>
+                            <br></br>
+                            <tr>
+                                <td>
+                                    <p:outputLabel>Fecha final: </p:outputLabel> 
+                                </td>
+                                <td>
+                                    <p:calendar id="fechafinal" value="#{reporteBean.fechaFinal}" showOn="button"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:outputLabel>Empleado: </p:outputLabel> 
+                                </td>
+                                <td>
+                                    <p:selectOneMenu id="empleado" value="#{reporteBean.empleado}" style="width:300px">
+                                        <f:selectItem itemLabel="Selecciones un empleado"   />
+                                        <f:selectItems value="#{reporteBean.empleados}" />
+                                    </p:selectOneMenu>
+                                </td>
+                            </tr>
+                        </table>
+                        <br></br> 
+                        <h:commandLink action="#{reporteBean.imprimirReporte1()}" target="_blank" >
+                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                        </h:commandLink>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte1').hide();">    
+                        </p:commandButton> 
+
+                    </p:dialog>
+
+                    <table>
+                        <tr>
+                            <td>
+                                <p:outputLabel>Reporte: </p:outputLabel> 
+                            </td>
+                            <td>
+                                <p:selectOneMenu id="reporte" value="#{reporteBean.reporte}" style="width:300px">
+                                    <f:selectItem itemLabel="Selecciones un reporte"   />
+                                    <f:selectItems value="#{reporteBean.reportes}" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <br></br>
+                                <p:commandButton value="Aceptar"
+                                                 update=":frmReportes :frmReportes:message :frmReportes:dlgReporte1"
+                                                 actionListener="#{reporteBean.aceptarReporte()}">    
+                                </p:commandButton> 
+                            </td>
+                        </tr>
+                    </table>
+                </h:form>    
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
