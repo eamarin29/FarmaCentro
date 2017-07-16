@@ -9,7 +9,7 @@ public class Statics {
     //Conexion a la app
     public static String direccionIp = "localhost";
     public static String puerto = "8084";
-    public static String nombreApp = "MauroMotos";
+    public static String nombreApp = "FarmaCentro";
     
     //Conexion a la bd
     public static String driver_class="oracle.jdbc.OracleDriver";

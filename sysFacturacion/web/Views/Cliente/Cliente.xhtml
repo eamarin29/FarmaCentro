@@ -20,7 +20,7 @@
                         <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
 
                             <p:outputLabel value="Cédula"></p:outputLabel>
-                            <p:inputText style="width: 500px; text-transform:uppercase;" value="#{clienteBean.cliente.codcliente}"></p:inputText>
+                            <p:inputText style="width: 500px;" value="#{clienteBean.cliente.codcliente}"></p:inputText>
 
                             <p:outputLabel value="Nombres"></p:outputLabel>
                             <p:inputText style="width: 500px; text-transform:uppercase;" value="#{clienteBean.cliente.nombres}"></p:inputText>
@@ -132,7 +132,7 @@
                                 <f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{ct}">
                                 </f:setPropertyActionListener>     
                             </p:commandButton>
-                            <p:commandButton style="margin-left: 15%;" title="Eliminar registro" icon="ui-icon-delete2" 
+                            <p:commandButton title="Eliminar registro" icon="ui-icon-delete2" 
                                              oncomplete="PF('dialogEliminarCliente').show();" update=":frmEliminarCliente">  
                                 <f:setPropertyActionListener target="#{clienteBean.cliente}" value="#{ct}">
                                 </f:setPropertyActionListener> 

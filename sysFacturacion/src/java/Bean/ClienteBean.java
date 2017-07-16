@@ -75,7 +75,6 @@ public class ClienteBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
         } else {
 
-            cliente.setCodcliente(cliente.getCodcliente().toUpperCase());
             cliente.setNombres(cliente.getNombres().toUpperCase());
             cliente.setApellidos(cliente.getApellidos().toUpperCase());
             cliente.setDireccion(cliente.getDireccion().toUpperCase());
@@ -107,6 +106,10 @@ public class ClienteBean implements Serializable {
         if (cliente.getNombres().equals("") || cliente.getApellidos().equals("") || cliente.getDireccion().equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
         } else {
+            cliente.setNombres(cliente.getNombres().toUpperCase());
+            cliente.setApellidos(cliente.getApellidos().toUpperCase());
+            cliente.setDireccion(cliente.getDireccion().toUpperCase());
+
             ClienteController clienteController = new ClienteController();
             clienteController.updateCliente(cliente);
             RequestContext context = RequestContext.getCurrentInstance();

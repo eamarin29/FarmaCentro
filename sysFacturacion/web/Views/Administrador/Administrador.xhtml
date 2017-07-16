@@ -14,25 +14,25 @@
                 <h:form id="frmNuevoAdmin">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgNuevoAdmin" widgetVar="dialogNuevoAdmin" resizable="false" showEffect="explode"
-                              hideEffect="explode" modal="true" header="Crear un nuevo Administrador." width="30%">
-                        <p:panelGrid columns="2" style="margin: 0 auto; width: 100%;">
+                              hideEffect="explode" modal="true" header="Crear un nuevo Administrador." >
+                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
                             
                             <p:outputLabel value="Cédula:"></p:outputLabel>
-                            <p:inputText style="width: 100%;" value="#{adminBean.usuario.cedula}"></p:inputText>
+                            <p:inputText style="width: 500px;" value="#{administradorBean.usuario.cedula}"></p:inputText>
 
                             <p:outputLabel value="Email:"></p:outputLabel>
-                            <p:inputText style="width: 100%;" value="#{adminBean.email}"></p:inputText>
+                            <p:inputText style="width: 500px;" value="#{administradorBean.email}"></p:inputText>
 
                             <p:outputLabel value="Contraseña:"></p:outputLabel>
-                            <p:password style="width: 100%;" value="#{adminBean.contraseñaIngresada}"></p:password>
+                            <p:password style="width: 500px; text-transform:uppercase;" value="#{administradorBean.contraseñaIngresada}"></p:password>
                             
                              <p:outputLabel value="Verificar Contraseña:"></p:outputLabel>
-                             <p:password style="width: 100%;" value="#{adminBean.verificarContraseñaIngresada}"></p:password>
+                             <p:password style="width: 500px; text-transform:uppercase;" value="#{administradorBean.verificarContraseñaIngresada}"></p:password>
 
                         </p:panelGrid>
                         <br></br>
                         <p:commandButton id="btnGuardarCliente" 
-                                         action="#{adminBean.nuevoAdmin()}" 
+                                         action="#{administradorBean.nuevoAdmin()}" 
                                          update="frmMostrarAdmin:tablaAdmin, message"
                                          title="Guardar registro" icon="ui-icon-guardar2">
                         </p:commandButton>
@@ -47,12 +47,12 @@
                         <p:panelGrid columns="2" style="margin: 0 auto; width: 100%;">
 
                             <p:outputLabel value="Email"></p:outputLabel>
-                            <p:inputText  style="width: 100%;" value="#{adminBean.usuario.email}"></p:inputText>
+                            <p:inputText  style="width: 100%;" value="#{administradorBean.usuario.email}"></p:inputText>
 
                         </p:panelGrid>
                         <br></br>
                         <p:commandButton id="btnGuardarVendedor"
-                                         action="#{adminBean.modificarAdmin()}" 
+                                         action="#{administradorBean.modificarAdmin()}" 
                                          update="frmMostrarAdmin:tablaAdmin, message"
                                          title="Guardar cambios" icon="ui-icon-guardar2">
                         </p:commandButton>
@@ -68,7 +68,7 @@
                         <h:outputText value="¿Seguro que desea eliminar este Admin?"></h:outputText>
                         <br></br>
                         <br></br>
-                        <p:commandButton id="yes" action="#{adminBean.eliminarAdmin()}" 
+                        <p:commandButton id="yes" action="#{administradorBean.eliminarAdmin()}" 
                                          update="frmMostrarAdmin:tablaAdmin, message"
                                          title="Eliminar Admin" icon="ui-icon-yes">
                         </p:commandButton>
@@ -77,7 +77,7 @@
                     </p:dialog>
                 </h:form>           
                 <h:form>
-                    <p:commandButton value="Nuevo Administrador" actionListener="#{adminBean.prepararNuevoAdmin()}" 
+                    <p:commandButton value="Nuevo Administrador" actionListener="#{administradorBean.prepararNuevoAdmin()}" 
                                      oncomplete="PF('dialogNuevoAdmin').show();"
                                      update=":frmNuevoAdmin">
                     </p:commandButton> 
@@ -86,7 +86,7 @@
                 <!-- TABLA MOSTRAR TODOS LOS CLIENTES --> 
                 <h:form id="frmMostrarAdmin">
                     <p:dataTable id="tablaAdmin" paginator="true" paginatorPosition="top" var="ad" 
-                                 value="#{adminBean.listaAdmin}"
+                                 value="#{administradorBean.listaAdmin}"
                                  emptyMessage="No hay Clientes registrados hasta el momento.">
                         <p:column  headerText="Cédula">
                             <h:outputText value="#{ad.cedula}"></h:outputText>
@@ -95,14 +95,14 @@
                             <h:outputText value="#{ad.email}"></h:outputText>
                         </p:column>
                         <p:column headerText="Acciones">
-                            <p:commandButton title="Modificar registro" action="#{adminBean.prepararModificacionAdmin()}"
-                                             update=":frmModificarAdmin" icon="ui-icon-modificar2" >
-                                <f:setPropertyActionListener target="#{adminBean.usuario}" value="#{ad}">
+                            <p:commandButton title="Modificar registro" action="#{administradorBean.prepararModificacionAdmin()}"
+                                             update=":frmModificarAdmin" icon="ui-icon-modificar" >
+                                <f:setPropertyActionListener target="#{administradorBean.usuario}" value="#{ad}">
                                 </f:setPropertyActionListener>     
                             </p:commandButton>
-                              <p:commandButton style="margin-left: 15%;" title="Eliminar registro" icon="ui-icon-delete2" 
+                              <p:commandButton title="Eliminar registro" icon="ui-icon-delete2" 
                                              oncomplete="PF('dialogEliminarAdmin').show();" >  
-                                  <f:setPropertyActionListener target="#{adminBean.usuario}" value="#{ad}">
+                                  <f:setPropertyActionListener target="#{administradorBean.usuario}" value="#{ad}">
                                 </f:setPropertyActionListener> 
                             </p:commandButton> 
                         </p:column> 

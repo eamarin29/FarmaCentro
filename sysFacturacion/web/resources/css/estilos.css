@@ -4,7 +4,7 @@
 
 .body {
 
-    background-image: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.4) 100%), url("#{facesContext.externalContext.request.contextPath}/resources/images/fondo.jpg");
+    background-image: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.1) 100%), url("#{facesContext.externalContext.request.contextPath}/resources/images/fondo.jpg");
 
 }
 
@@ -112,8 +112,8 @@ estilos footer
 */
 .div_footer{
     width: 100%;
-    height: 160px;
-    background: rgb(72, 97, 123);
+    height: 170px;
+    background: rgb(35, 47, 60);
 
 }
 

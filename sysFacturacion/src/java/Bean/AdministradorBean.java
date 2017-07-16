@@ -23,7 +23,7 @@ import org.primefaces.context.RequestContext;
 
 @ManagedBean
 @ViewScoped
-public class AdminBean implements Serializable {
+public class AdministradorBean implements Serializable {
 
     @ManagedProperty("#{usuarioBean}")
     private UsuarioBean usuarioBean;
@@ -39,7 +39,7 @@ public class AdminBean implements Serializable {
 
     private String emailAntiguo;
 
-    public AdminBean() {
+    public AdministradorBean() {
     }
 
     @PostConstruct
@@ -169,15 +169,15 @@ public class AdminBean implements Serializable {
 
                                 RequestContext context = RequestContext.getCurrentInstance();
                                 context.execute("PF('dialogNuevoAdmin').hide();");
-                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación Exitosa:", "El Admin se ha registrado correctamente."));
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación Exitosa:", "El Administrador se ha registrado correctamente."));
 
                                 //envio email
                                 String tituloEmail = "Bienvenido al Sistema de Facturación Web "+Statics.nombreApp;
 
                                 String contenidoEmail
                                         = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
-                                        + " <h3 style='color: black;''>Activar su cuenta en Sistema de Facturación Web</h3>\n"
-                                        + " <p style='color: black;''>Usted se ha registrado como Administrador del Sistema de Facturación Web. <br></br>Para activar su cuenta y poder iniciar sesión con las sus credenciales ingresadas en el proceso de registro <br> o por las credenciales que se le ha proporcionado, por favor haga click <a href=\"http://" + direccionIp + ":" + puerto + "/" + nombreApp + "/ActivacionCuenta?usuario=" + usuario.getCedula() + "&aleatorio=" + aleatorio + "\">Aqui</a> <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
+                                        + " <h3 style='color: black;''>Activar su cuenta en Sistema de Facturación Web "+Statics.nombreApp+" </h3>\n"
+                                        + " <p style='color: black;''>Usted se ha registrado como Administrador del Sistema de Facturación Web "+Statics.nombreApp+". <br></br>Para activar su cuenta y poder iniciar sesión con las sus credenciales ingresadas en el proceso de registro <br> o por las credenciales que se le ha proporcionado, por favor haga click <a href=\"http://" + direccionIp + ":" + puerto + "/" + nombreApp + "/ActivacionCuenta?usuario=" + usuario.getCedula() + "&aleatorio=" + aleatorio + "\">Aqui</a> <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
 
                                 v.sendMailConfirmacion(usuario.getEmail(), contenidoEmail, tituloEmail);
 
@@ -262,11 +262,11 @@ public class AdminBean implements Serializable {
                                 usuContro.updateUsuario(usuario);
 
                                 //envio email de cambio de email
-                                String tituloEmail = "Modificación Administrador del Sistema de Facturación Web";
+                                String tituloEmail = "Modificación Administrador del Sistema de Facturación Web "+nombreApp;
                                 String contenidoEmail
                                         = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
-                                        + " <h3 style='color: black;''>Activar su cuenta en Sistema de Facturación Web</h3>\n"
-                                        + " <p style='color: black;''>Se ha modificado el email del Administrador del Sistema de Facturación Web con cédula: " + usuario.getCedula() + " a este email.  <br></br>Para activar su cuenta y poder iniciar sesión con sus nuevas credenciales  por favor haga click <a href=\"http://" + direccionIp + ":" + puerto + "/" + nombreApp + "/ActivacionCuenta?usuario=" + usuario.getCedula() + "&aleatorio=" + aleatorio + "\">Aqui</a> <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
+                                        + " <h3 style='color: black;''>Activar su cuenta en Sistema de Facturación Web "+Statics.nombreApp+" </h3>\n"
+                                        + " <p style='color: black;''>Se ha modificado el email del Administrador del Sistema de Facturación Web "+Statics.nombreApp+" con cédula: " + usuario.getCedula() + " a este email.  <br></br>Para activar su cuenta y poder iniciar sesión con sus nuevas credenciales  por favor haga click <a href=\"http://" + direccionIp + ":" + puerto + "/" + nombreApp + "/ActivacionCuenta?usuario=" + usuario.getCedula() + "&aleatorio=" + aleatorio + "\">Aqui</a> <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
 
                                 v.sendMailConfirmacion(usuario.getEmail(), contenidoEmail, tituloEmail);
 
@@ -278,7 +278,7 @@ public class AdminBean implements Serializable {
                                     //no cierro session
                                     RequestContext context = RequestContext.getCurrentInstance();
                                     context.execute("PF('dialogModificarAdmin').hide();");
-                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación Exitosa:", "El Admin se ha modificado correctamente."));
+                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación Exitosa:", "El Administrador se ha modificado correctamente."));
                                     usuario = new Usuario();
                                 }
 
@@ -287,7 +287,7 @@ public class AdminBean implements Serializable {
                                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El email ingresado ya se encuentra registrado en el sistema."));
                             }
                         } catch (Exception ex) {
-                            Logger.getLogger(AdminBean.class.getName()).log(Level.SEVERE, null, ex);
+                            Logger.getLogger(AdministradorBean.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                     } else {
@@ -313,11 +313,11 @@ public class AdminBean implements Serializable {
 
             //mando email de aviso de eliminacion
             Validaciones v = new Validaciones();
-            String tituloEmail = "Cuenta Administrador del Sistema de Facturación Web Eliminada";
+            String tituloEmail = "Cuenta Administrador del Sistema de Facturación Web "+Statics.nombreApp+" Eliminada";
             String contenidoEmail
                     = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
-                    + " <h3 style='color: black;''>Su cuenta en Sistema de Facturación Web ha sido eliminada</h3>\n"
-                    + " <p style='color: black;''>Se ha eliminado la cuenta del Administrador del Sistema de Facturación Web con cédula: " + usuario.getCedula() + ". <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
+                    + " <h3 style='color: black;''>Su cuenta en Sistema de Facturación Web "+Statics.nombreApp+" ha sido eliminada</h3>\n"
+                    + " <p style='color: black;''>Se ha eliminado la cuenta del Administrador del Sistema de Facturación Web "+Statics.nombreApp+" con cédula: " + usuario.getCedula() + ". <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
 
             v.sendMailConfirmacion(usuario.getEmail(), contenidoEmail, tituloEmail);
 
@@ -327,7 +327,7 @@ public class AdminBean implements Serializable {
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('dialogEliminarAdmin').hide();");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación Exitosa:", "El Admin se ha eliminado correctamente."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación Exitosa:", "El Administrador se ha eliminado correctamente."));
 
             //inicializo
             usuario = new Usuario();

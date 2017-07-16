@@ -87,13 +87,12 @@ public class UsuarioBean implements Serializable {
         } else if (!this.aleatorio2.equals("") && !this.cambioContrasena.equals("")) {
             if (this.aleatorio2.equals(this.cambioContrasena)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "Su contraseña se guardó satisfactoriamente."));
-                this.aleatorio2="";
-                this.cambioContrasena="";
+                this.aleatorio2 = "";
+                this.cambioContrasena = "";
             } else {
 
             }
         }
-
         return btnLogin;
     }
 
@@ -146,60 +145,61 @@ public class UsuarioBean implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         boolean loggedIn = false;
 
-        if (username == null || password == null || username.equals("") || password.equals("")) {
+        if (username == null || password == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Usuario y Contraseña son requeridos."));
         } else {
-            UsuarioController usuarioController = new UsuarioController();
-            VendedorController vendedorController = new VendedorController();
 
-            this.usuario = usuarioController.login(this.username, this.password);
-            if (usuario != null) {
-                if (usuario.getValidado().equals("S")) {
-                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tipo", usuario.getTipo().getCodtipo().intValue());
-                    setNumeroTipoLogueado(usuario.getTipo().getCodtipo().intValue());
-                    setCedulaUsuarioLogueado(usuario.getCedula());
-                    System.out.println("--La cedula del usuario logueado es: " + usuario.getCedula());
-                    BigDecimal tipo_admin = new BigDecimal(1);
-                    if (usuario.getTipo().getCodtipo().equals(tipo_admin)) {
-                        try {
-                            this.nombreUsuarioLogueado = "Admin";
-                            loggedIn = true;
-                            //redireccionar
-                            FacesContext contex = FacesContext.getCurrentInstance();
-                            contex.getExternalContext().redirect("/" + Statics.nombreApp + "/faces/Views/bienvenido.xhtml");
-                        } catch (Exception ex) {
-                            System.out.println("--Error : " + ex.getMessage());
-                        }
-                    } else if (usuario.getTipo().getCodtipo().equals(new BigDecimal(2))) {
-                        Vendedor vendedorLogueado = new Vendedor();
-                        vendedorLogueado = vendedorController.consultarVendedorPorCedula(usuario.getCedula());
+            if (username.equals("") || password.equals("")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Usuario y Contraseña son requeridos."));
+            } else {
+                UsuarioController usuarioController = new UsuarioController();
+                VendedorController vendedorController = new VendedorController();
 
-                        if (vendedorLogueado != null) {
+                this.usuario = usuarioController.login(this.username, this.password);
+                if (this.usuario != null) {
+                    if (usuario.getValidado().equals("S")) {
+                        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tipo", usuario.getTipo().getCodtipo().intValue());
+                        setNumeroTipoLogueado(usuario.getTipo().getCodtipo().intValue());
+                        setCedulaUsuarioLogueado(usuario.getCedula());
+                        System.out.println("--La cedula del usuario logueado es: " + usuario.getCedula());
+                        BigDecimal tipo_admin = new BigDecimal(1);
+                        if (usuario.getTipo().getCodtipo().equals(tipo_admin)) {
                             try {
-                                this.nombreUsuarioLogueado = vendedorLogueado.getNombres();
-                                this.cedulaUsuarioLogueado = vendedorLogueado.getUsuario().getCedula();
-
+                                this.nombreUsuarioLogueado = "Admin";
                                 loggedIn = true;
-
-                                //redirecciono
                                 FacesContext contex = FacesContext.getCurrentInstance();
                                 contex.getExternalContext().redirect("/" + Statics.nombreApp + "/faces/Views/bienvenido.xhtml");
-                            } catch (IOException ex) {
-                                Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (Exception ex) {
+                                System.out.println("--Error : " + ex.getMessage());
                             }
-                        } else {
-                            System.out.println("--Error");
+                        } else if (usuario.getTipo().getCodtipo().equals(new BigDecimal(2))) {
+                            Vendedor vendedorLogueado = new Vendedor();
+                            vendedorLogueado = vendedorController.consultarVendedorPorCedula(usuario.getCedula());
+                            if (vendedorLogueado != null) {
+                                try {
+                                    this.nombreUsuarioLogueado = vendedorLogueado.getNombres();
+                                    this.cedulaUsuarioLogueado = vendedorLogueado.getUsuario().getCedula();
+                                    loggedIn = true;
+                                    //redirecciono
+                                    FacesContext contex = FacesContext.getCurrentInstance();
+                                    contex.getExternalContext().redirect("/" + Statics.nombreApp + "/faces/Views/bienvenido.xhtml");
+                                } catch (IOException ex) {
+                                    Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                System.out.println("--Error");
+                            }
                         }
+                    } else {
+                        loggedIn = false;
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Por favor revise su correo electrónico para continuar con la validación de su cuenta."));
                     }
                 } else {
                     loggedIn = false;
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Por favor revise su correo electrónico para continuar con la validación de su cuenta."));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Las credenciales son incorrectas."));
                 }
-            } else {
-                loggedIn = false;
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Las credenciales son incorrectas."));
+                context.addCallbackParam("loggedIn", loggedIn);
             }
-            context.addCallbackParam("loggedIn", loggedIn);
         }
     }
 
@@ -245,7 +245,7 @@ public class UsuarioBean implements Serializable {
                 String tituloEmail = "Cambio de contraseña Sistema de Facturación Web";
                 String contenidoEmail
                         = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
-                        + " <h3 style='color: black;''>La cuenta del Sistema de Facturación Web "+Statics.nombreApp+" asociada a este email, ha solicitado un cambio de contraseña</h3>\n"
+                        + " <h3 style='color: black;''>La cuenta del Sistema de Facturación Web " + Statics.nombreApp + " asociada a este email, ha solicitado un cambio de contraseña</h3>\n"
                         + " <p style='color: black;''>Para realizar su cambio de contraseña por favor haga click <a href=\"http://" + direccionIp + ":" + puerto + "/" + nombreApp + "/CambioContrasena?usuario=" + usu.getCedula() + "&aleatorio=" + usu.getCodregistro() + "\">Aqui</a> <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
 
                 Validaciones v = new Validaciones();

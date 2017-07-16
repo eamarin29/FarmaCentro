@@ -179,7 +179,7 @@ public class VendedorBean implements Serializable {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación Exitosa:", "El vendedor se ha registrado correctamente."));
 
                             //envio email
-                            String tituloEmail = "Bienvenido al Sistema de Facturación Web";
+                            String tituloEmail = "Bienvenido al Sistema de Facturación Web "+Statics.nombreApp;
 
                             String contenidoEmail
                                     = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
@@ -308,7 +308,7 @@ public class VendedorBean implements Serializable {
                                 usuario.setCodregistro(aleatorio);
 
                                 //envio email de cambio de email
-                                String tituloMensaje = "Modificación Vendedor del Sistema de Facturación Web";
+                                String tituloMensaje = "Modificación Vendedor del Sistema de Facturación Web "+Statics.nombreApp;
                                 String contenidoEmail
                                         = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
                                         + " <h3 style='color: black;''>Activar su cuenta en Sistema de Facturación Web " + Statics.nombreApp + ".</h3>\n"
@@ -384,11 +384,11 @@ public class VendedorBean implements Serializable {
 
                     //mando email de aviso de eliminacion
                     Validaciones v = new Validaciones();
-                    String tituloEmail = "Cuenta Vendedor del Sistema de Facturación Web Eliminada";
+                    String tituloEmail = "Cuenta Vendedor del Sistema de Facturación Web "+Statics.nombreApp+" Eliminada";
                     String contenidoEmail
                             = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
-                            + " <h3 style='color: black;''>Su cuenta en Sistema de Facturación Web ha sido eliminada</h3>\n"
-                            + " <p style='color: black;''>Se ha eliminado la cuenta del Vendedor del Sistema de Facturación Web con cédula: " + vendedor.getUsuario().getCedula() + ".  <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios!  </p>   <br>   </div>    </div>";
+                            + " <h3 style='color: black;''>Su cuenta en Sistema de Facturación Web "+Statics.nombreApp+" ha sido eliminada</h3>\n"
+                            + " <p style='color: black;''>Se ha eliminado la cuenta del Vendedor del Sistema de Facturación Web "+Statics.nombreApp+" con cédula: " + vendedor.getUsuario().getCedula() + ".  <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios!  </p>   <br>   </div>    </div>";
 
                     v.sendMailConfirmacion(usuario.getEmail(), contenidoEmail, tituloEmail);
                 } else {

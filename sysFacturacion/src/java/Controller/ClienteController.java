@@ -15,7 +15,7 @@ public class ClienteController {
         List<Cliente> lista = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = session.beginTransaction();
-        String hql = "FROM Cliente";
+        String hql = "FROM Cliente ORDER BY codcliente ASC";
 
         try {
             lista = session.createQuery(hql).list();
