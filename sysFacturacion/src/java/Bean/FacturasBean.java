@@ -1,6 +1,6 @@
 package Bean;
 
-import ClasesAuxiliares.ReporteFactura;
+import ClasesAuxiliares.ImpresionReportes;
 import Controller.FacturasController;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -62,14 +62,14 @@ public class FacturasBean implements Serializable{
         String cv = factura.getVendedor().getCedula();
         int cf = factura.getCodfactura().intValue();
 
-        //Instancia hacia la clase ReporteFactura        
-        ReporteFactura rFactura = new ReporteFactura();
+        //Instancia hacia la clase ImpresionReportes        
+        ImpresionReportes rFactura = new ImpresionReportes();
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
         String ruta = servletContext.getRealPath("/Reportes/Factura/factura.jasper");
 
-        rFactura.getReporte(ruta, cc, cv, cf);
+        rFactura.getReporteFactura(ruta, cc, cv, cf);
         FacesContext.getCurrentInstance().responseComplete();
 
         RequestContext context = RequestContext.getCurrentInstance();

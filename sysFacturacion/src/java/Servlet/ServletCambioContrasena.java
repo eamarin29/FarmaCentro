@@ -21,9 +21,9 @@ public class ServletCambioContrasena extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-     @ManagedProperty("#{cambioContrasenaBean}")
+    @ManagedProperty("#{cambioContrasenaBean}")
     private CambioContrasenaBean cambioContrasenaBean;
-    
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,7 +39,7 @@ public class ServletCambioContrasena extends HttpServlet {
     public void setCambioContrasenaBean(CambioContrasenaBean cambioContrasenaBean) {
         this.cambioContrasenaBean = cambioContrasenaBean;
     }
-    
+
     /**
      * @param request
      * @param response
@@ -60,30 +60,19 @@ public class ServletCambioContrasena extends HttpServlet {
             //realizo la consulta
             String hql = "FROM Usuario WHERE cedula=:codUsuario AND codRegistro=:codRegistro AND validado='S'";
             Query q = session.createQuery(hql);
-
             q.setParameter("codUsuario", cedula);
             q.setParameter("codRegistro", codRegistro);
-
             @SuppressWarnings("UnusedAssignment")
             Usuario us = new Usuario();
             us = (Usuario) q.uniqueResult();
-
             if (us != null) {
-                
-                response.sendRedirect("http://" + direccionIp + ":" + puerto + "/" + nombreApp + "/faces/Views/cambiarContrasena.xhtml?cedula="+cedula+"&codRegistro="+codRegistro);
-               
-
+                response.sendRedirect("http://" + direccionIp + ":" + puerto + "/" + nombreApp + "/faces/Views/cambiarContrasena.xhtml?cedula=" + cedula + "&codRegistro=" + codRegistro);
             } else {
-
             }
-
             t.commit();
             session.close();
-
         } catch (Exception e) {
             t.rollback();
         }
-
     }
-
 }

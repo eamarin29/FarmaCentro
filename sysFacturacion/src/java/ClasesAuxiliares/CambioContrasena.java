@@ -37,12 +37,4 @@ public class CambioContrasena {
 
     }
 
-    public String cambiarContrasena(String cedula, String codRegistro, String contrasenaNueva) {
-
-        String mensajeRetornar = "holi";
-         System.out.println("--la cedula recogida es: "+cedula);
-        return mensajeRetornar;
-        
-    }
-
 }

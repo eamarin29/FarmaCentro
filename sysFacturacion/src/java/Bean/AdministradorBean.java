@@ -3,7 +3,7 @@ package Bean;
 import ClasesAuxiliares.Statics;
 import static ClasesAuxiliares.Statics.*;
 import ClasesAuxiliares.Validaciones;
-import Controller.AdminController;
+import Controller.AdministradorController;
 import Controller.UsuarioController;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -92,7 +92,7 @@ public class AdministradorBean implements Serializable {
     }
 
     public List<Usuario> getListaAdmin() {
-        AdminController aDao = new AdminController();
+        AdministradorController aDao = new AdministradorController();
         listaAdmin = aDao.listarAdmin();
         return listaAdmin;
     }

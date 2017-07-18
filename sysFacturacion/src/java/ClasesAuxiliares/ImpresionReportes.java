@@ -15,10 +15,10 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ReporteFactura {
+public class ImpresionReportes {
 
     @SuppressWarnings("CallToPrintStackTrace")
-    public void getReporte(String ruta, String codC, String codV, Integer codF) throws ClassNotFoundException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+    public void getReporteFactura(String ruta, String codC, String codV, Integer codF) throws ClassNotFoundException, ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
         Connection conexion;
         Class.forName(driver_class).newInstance();
         conexion = DriverManager.getConnection(cadenaConexion, usbd, passbd);
@@ -132,7 +132,7 @@ public class ReporteFactura {
             }
 
         } catch (ParseException ex) {
-            Logger.getLogger(ReporteFactura.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ImpresionReportes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

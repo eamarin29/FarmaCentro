@@ -7,7 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import Util.HibernateUtil;
 
-public class AdminController {
+public class AdministradorController {
 
     public List<Usuario> listarAdmin() {
         List<Usuario> lista = null;

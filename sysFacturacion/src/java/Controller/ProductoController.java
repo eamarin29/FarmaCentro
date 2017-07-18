@@ -160,7 +160,7 @@ public class ProductoController {
                             + " <h3 style='color: black;''>Sistema de Facturación Web "+Statics.nombreApp+" - Producto Agotado </h3>\n"
                             + " <p style='color: black;''>El producto con código de barras: "+pre.getCodbarras()+" Con nombre: "+pre.getNombreProducto()+". Se ha agotado. <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios!</p>   <br>   </div>    </div>";
 
-                    AdminController adminController = new AdminController();
+                    AdministradorController adminController = new AdministradorController();
                     List<Usuario> listaAdmins = adminController.listarAdmin();
                     
                     for (int i = 0; i < listaAdmins.size(); i++) {

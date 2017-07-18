@@ -1,6 +1,6 @@
 package Bean;
 
-import ClasesAuxiliares.ReporteFactura;
+import ClasesAuxiliares.ImpresionReportes;
 import Controller.EmpleadosController;
 import Controller.ReporteController;
 import java.io.Serializable;
@@ -131,7 +131,7 @@ public class ReporteBean implements Serializable {
             String empleado = this.empleado;
 
             //metodo
-            ReporteFactura rFactura = new ReporteFactura();
+            ImpresionReportes rFactura = new ImpresionReportes();
 
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();

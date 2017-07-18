@@ -6,7 +6,7 @@ import static ClasesAuxiliares.Statics.nombreApp;
 import static ClasesAuxiliares.Statics.puerto;
 import ClasesAuxiliares.TipoController;
 import ClasesAuxiliares.Validaciones;
-import Controller.AdminController;
+import Controller.AdministradorController;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -229,7 +229,7 @@ public class SolicitarRegistroBean implements Serializable {
                                 + " <h3 style='color: black;''>Un usuario ha solicitado un registro en el Sistema de Facturación Web " + Statics.nombreApp + "</h3>\n"
                                 + " <p style='color: black;''>Sus datos son los siguientes: <br></br> Rol: Administrador <br> Cédula: " + txtCedula.getValue().toString().toUpperCase() + "<br> Correo electrónico: " + txtCorreoElectronico.getValue().toString() + " <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios!  </p>   <br>   </div>    </div>";
 
-                        AdminController adminController = new AdminController();
+                        AdministradorController adminController = new AdministradorController();
                         List<Usuario> listaAdmins = adminController.listarAdmin();
 
                         for (int i = 0; i < listaAdmins.size(); i++) {
@@ -251,7 +251,7 @@ public class SolicitarRegistroBean implements Serializable {
                                 + " <h3 style='color: black;''>Un usuario ha solicitado un registro en el Sistema de Facturación Web " + Statics.nombreApp + "</h3>\n"
                                 + " <p style='color: black;''>Sus datos son los siguientes: <br></br> Rol: Vendedor <br> Cédula: " + txtCedula.getValue().toString().toUpperCase() + "<br> Correo electrónico: " + txtCorreoElectronico.getValue().toString() + " <br> Nombres: " + txtNombres.getValue().toString().toUpperCase() + " <br> Apellidos: " + txtApellidos.getValue().toString().toUpperCase() + " <br> Celular: " + txtCelular.getValue().toString().toUpperCase() + " <br> Dirección: " + txtDireccion.getValue().toString().toUpperCase() + " <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
 
-                        AdminController adminController = new AdminController();
+                        AdministradorController adminController = new AdministradorController();
                         List<Usuario> listaAdmins = adminController.listarAdmin();
 
                         for (int i = 0; i < listaAdmins.size(); i++) {
