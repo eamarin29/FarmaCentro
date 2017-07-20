@@ -1,5 +1,5 @@
 package Model;
-// Generated 16-jul-2017 13:53:14 by Hibernate Tools 4.3.1
+// Generated 20-jul-2017 12:11:25 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -12,65 +12,68 @@ import java.util.Set;
 public class Producto  implements java.io.Serializable {
 
 
-     private String codbarras;
-     private String nombreProducto;
-     private BigDecimal precioVenta;
-     private Long stockMinimo;
-     private Long stockActual;
+     private long codigo;
+     private String codBarras;
+     private String nombre;
+     private String paquete;
      private BigDecimal precioCompra;
+     private BigDecimal porcentajeDescuento;
+     private BigDecimal precioCompraReal;
+     private BigDecimal porcentajeUtilidad;
+     private BigDecimal precioVentaReal;
+     private Long stockMinUni;
+     private Long stockActUni;
      private Set<DetalleFactura> detalleFacturas = new HashSet<DetalleFactura>(0);
 
     public Producto() {
     }
 
 	
-    public Producto(String codbarras) {
-        this.codbarras = codbarras;
+    public Producto(long codigo) {
+        this.codigo = codigo;
     }
-    public Producto(String codbarras, String nombreProducto, BigDecimal precioVenta, Long stockMinimo, Long stockActual, BigDecimal precioCompra, Set<DetalleFactura> detalleFacturas) {
-       this.codbarras = codbarras;
-       this.nombreProducto = nombreProducto;
-       this.precioVenta = precioVenta;
-       this.stockMinimo = stockMinimo;
-       this.stockActual = stockActual;
+    public Producto(long codigo, String codBarras, String nombre, String paquete, BigDecimal precioCompra, BigDecimal porcentajeDescuento, BigDecimal precioCompraReal, BigDecimal porcentajeUtilidad, BigDecimal precioVentaReal, Long stockMinUni, Long stockActUni, Set<DetalleFactura> detalleFacturas) {
+       this.codigo = codigo;
+       this.codBarras = codBarras;
+       this.nombre = nombre;
+       this.paquete = paquete;
        this.precioCompra = precioCompra;
+       this.porcentajeDescuento = porcentajeDescuento;
+       this.precioCompraReal = precioCompraReal;
+       this.porcentajeUtilidad = porcentajeUtilidad;
+       this.precioVentaReal = precioVentaReal;
+       this.stockMinUni = stockMinUni;
+       this.stockActUni = stockActUni;
        this.detalleFacturas = detalleFacturas;
     }
    
-    public String getCodbarras() {
-        return this.codbarras;
+    public long getCodigo() {
+        return this.codigo;
     }
     
-    public void setCodbarras(String codbarras) {
-        this.codbarras = codbarras;
+    public void setCodigo(long codigo) {
+        this.codigo = codigo;
     }
-    public String getNombreProducto() {
-        return this.nombreProducto;
-    }
-    
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
-    }
-    public BigDecimal getPrecioVenta() {
-        return this.precioVenta;
+    public String getCodBarras() {
+        return this.codBarras;
     }
     
-    public void setPrecioVenta(BigDecimal precioVenta) {
-        this.precioVenta = precioVenta;
+    public void setCodBarras(String codBarras) {
+        this.codBarras = codBarras;
     }
-    public Long getStockMinimo() {
-        return this.stockMinimo;
-    }
-    
-    public void setStockMinimo(Long stockMinimo) {
-        this.stockMinimo = stockMinimo;
-    }
-    public Long getStockActual() {
-        return this.stockActual;
+    public String getNombre() {
+        return this.nombre;
     }
     
-    public void setStockActual(Long stockActual) {
-        this.stockActual = stockActual;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public String getPaquete() {
+        return this.paquete;
+    }
+    
+    public void setPaquete(String paquete) {
+        this.paquete = paquete;
     }
     public BigDecimal getPrecioCompra() {
         return this.precioCompra;
@@ -78,6 +81,48 @@ public class Producto  implements java.io.Serializable {
     
     public void setPrecioCompra(BigDecimal precioCompra) {
         this.precioCompra = precioCompra;
+    }
+    public BigDecimal getPorcentajeDescuento() {
+        return this.porcentajeDescuento;
+    }
+    
+    public void setPorcentajeDescuento(BigDecimal porcentajeDescuento) {
+        this.porcentajeDescuento = porcentajeDescuento;
+    }
+    public BigDecimal getPrecioCompraReal() {
+        return this.precioCompraReal;
+    }
+    
+    public void setPrecioCompraReal(BigDecimal precioCompraReal) {
+        this.precioCompraReal = precioCompraReal;
+    }
+    public BigDecimal getPorcentajeUtilidad() {
+        return this.porcentajeUtilidad;
+    }
+    
+    public void setPorcentajeUtilidad(BigDecimal porcentajeUtilidad) {
+        this.porcentajeUtilidad = porcentajeUtilidad;
+    }
+    public BigDecimal getPrecioVentaReal() {
+        return this.precioVentaReal;
+    }
+    
+    public void setPrecioVentaReal(BigDecimal precioVentaReal) {
+        this.precioVentaReal = precioVentaReal;
+    }
+    public Long getStockMinUni() {
+        return this.stockMinUni;
+    }
+    
+    public void setStockMinUni(Long stockMinUni) {
+        this.stockMinUni = stockMinUni;
+    }
+    public Long getStockActUni() {
+        return this.stockActUni;
+    }
+    
+    public void setStockActUni(Long stockActUni) {
+        this.stockActUni = stockActUni;
     }
     public Set<DetalleFactura> getDetalleFacturas() {
         return this.detalleFacturas;

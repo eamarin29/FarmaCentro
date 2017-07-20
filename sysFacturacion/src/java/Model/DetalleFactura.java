@@ -1,5 +1,5 @@
 package Model;
-// Generated 16-jul-2017 13:53:14 by Hibernate Tools 4.3.1
+// Generated 20-jul-2017 12:11:25 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -11,12 +11,10 @@ public class DetalleFactura  implements java.io.Serializable {
 
 
      private BigDecimal coddetalle;
-     private Producto producto;
      private Factura factura;
-     private Servicio servicio;
+     private Producto producto;
      private BigDecimal cantidad;
      private BigDecimal totalDetalle;
-     private BigDecimal precioRealUnidad;
 
     public DetalleFactura() {
     }
@@ -25,14 +23,12 @@ public class DetalleFactura  implements java.io.Serializable {
     public DetalleFactura(BigDecimal coddetalle) {
         this.coddetalle = coddetalle;
     }
-    public DetalleFactura(BigDecimal coddetalle, Producto producto, Factura factura, Servicio servicio, BigDecimal cantidad, BigDecimal totalDetalle, BigDecimal precioRealUnidad) {
+    public DetalleFactura(BigDecimal coddetalle, Factura factura, Producto producto, BigDecimal cantidad, BigDecimal totalDetalle) {
        this.coddetalle = coddetalle;
-       this.producto = producto;
        this.factura = factura;
-       this.servicio = servicio;
+       this.producto = producto;
        this.cantidad = cantidad;
        this.totalDetalle = totalDetalle;
-       this.precioRealUnidad = precioRealUnidad;
     }
    
     public BigDecimal getCoddetalle() {
@@ -42,13 +38,6 @@ public class DetalleFactura  implements java.io.Serializable {
     public void setCoddetalle(BigDecimal coddetalle) {
         this.coddetalle = coddetalle;
     }
-    public Producto getProducto() {
-        return this.producto;
-    }
-    
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
     public Factura getFactura() {
         return this.factura;
     }
@@ -56,12 +45,12 @@ public class DetalleFactura  implements java.io.Serializable {
     public void setFactura(Factura factura) {
         this.factura = factura;
     }
-    public Servicio getServicio() {
-        return this.servicio;
+    public Producto getProducto() {
+        return this.producto;
     }
     
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
     public BigDecimal getCantidad() {
         return this.cantidad;
@@ -76,13 +65,6 @@ public class DetalleFactura  implements java.io.Serializable {
     
     public void setTotalDetalle(BigDecimal totalDetalle) {
         this.totalDetalle = totalDetalle;
-    }
-    public BigDecimal getPrecioRealUnidad() {
-        return this.precioRealUnidad;
-    }
-    
-    public void setPrecioRealUnidad(BigDecimal precioRealUnidad) {
-        this.precioRealUnidad = precioRealUnidad;
     }
 
 

@@ -159,7 +159,7 @@ public String obtenerIVA() throws Exception {
                 Double precioVenta = precioCompra + (precioCompra * iva) / 100;
                 BigDecimal precioVentaFinal = new BigDecimal(precioVenta);
                 
-                lista.get(i).setPrecioVenta(precioVentaFinal);
+                lista.get(i).setPrecioVentaReal(precioVentaFinal);
                 productoController.updateProducto(lista.get(i));
             } catch (Exception ex) {
                 Logger.getLogger(ParametrosController.class.getName()).log(Level.SEVERE, null, ex);

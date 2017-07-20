@@ -1,31 +1,46 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 16-jul-2017 13:53:17 by Hibernate Tools 4.3.1 -->
+<!-- Generated 20-jul-2017 12:11:28 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.Producto" table="PRODUCTO" schema="FACTURACION" optimistic-lock="version">
-        <id name="codbarras" type="string">
-            <column name="CODBARRAS" length="200" />
+        <id name="codigo" type="long">
+            <column name="CODIGO" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
-        <property name="nombreProducto" type="string">
-            <column name="NOMBRE_PRODUCTO" length="200" />
+        <property name="codBarras" type="string">
+            <column name="COD_BARRAS" length="600" />
         </property>
-        <property name="precioVenta" type="big_decimal">
-            <column name="PRECIO_VENTA" precision="10" />
+        <property name="nombre" type="string">
+            <column name="NOMBRE" length="600" />
         </property>
-        <property name="stockMinimo" type="java.lang.Long">
-            <column name="STOCK_MINIMO" precision="10" scale="0" />
-        </property>
-        <property name="stockActual" type="java.lang.Long">
-            <column name="STOCK_ACTUAL" precision="10" scale="0" />
+        <property name="paquete" type="string">
+            <column name="PAQUETE" length="80" />
         </property>
         <property name="precioCompra" type="big_decimal">
             <column name="PRECIO_COMPRA" precision="10" />
         </property>
+        <property name="porcentajeDescuento" type="big_decimal">
+            <column name="PORCENTAJE_DESCUENTO" precision="10" />
+        </property>
+        <property name="precioCompraReal" type="big_decimal">
+            <column name="PRECIO_COMPRA_REAL" precision="10" />
+        </property>
+        <property name="porcentajeUtilidad" type="big_decimal">
+            <column name="PORCENTAJE_UTILIDAD" precision="10" />
+        </property>
+        <property name="precioVentaReal" type="big_decimal">
+            <column name="PRECIO_VENTA_REAL" precision="10" />
+        </property>
+        <property name="stockMinUni" type="java.lang.Long">
+            <column name="STOCK_MIN_UNI" precision="10" scale="0" />
+        </property>
+        <property name="stockActUni" type="java.lang.Long">
+            <column name="STOCK_ACT_UNI" precision="10" scale="0" />
+        </property>
         <set name="detalleFacturas" table="DETALLE_FACTURA" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="CODPRODUCTO" length="200" />
+                <column name="CODPRODUCTO" precision="10" scale="0" />
             </key>
             <one-to-many class="Model.DetalleFactura" />
         </set>

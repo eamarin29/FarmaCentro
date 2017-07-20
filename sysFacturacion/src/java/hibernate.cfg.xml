@@ -52,16 +52,14 @@ Contributor(s):
         <property name="c3p0.timeout">1800</property> 
         <property name="c3p0.max_statements">50</property>
         <property name="hibernate.current_session_context_class">thread</property>
-        <mapping resource="Model/Reporte.hbm.xml"/>
-        <mapping resource="Model/Parametro.hbm.xml"/>
         <mapping resource="Model/Vendedor.hbm.xml"/>
-        <mapping resource="Model/Producto.hbm.xml"/>
-        <mapping resource="Model/Servicio.hbm.xml"/>
-        <mapping resource="Model/Empleado.hbm.xml"/>
-        <mapping resource="Model/DetalleFactura.hbm.xml"/>
         <mapping resource="Model/Tipo.hbm.xml"/>
         <mapping resource="Model/Factura.hbm.xml"/>
-        <mapping resource="Model/Usuario.hbm.xml"/>
+        <mapping resource="Model/Reporte.hbm.xml"/>
+        <mapping resource="Model/Producto.hbm.xml"/>
+        <mapping resource="Model/Parametro.hbm.xml"/>
         <mapping resource="Model/Cliente.hbm.xml"/>
+        <mapping resource="Model/Usuario.hbm.xml"/>
+        <mapping resource="Model/DetalleFactura.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

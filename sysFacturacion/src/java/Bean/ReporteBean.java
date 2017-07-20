@@ -1,7 +1,6 @@
 package Bean;
 
 import ClasesAuxiliares.ImpresionReportes;
-import Controller.EmpleadosController;
 import Controller.ReporteController;
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -19,7 +18,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
-import Model.Empleado;
 import Model.Reporte;
 import org.primefaces.context.RequestContext;
 
@@ -31,8 +29,6 @@ public class ReporteBean implements Serializable {
     private String reporte;
     private Map<String, String> reportes;
 
-    private String empleado;
-    private Map<String, String> empleados;
 
     private Date fechaInicial;
     private Date fechaFinal;
@@ -51,30 +47,7 @@ public class ReporteBean implements Serializable {
             reportes.put(listaReportes.get(i).getDescripcion(), String.valueOf(listaReportes.get(i).getCodigo()));
         }
 
-        //combo de empleados
-        empleados = new HashMap<String, String>();
-        EmpleadosController empleadosController = new EmpleadosController();
-        List<Empleado> listaEmpleados = empleadosController.listarEmpleados();
-        for (int i = 0; i < listaEmpleados.size(); i++) {
-            empleados.put(listaEmpleados.get(i).getNombres() + listaEmpleados.get(i).getApellidos(), listaEmpleados.get(i).getCedula());
-        }
 
-    }
-
-    public String getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(String empleado) {
-        this.empleado = empleado;
-    }
-
-    public Map<String, String> getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(Map<String, String> empleados) {
-        this.empleados = empleados;
     }
 
     public String getReporte() {
@@ -124,26 +97,5 @@ public class ReporteBean implements Serializable {
 
     public void imprimirReporte1() {
 
-        try {
-            DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            String fechaInicial = hourdateFormat.format(this.fechaInicial);
-            String fechaFinal = hourdateFormat.format(this.fechaFinal);
-            String empleado = this.empleado;
-
-            //metodo
-            ImpresionReportes rFactura = new ImpresionReportes();
-
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-            String ruta = servletContext.getRealPath("/Reportes/1/1.jasper");
-
-            rFactura.getReporte1(ruta, empleado, fechaFinal, fechaInicial);
-            FacesContext.getCurrentInstance().responseComplete();
-
-            this.fechaInicial = null;
-            this.fechaFinal = null;
-        } catch (Exception ex) {
-            Logger.getLogger(ReporteBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }

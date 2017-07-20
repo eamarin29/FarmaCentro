@@ -5,11 +5,9 @@ import ClasesAuxiliares.Validaciones;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import Controller.ClienteController;
-import Controller.EmpleadosController;
 import Controller.FacturaController;
 import Controller.ParametrosController;
 import Controller.ProductoController;
-import Controller.ServiciosController;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -31,10 +29,8 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import Model.Cliente;
 import Model.DetalleFactura;
-import Model.Empleado;
 import Model.Factura;
 import Model.Producto;
-import Model.Servicio;
 import Model.Vendedor;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -46,7 +42,7 @@ import Util.HibernateUtil;
 @ViewScoped
 public class FacturaBean implements Serializable {
 
-    @ManagedProperty("#{usuarioBean}")
+    @ManagedProperty("#{UsuarioBean}")
     private UsuarioBean usuarioBean;
 
     Session session = null;
@@ -84,12 +80,6 @@ public class FacturaBean implements Serializable {
     private String precioRealText;
     private String totalServicio;
 
-    private String empleado;
-    private Map<String, String> empleados;
-
-    private String descripcionServicio;
-    private String cantidadServicio = "1";
-
     public FacturaBean() {
     }
 
@@ -106,46 +96,8 @@ public class FacturaBean implements Serializable {
 
         this.codigoBarras = "";
 
-        //combo de empleados
-        empleados = new HashMap<String, String>();
-        EmpleadosController empleadosController = new EmpleadosController();
-        List<Empleado> lista = empleadosController.listarEmpleados();
-        for (int i = 0; i < lista.size(); i++) {
-            empleados.put(lista.get(i).getNombres() + " " + lista.get(i).getApellidos(), lista.get(i).getCedula());
-        }
 
-    }
 
-    public String getCantidadServicio() {
-        return cantidadServicio;
-    }
-
-    public void setCantidadServicio(String cantidadServicio) {
-        this.cantidadServicio = cantidadServicio;
-    }
-
-    public String getDescripcionServicio() {
-        return descripcionServicio;
-    }
-
-    public void setDescripcionServicio(String descripcionServicio) {
-        this.descripcionServicio = descripcionServicio;
-    }
-
-    public String getEmpleado() {
-        return empleado;
-    }
-
-    public void setEmpleado(String empleado) {
-        this.empleado = empleado;
-    }
-
-    public Map<String, String> getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(Map<String, String> empleados) {
-        this.empleados = empleados;
     }
 
     public String getTotalServicio() {
@@ -393,7 +345,7 @@ public class FacturaBean implements Serializable {
 
                     } else {
                         //compruebo de que el producto seleccionado tenga mas de 0 en el stock actula
-                        precioReal = productoSeleccionado.getPrecioVenta().toString();
+                        precioReal = productoSeleccionado.getPrecioVentaReal().toString();
                         setCantidadProductoDigitado("1");
                         RequestContext context = RequestContext.getCurrentInstance();
                         context.execute("PF('dialogPedirCantidadProductos').show();");
@@ -473,10 +425,10 @@ public class FacturaBean implements Serializable {
 
                             //consulto si el stock actual es mayor a la cantidad ingresada
                             int cantidadProdutoDigitado = Integer.parseInt(this.cantidadProductoDigitado);
-                            if (cantidadProdutoDigitado <= this.producto.getStockActual().intValue()) {
+                            if (cantidadProdutoDigitado <= this.producto.getStockActUni().intValue()) {
                                 //se puede registrar
                                 double ventaTotalDetalle = Integer.parseInt(this.cantidadProductoDigitado) * Double.parseDouble(this.precioReal);
-                                this.listaDetalleFactura.add(new DetalleFactura(null, producto, null, null, new BigDecimal(this.cantidadProductoDigitado), new BigDecimal(ventaTotalDetalle), new BigDecimal(this.precioReal)));
+                              //  this.listaDetalleFactura.add(new DetalleFactura(null, null, producto, null, new BigDecimal(this.cantidadProductoDigitado), new BigDecimal(ventaTotalDetalle), new BigDecimal(this.precioReal)));
 
                                 this.tr.commit();
 
@@ -540,7 +492,7 @@ public class FacturaBean implements Serializable {
 
                     } else {
 
-                        if (this.producto.getCodbarras().equals("1")) {
+                        if (this.producto.getCodBarras().equals("1")) {
                             //abrimos el dialog de servicios
 
                             RequestContext context = RequestContext.getCurrentInstance();
@@ -548,7 +500,7 @@ public class FacturaBean implements Serializable {
 
                         } else {
                             //abrimos el dialog normal
-                            this.precioRealText = this.producto.getPrecioVenta().toString();
+                            this.precioRealText = this.producto.getPrecioVentaReal().toString();
                             RequestContext context = RequestContext.getCurrentInstance();
                             context.execute("PF('dialogPedirCantidadProductosxText').show();");
                         }
@@ -612,11 +564,11 @@ public class FacturaBean implements Serializable {
                     } else {
                         //consulto el sotock
                         int cantidadProdutoDigitado = Integer.parseInt(this.cantidadProductoDigitadoxText);
-                        if (cantidadProdutoDigitado <= this.producto.getStockActual().intValue()) {
+                        if (cantidadProdutoDigitado <= this.producto.getStockActUni().intValue()) {
                             //se puede agregar
                             //obtener datos del producto seleccionado
                             double ventaTotalDetalle = Integer.parseInt(this.cantidadProductoDigitadoxText) * Double.parseDouble(this.precioRealText);
-                            this.listaDetalleFactura.add(new DetalleFactura(null, producto, null, null, new BigDecimal(this.cantidadProductoDigitadoxText), new BigDecimal(ventaTotalDetalle), new BigDecimal(this.precioRealText)));
+                           // this.listaDetalleFactura.add(new DetalleFactura(null, producto, null, null, new BigDecimal(this.cantidadProductoDigitadoxText), new BigDecimal(ventaTotalDetalle), new BigDecimal(this.precioRealText)));
 
                             //cerramos el dialog
                             RequestContext context = RequestContext.getCurrentInstance();
@@ -666,7 +618,7 @@ public class FacturaBean implements Serializable {
         int error = 0;
 
         for (int i = 0; i < tamañoLista; i++) {
-            if (listaDetalleFactura.get(i).getProducto().getCodbarras().equals(codBarras)) {
+            if (listaDetalleFactura.get(i).getProducto().getCodBarras().equals(codBarras)) {
                 error++;
             }
         }
@@ -683,7 +635,7 @@ public class FacturaBean implements Serializable {
         int error = 0;
 
         for (int i = 0; i < tamañoLista; i++) {
-            if (listaDetalleFactura.get(i).getProducto().getCodbarras().equals(this.codBarrasProductoEliminarDetalle)) {
+            if (listaDetalleFactura.get(i).getProducto().getCodBarras().equals(this.codBarrasProductoEliminarDetalle)) {
                 //eliminelo de la lista
                 listaDetalleFactura.remove(i);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "El detalle se ha eliminado."));
@@ -728,17 +680,17 @@ public class FacturaBean implements Serializable {
                     productoModificarCant = pDao.obtenerProductoPorCodigoBarras(this.codBarrasProductoModificarCantidad);
 
                     int CantidadAModificar = Integer.parseInt(this.CantidadProductoModificar);
-                    if (CantidadAModificar <= productoModificarCant.getStockActual().intValue()) {
+                    if (CantidadAModificar <= productoModificarCant.getStockActUni().intValue()) {
                         //se puede agregar
                         //cambio la cantidad en la posicion de la lista
                         int tamañoLista = listaDetalleFactura.size();
                         for (int i = 0; i < tamañoLista; i++) {
-                            if (listaDetalleFactura.get(i).getProducto().getCodbarras().equals(this.codBarrasProductoModificarCantidad)) {
+                            if (listaDetalleFactura.get(i).getProducto().getCodBarras().equals(this.codBarrasProductoModificarCantidad)) {
                                 //eliminelo de la lista
                                 listaDetalleFactura.get(i).setCantidad(new BigDecimal(this.CantidadProductoModificar));
 
-                                double ventaTotalDetalle = Integer.parseInt(this.CantidadProductoModificar) * listaDetalleFactura.get(i).getPrecioRealUnidad().doubleValue();
-                                listaDetalleFactura.get(i).setTotalDetalle(new BigDecimal(ventaTotalDetalle));
+                              //  double ventaTotalDetalle = Integer.parseInt(this.CantidadProductoModificar) * listaDetalleFactura.get(i).getPreci.doubleValue();
+                              //  listaDetalleFactura.get(i).setTotalDetalle(new BigDecimal(ventaTotalDetalle));
 
                                 RequestContext context = RequestContext.getCurrentInstance();
                                 context.execute("PF('dialogModificarCantidad').hide();");
@@ -891,7 +843,7 @@ public class FacturaBean implements Serializable {
                             nDetalle = new BigDecimal(num);
                         }
 
-                        if (listaDetalleFactura.get(i).getProducto().getCodbarras().equals("1")) {
+                        if (listaDetalleFactura.get(i).getProducto().getCodBarras().equals("1")) {
 
                             //calculamos el precio real del servico (ganacia de la empresa)
                             ParametrosController parametrosController = new ParametrosController();
@@ -904,10 +856,7 @@ public class FacturaBean implements Serializable {
                             detalle.setProducto(listaDetalleFactura.get(i).getProducto());
                             detalle.setCantidad(listaDetalleFactura.get(i).getCantidad());
                             detalle.setTotalDetalle(listaDetalleFactura.get(i).getTotalDetalle());
-                            detalle.setPrecioRealUnidad(new BigDecimal(precioGananciaEmpresa));
-
-                            Servicio servicios = new Servicio();
-                            servicios = listaDetalleFactura.get(i).getServicio();
+                          //  detalle.setPrecioRealUnidad(new BigDecimal(precioGananciaEmpresa));
 
                             Date date = new Date();
                             DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -919,26 +868,6 @@ public class FacturaBean implements Serializable {
                                 Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
                             }
 
-                            servicios.setFechaRegistro(fecha);
-
-                            BigDecimal numServicio = null;
-
-                            Servicio s = new Servicio();
-                            s = obtenerUltimoRegistroServicios(this.session);
-
-                            if (obtenerCuantosRegistrosHayEnServicios(this.session) == 0) {
-                                numServicio = new BigDecimal(1);
-                            } else {
-
-                                Integer num = s.getCodigo().intValue() + 1;
-                                numServicio = new BigDecimal(num);
-                            }
-
-                            servicios.setCodigo(numServicio);
-
-                            ServiciosController serviciosController = new ServiciosController();
-                            serviciosController.newServicio(servicios);
-
                             facturaController.newDetalle(detalle);
 
                         } else {
@@ -947,13 +876,13 @@ public class FacturaBean implements Serializable {
                             detalle.setProducto(listaDetalleFactura.get(i).getProducto());
                             detalle.setCantidad(listaDetalleFactura.get(i).getCantidad());
                             detalle.setTotalDetalle(listaDetalleFactura.get(i).getTotalDetalle());
-                            detalle.setPrecioRealUnidad(listaDetalleFactura.get(i).getPrecioRealUnidad());
+                          //  detalle.setPrecioRealUnidad(listaDetalleFactura.get(i).getPrecioRealUni);
 
                             facturaController.newDetalle(detalle);
 
                             //actualizar stock del producto
                             ProductoController productoController = new ProductoController();
-                            productoController.actualizarStockActual(listaDetalleFactura.get(i).getProducto().getCodbarras(), listaDetalleFactura.get(i).getCantidad().longValue());
+                            productoController.actualizarStockActual(listaDetalleFactura.get(i).getProducto().getCodBarras(), listaDetalleFactura.get(i).getCantidad().longValue());
                         }
 
                     }
@@ -987,13 +916,6 @@ public class FacturaBean implements Serializable {
         String hql = "FROM Factura ORDER BY codFactura DESC";
         Query q = session.createQuery(hql).setMaxResults(1);
         return (Factura) q.uniqueResult();
-    }
-
-    public Servicio obtenerUltimoRegistroServicios(Session session) throws Exception {
-
-        String hql = "FROM Servicios ORDER BY codigo DESC";
-        Query q = session.createQuery(hql).setMaxResults(1);
-        return (Servicio) q.uniqueResult();
     }
 
     public DetalleFactura obtenerUltimoRegistroDetalle(Session session) throws Exception {
@@ -1042,87 +964,6 @@ public class FacturaBean implements Serializable {
         FacesContext.getCurrentInstance().responseComplete();
 
         cancelarVenta();
-    }
-
-    public void guardarServicio() {
-
-        Double total_servicio = null;
-        String empleado = null;
-        String descripcion = null;
-        int cantidadServicio = 0;
-
-        if (this.totalServicio == null || this.cantidadServicio == null || this.empleado == null) {
-
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("PF('dialogServicio').show();");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son requeridos."));
-
-        } else {
-
-            int error = 0;
-            try {
-                total_servicio = Double.parseDouble(this.totalServicio);
-                cantidadServicio = Integer.parseInt(this.cantidadServicio);
-            } catch (Exception e) {
-                error = 1;
-            }
-
-            if (error > 0 || this.totalServicio.equals("") || this.totalServicio.equals("0") || this.cantidadServicio.equals("") || this.cantidadServicio.equals("0")) {
-                error = 1;
-
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "La cantidad y el precio no deben quedar vacíos y deben ser mayores a 0."));
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("PF('dialogServicio').show();");
-            } else {
-
-                if (this.empleado == null || this.descripcionServicio == null) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos empleado y descripción del servicio son obligatorios."));
-                    RequestContext context = RequestContext.getCurrentInstance();
-                    context.execute("PF('dialogServicio').show();");
-                } else {
-                    if (this.empleado.equals("") || this.descripcionServicio.equals("")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos empleado y descripción del servicio son obligatorios."));
-                        RequestContext context = RequestContext.getCurrentInstance();
-                        context.execute("PF('dialogServicio').show();");
-                    } else {
-
-                        try {
-                            //calculamos el precio real del servico (ganacia de la empresa)
-                            ParametrosController parametrosController = new ParametrosController();
-                            double ventaTotalUnidad = Double.parseDouble(this.totalServicio);
-                            Double iva = Double.parseDouble(parametrosController.obtenerIVAmanoObra());
-                            double ventaTotalTotal = ventaTotalUnidad * Double.parseDouble(this.cantidadServicio);
-
-                            Double precioGananciaEmpresa = ventaTotalTotal - (ventaTotalTotal * iva) / 100;
-                            Double ventaTotalDetalle = ventaTotalUnidad * Integer.parseInt(this.cantidadServicio);
-
-                            Servicio servicios = new Servicio();
-                            servicios.setTotal(new BigDecimal(ventaTotalDetalle));
-                            servicios.setGananciaEmpresa(new BigDecimal(precioGananciaEmpresa));
-                            servicios.setGananciaEmpleado(new BigDecimal(ventaTotalDetalle - precioGananciaEmpresa));
-                            servicios.setDescripcion(this.descripcionServicio);
-                            servicios.setFechaRegistro(null);
-
-                            Empleado empleadoM = new Empleado();
-                            empleadoM.setCedula(this.empleado);
-                            servicios.setEmpleado(empleadoM);
-
-                            this.listaDetalleFactura.add(new DetalleFactura(null, producto, null, servicios, new BigDecimal(this.cantidadServicio), new BigDecimal(ventaTotalDetalle), new BigDecimal(ventaTotalUnidad)));
-
-                            totalPagarFactura();
-                            this.empleado = null;
-                            this.totalServicio = null;
-                            this.descripcionServicio = null;
-                            this.cantidadServicio = null;
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "El servicio fue agregado correctamente."));
-
-                        } catch (Exception ex) {
-                            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-            }
-        }
     }
 
 }

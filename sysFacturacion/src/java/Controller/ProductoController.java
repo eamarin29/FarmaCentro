@@ -20,7 +20,7 @@ public class ProductoController {
         List<Producto> lista = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = session.beginTransaction();
-        String hql = "FROM Producto ORDER BY codbarras ASC";
+        String hql = "FROM Producto ORDER BY codBarras ASC";
 
         try {
             lista = session.createQuery(hql).list();
@@ -147,9 +147,9 @@ public class ProductoController {
             Producto pre = new Producto();
             pre = obtenerProductoPorCodigoBarras(codBarras);
             if (pre != null) {
-                pre.setStockActual(pre.getStockActual().intValue() - cantVendida);
+                pre.setStockActUni(pre.getStockActUni().intValue() - cantVendida);
                 updateProducto(pre);
-                if (pre.getStockActual() <= pre.getStockMinimo()) {
+                if (pre.getStockActUni() <= pre.getStockMinUni()) {
                     
                     //envio email
                      Validaciones v = new Validaciones();
@@ -158,7 +158,7 @@ public class ProductoController {
                     String contenidoEmail
                             = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
                             + " <h3 style='color: black;''>Sistema de Facturación Web "+Statics.nombreApp+" - Producto Agotado </h3>\n"
-                            + " <p style='color: black;''>El producto con código de barras: "+pre.getCodbarras()+" Con nombre: "+pre.getNombreProducto()+". Se ha agotado. <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios!</p>   <br>   </div>    </div>";
+                            + " <p style='color: black;''>El producto con código de barras: "+pre.getCodBarras()+" Con nombre: "+pre.getNombre()+". Se ha agotado. <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios!</p>   <br>   </div>    </div>";
 
                     AdministradorController adminController = new AdministradorController();
                     List<Usuario> listaAdmins = adminController.listarAdmin();

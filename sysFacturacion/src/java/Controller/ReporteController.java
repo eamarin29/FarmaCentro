@@ -1,7 +1,6 @@
 package Controller;
 
 import java.util.List;
-import Model.Empleado;
 import Model.Reporte;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
