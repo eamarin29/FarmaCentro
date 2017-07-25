@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 20-jul-2017 12:11:28 by Hibernate Tools 4.3.1 -->
+<!-- Generated 22-jul-2017 17:32:23 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.Vendedor" table="VENDEDOR" schema="FACTURACION" optimistic-lock="version">
         <id name="cedula" type="string">
@@ -23,6 +23,12 @@
         <property name="direccion" type="string">
             <column name="DIRECCION" length="200" />
         </property>
+        <set name="comisions" table="COMISION" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="VENDEDOR" length="200" />
+            </key>
+            <one-to-many class="Model.Comision" />
+        </set>
         <set name="facturas" table="FACTURA" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="CODVENDEDOR" length="200" />

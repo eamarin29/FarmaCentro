@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 20-jul-2017 12:11:28 by Hibernate Tools 4.3.1 -->
+<!-- Generated 22-jul-2017 17:32:23 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.Factura" table="FACTURA" schema="FACTURACION" optimistic-lock="version">
         <id name="codfactura" type="big_decimal">
-            <column name="CODFACTURA" precision="22" scale="0" />
+            <column name="CODFACTURA" precision="30" scale="0" />
             <generator class="assigned" />
         </id>
         <many-to-one name="vendedor" class="Model.Vendedor" fetch="select">
@@ -22,7 +22,7 @@
         </property>
         <set name="detalleFacturas" table="DETALLE_FACTURA" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="CODFACTURA" precision="22" scale="0" />
+                <column name="CODFACTURA" precision="30" scale="0" />
             </key>
             <one-to-many class="Model.DetalleFactura" />
         </set>

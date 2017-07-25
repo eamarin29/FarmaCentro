@@ -1,5 +1,5 @@
 package Model;
-// Generated 20-jul-2017 12:11:25 by Hibernate Tools 4.3.1
+// Generated 22-jul-2017 17:32:23 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -12,7 +12,7 @@ import java.util.Set;
 public class Producto  implements java.io.Serializable {
 
 
-     private long codigo;
+     private BigDecimal codigo;
      private String codBarras;
      private String nombre;
      private String paquete;
@@ -23,16 +23,17 @@ public class Producto  implements java.io.Serializable {
      private BigDecimal precioVentaReal;
      private Long stockMinUni;
      private Long stockActUni;
+     private BigDecimal comision;
      private Set<DetalleFactura> detalleFacturas = new HashSet<DetalleFactura>(0);
 
     public Producto() {
     }
 
 	
-    public Producto(long codigo) {
+    public Producto(BigDecimal codigo) {
         this.codigo = codigo;
     }
-    public Producto(long codigo, String codBarras, String nombre, String paquete, BigDecimal precioCompra, BigDecimal porcentajeDescuento, BigDecimal precioCompraReal, BigDecimal porcentajeUtilidad, BigDecimal precioVentaReal, Long stockMinUni, Long stockActUni, Set<DetalleFactura> detalleFacturas) {
+    public Producto(BigDecimal codigo, String codBarras, String nombre, String paquete, BigDecimal precioCompra, BigDecimal porcentajeDescuento, BigDecimal precioCompraReal, BigDecimal porcentajeUtilidad, BigDecimal precioVentaReal, Long stockMinUni, Long stockActUni, BigDecimal comision, Set<DetalleFactura> detalleFacturas) {
        this.codigo = codigo;
        this.codBarras = codBarras;
        this.nombre = nombre;
@@ -44,14 +45,15 @@ public class Producto  implements java.io.Serializable {
        this.precioVentaReal = precioVentaReal;
        this.stockMinUni = stockMinUni;
        this.stockActUni = stockActUni;
+       this.comision = comision;
        this.detalleFacturas = detalleFacturas;
     }
    
-    public long getCodigo() {
+    public BigDecimal getCodigo() {
         return this.codigo;
     }
     
-    public void setCodigo(long codigo) {
+    public void setCodigo(BigDecimal codigo) {
         this.codigo = codigo;
     }
     public String getCodBarras() {
@@ -123,6 +125,13 @@ public class Producto  implements java.io.Serializable {
     
     public void setStockActUni(Long stockActUni) {
         this.stockActUni = stockActUni;
+    }
+    public BigDecimal getComision() {
+        return this.comision;
+    }
+    
+    public void setComision(BigDecimal comision) {
+        this.comision = comision;
     }
     public Set<DetalleFactura> getDetalleFacturas() {
         return this.detalleFacturas;

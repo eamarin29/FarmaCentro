@@ -1,5 +1,5 @@
 package Model;
-// Generated 20-jul-2017 12:11:25 by Hibernate Tools 4.3.1
+// Generated 22-jul-2017 17:32:23 by Hibernate Tools 4.3.1
 
 
 import java.util.HashSet;
@@ -17,6 +17,7 @@ public class Vendedor  implements java.io.Serializable {
      private String apellidos;
      private String celular;
      private String direccion;
+     private Set<Comision> comisions = new HashSet<Comision>(0);
      private Set<Factura> facturas = new HashSet<Factura>(0);
 
     public Vendedor() {
@@ -26,12 +27,13 @@ public class Vendedor  implements java.io.Serializable {
     public Vendedor(Usuario usuario) {
         this.usuario = usuario;
     }
-    public Vendedor(Usuario usuario, String nombres, String apellidos, String celular, String direccion, Set<Factura> facturas) {
+    public Vendedor(Usuario usuario, String nombres, String apellidos, String celular, String direccion, Set<Comision> comisions, Set<Factura> facturas) {
        this.usuario = usuario;
        this.nombres = nombres;
        this.apellidos = apellidos;
        this.celular = celular;
        this.direccion = direccion;
+       this.comisions = comisions;
        this.facturas = facturas;
     }
    
@@ -76,6 +78,13 @@ public class Vendedor  implements java.io.Serializable {
     
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+    public Set<Comision> getComisions() {
+        return this.comisions;
+    }
+    
+    public void setComisions(Set<Comision> comisions) {
+        this.comisions = comisions;
     }
     public Set<Factura> getFacturas() {
         return this.facturas;

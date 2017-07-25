@@ -2,6 +2,7 @@ package Controller;
 
 import ClasesAuxiliares.Statics;
 import ClasesAuxiliares.Validaciones;
+import Model.Factura;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,7 +106,7 @@ public class ProductoController {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
 
-            String hql = "FROM Producto WHERE codbarras=:codBarras";
+            String hql = "FROM Producto WHERE codBarras=:codBarras";
             Query q = session.createQuery(hql);
             q.setParameter("codBarras", codBarras);
             ret = (Producto) q.uniqueResult();
@@ -150,26 +151,24 @@ public class ProductoController {
                 pre.setStockActUni(pre.getStockActUni().intValue() - cantVendida);
                 updateProducto(pre);
                 if (pre.getStockActUni() <= pre.getStockMinUni()) {
-                    
+
                     //envio email
-                     Validaciones v = new Validaciones();
-                    String tituloEmail = "Sistema de Facturación Web "+Statics.nombreApp+" - Producto agotado";
+                    Validaciones v = new Validaciones();
+                    String tituloEmail = "Sistema de Facturación Web " + Statics.nombreApp + " - Producto agotado";
 
                     String contenidoEmail
                             = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
-                            + " <h3 style='color: black;''>Sistema de Facturación Web "+Statics.nombreApp+" - Producto Agotado </h3>\n"
-                            + " <p style='color: black;''>El producto con código de barras: "+pre.getCodBarras()+" Con nombre: "+pre.getNombre()+". Se ha agotado. <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios!</p>   <br>   </div>    </div>";
+                            + " <h3 style='color: black;''>Sistema de Facturación Web " + Statics.nombreApp + " - Producto Agotado </h3>\n"
+                            + " <p style='color: black;''>El producto con código de barras: " + pre.getCodBarras() + " Con nombre: " + pre.getNombre() + ". Se ha agotado. <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios!</p>   <br>   </div>    </div>";
 
                     AdministradorController adminController = new AdministradorController();
                     List<Usuario> listaAdmins = adminController.listarAdmin();
-                    
+
                     for (int i = 0; i < listaAdmins.size(); i++) {
-                        
+
                         v.sendMailConfirmacion(listaAdmins.get(i).getEmail(), contenidoEmail, tituloEmail);
                     }
-                    
-                    
-                    
+
                 }
             } else {
 
@@ -177,6 +176,44 @@ public class ProductoController {
         } catch (Exception ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    public Producto obtenerUltimoRegistro() throws Exception {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        Producto p = new Producto();
+        p = null;
+
+        try {
+            String hql = "FROM Producto ORDER BY codigo DESC";
+            Query q = session.createQuery(hql).setMaxResults(1);
+            p = (Producto) q.uniqueResult();
+            t.commit();
+            session.close();
+        } catch (HibernateException e) {
+            t.rollback();
+        }
+        return p;
+    }
+
+    public Long obtenerCuantosRegistrosHayEnProducto() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        Long p = 0L;
+
+        try {
+            String hql = "SELECT COUNT(*) FROM Producto";
+            Query q = session.createQuery(hql);
+            p = (Long) q.uniqueResult();
+            t.commit();
+            session.close();
+        } catch (HibernateException e) {
+            t.rollback();
+        }
+        return p;
 
     }
 

@@ -41,13 +41,14 @@ Contributor(s):
 -->
 <hibernate-reverse-engineering>
   <schema-selection match-schema="FACTURACION"/>
-  <table-filter match-name="PARAMETRO"/>
-  <table-filter match-name="FACTURA"/>
-  <table-filter match-name="DETALLE_FACTURA"/>
+  <table-filter match-name="COMISION"/>
   <table-filter match-name="CLIENTE"/>
-  <table-filter match-name="USUARIO"/>
-  <table-filter match-name="TIPO"/>
-  <table-filter match-name="REPORTE"/>
   <table-filter match-name="VENDEDOR"/>
+  <table-filter match-name="TIPO"/>
+  <table-filter match-name="PARAMETRO"/>
+  <table-filter match-name="DETALLE_FACTURA"/>
+  <table-filter match-name="FACTURA"/>
+  <table-filter match-name="REPORTE"/>
   <table-filter match-name="PRODUCTO"/>
+  <table-filter match-name="USUARIO"/>
 </hibernate-reverse-engineering>

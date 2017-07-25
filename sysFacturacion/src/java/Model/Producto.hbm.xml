@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 20-jul-2017 12:11:28 by Hibernate Tools 4.3.1 -->
+<!-- Generated 22-jul-2017 17:32:23 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.Producto" table="PRODUCTO" schema="FACTURACION" optimistic-lock="version">
-        <id name="codigo" type="long">
-            <column name="CODIGO" precision="10" scale="0" />
+        <id name="codigo" type="big_decimal">
+            <column name="CODIGO" precision="30" scale="0" />
             <generator class="assigned" />
         </id>
         <property name="codBarras" type="string">
@@ -38,9 +38,12 @@
         <property name="stockActUni" type="java.lang.Long">
             <column name="STOCK_ACT_UNI" precision="10" scale="0" />
         </property>
+        <property name="comision" type="big_decimal">
+            <column name="COMISION" precision="10" />
+        </property>
         <set name="detalleFacturas" table="DETALLE_FACTURA" inverse="true" lazy="true" fetch="select">
             <key>
-                <column name="CODPRODUCTO" precision="10" scale="0" />
+                <column name="CODPRODUCTO" precision="30" scale="0" />
             </key>
             <one-to-many class="Model.DetalleFactura" />
         </set>
