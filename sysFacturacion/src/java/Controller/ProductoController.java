@@ -96,7 +96,24 @@ public class ProductoController {
         return errores;
     }
 
-    public Producto obtenerProductoPorCodigoBarras(String codBarras) throws Exception {
+    public List<Producto> obtenerListaProductosPorCodigoBarras(String codBarras) {
+
+        List<Producto> lista = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Producto ORDER BY codBarras ASC";
+
+        try {
+            lista = session.createQuery(hql).list();
+            t.commit();
+            session.close();
+        } catch (HibernateException e) {
+            t.rollback();
+        }
+        return lista;
+    }
+
+    public Producto obtenerProductoPorCodigoBarras(String codBarras) {
 
         Session session = null;
         Producto ret = new Producto();
@@ -105,14 +122,12 @@ public class ProductoController {
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
-
             String hql = "FROM Producto WHERE codBarras=:codBarras";
             Query q = session.createQuery(hql);
             q.setParameter("codBarras", codBarras);
-            ret = (Producto) q.uniqueResult();
             session.getTransaction().commit();
+            ret = (Producto) q.uniqueResult();
             return ret;
-
         } catch (Exception e) {
             session.getTransaction().rollback();
         } finally {
@@ -120,9 +135,7 @@ public class ProductoController {
                 session.close();
             }
         }
-
         return ret;
-
     }
 
     public List<Producto> listarProductosMayorCero() {
