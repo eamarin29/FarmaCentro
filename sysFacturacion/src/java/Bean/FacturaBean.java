@@ -340,7 +340,7 @@ public class FacturaBean implements Serializable {
                     //se puede agregar
                     this.codBarrasProductoSeleccionado = codBarraProductoSeleccionado;
                     ProductoController productoController = new ProductoController();
-                    this.productoSeleccionado = productoController.obtenerProductoPorCodigoBarras(this.codBarrasProductoSeleccionado);
+                //    this.productoSeleccionado = productoController.obtenerProductoPorCodigoBarras(this.codBarrasProductoSeleccionado);
                     if (productoSeleccionado == null) {
 
                     } else {
@@ -421,7 +421,7 @@ public class FacturaBean implements Serializable {
                             ProductoController contro = new ProductoController();
 
                             //obtener datos del producto seleccionado
-                            this.producto = contro.obtenerProductoPorCodigoBarras(this.codBarrasProductoSeleccionado);
+                          //  this.producto = contro.obtenerProductoPorCodigoBarras(this.codBarrasProductoSeleccionado);
 
                             //consulto si el stock actual es mayor a la cantidad ingresada
                             int cantidadProdutoDigitado = Integer.parseInt(this.cantidadProductoDigitado);
@@ -486,7 +486,7 @@ public class FacturaBean implements Serializable {
                     ProductoController contro = new ProductoController();
 
                     //obtener datos del cliente seleccionado
-                    this.producto = contro.obtenerProductoPorCodigoBarras(codigoBarras);
+                //    this.producto = contro.obtenerProductoPorCodigoBarras(codigoBarras);
 
                     if (this.producto == null) {
 
@@ -677,7 +677,7 @@ public class FacturaBean implements Serializable {
 
                     Producto productoModificarCant = new Producto();
                     ProductoController pDao = new ProductoController();
-                    productoModificarCant = pDao.obtenerProductoPorCodigoBarras(this.codBarrasProductoModificarCantidad);
+                 //   productoModificarCant = pDao.obtenerProductoPorCodigoBarras(this.codBarrasProductoModificarCantidad);
 
                     int CantidadAModificar = Integer.parseInt(this.CantidadProductoModificar);
                     if (CantidadAModificar <= productoModificarCant.getStockActUni().intValue()) {
@@ -882,7 +882,7 @@ public class FacturaBean implements Serializable {
 
                             //actualizar stock del producto
                             ProductoController productoController = new ProductoController();
-                            productoController.actualizarStockActual(listaDetalleFactura.get(i).getProducto().getCodBarras(), listaDetalleFactura.get(i).getCantidad().longValue());
+                       //     productoController.actualizarStockActual(listaDetalleFactura.get(i).getProducto().getCodBarras(), listaDetalleFactura.get(i).getCantidad().longValue());
                         }
 
                     }

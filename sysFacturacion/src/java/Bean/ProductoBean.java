@@ -22,7 +22,7 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class ProductoBean implements Serializable {
 
-    private List<Producto> productoViejo;
+    private Producto productoViejo;
     private List<Producto> listaProductos;
     private Producto producto;
     private List<Producto> filtroProductos;
@@ -514,11 +514,11 @@ public class ProductoBean implements Serializable {
         this.listaProductosStockMayorCero = listaProductosStockMayorCero;
     }
 
-    public List<Producto> getProductoViejo() {
+    public Producto getProductoViejo() {
         return productoViejo;
     }
 
-    public void setProductoViejo(List<Producto> productoViejo) {
+    public void setProductoViejo(Producto productoViejo) {
         this.productoViejo = productoViejo;
     }
 
@@ -585,9 +585,9 @@ public class ProductoBean implements Serializable {
                         try {
 
                             ProductoController ProductoController = new ProductoController();
-                            productoViejo = ProductoController.obtenerListaProductosPorCodigoBarras(producto.getCodBarras());
-                            
-                            if (productoViejo == null) {
+                            boolean existe = ProductoController.obtenerProductoPorCodigoBarras(producto.getCodBarras());
+
+                            if (existe == false) {
                                 //agrego solo el normal
                                 Long cod_producto = 0L;
                                 Producto p = new Producto();
@@ -682,9 +682,9 @@ public class ProductoBean implements Serializable {
                                     try {
 
                                         ProductoController ProductoController = new ProductoController();
-                                        productoViejo = ProductoController.obtenerListaProductosPorCodigoBarras(producto.getCodBarras());
+                                        boolean existe = ProductoController.obtenerProductoPorCodigoBarras(producto.getCodBarras());
 
-                                        if (productoViejo == null) {
+                                        if (existe == false) {
                                             //agrego solo el normal
                                             Long cod_producto = 0L;
                                             Producto p = new Producto();
@@ -744,7 +744,7 @@ public class ProductoBean implements Serializable {
                                                 p1.setCodigo(cod1);
 
                                                 p1.setNombre(nombre_producto);
-
+                                                p1.setCodBarras(producto.getCodBarras());
                                                 p1.setPaquete(txtDescripcionPaquete1.getValue().toString().toUpperCase());
                                                 BigDecimal precio_compra1 = new BigDecimal(txtCompra1.getValue().toString());
                                                 p1.setPrecioCompra(precio_compra1);
@@ -793,47 +793,6 @@ public class ProductoBean implements Serializable {
 
                     }
 
-                } else if (check1 == false && check2 == true && check3 == false) {
-                    if (txtCantidadPaquete2.getValue() == null || txtDescripcionPaquete2.getValue().toString().equals("") || txtUnidadXPaquete2.getValue() == null || txtCompra2.getValue() == null || txtDescuentoCompra2.getValue() == null || txtPorcentajeUtilidad2.getValue() == null || txtComision2.getValue() == null || txtVentaReal2.getValue() == null || producto.getStockMinUni() == 0) {
-                        context.execute("PF('dialogNuevoProducto').show();");
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 2 son obligatorios."));
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
-                    } else {
-
-                        if (txtCantidadPaquete2.getValue().equals("0") || txtUnidadXPaquete2.getValue().equals("0") || txtCompra2.getValue().equals("0") || txtPorcentajeUtilidad2.getValue().equals("0") || txtVentaReal2.getValue().equals("0")) {
-
-                            context.execute("PF('dialogNuevoProducto').show();");
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 2 son obligatorios."));
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
-
-                        } else {
-                            //agrego normal + check 2
-
-                            //aqui va el codigo
-                        }
-
-                    }
-                } else if (check1 == false && check2 == false && check3 == true) {
-                    if (txtCantidadPaquete3.getValue() == null || txtDescripcionPaquete3.getValue().toString().equals("") || txtUnidadXPaquete3.getValue() == null || txtCompra3.getValue() == null || txtDescuentoCompra3.getValue() == null || txtPorcentajeUtilidad3.getValue() == null || txtComision3.getValue() == null || txtVentaReal3.getValue() == null || producto.getStockMinUni() == 0) {
-                        context.execute("PF('dialogNuevoProducto').show();");
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 3 son obligatorios."));
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
-                    } else {
-
-                        if (txtCantidadPaquete3.getValue().equals("0") || txtUnidadXPaquete3.getValue().equals("0") || txtCompra3.getValue().equals("0") || txtPorcentajeUtilidad3.getValue().equals("0") || txtVentaReal3.getValue().equals("0")) {
-
-                            context.execute("PF('dialogNuevoProducto').show();");
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 3 son obligatorios."));
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
-
-                        } else {
-                            //agrego normal + check 3
-
-                            //aqui va el codigo
-                        }
-
-                    }
-                    //agrego normal + check 1 y 2                
                 } else if (check1 == true && check2 == true && check3 == false) {
                     if (txtCantidadPaquete1.getValue() == null || txtDescripcionPaquete1.getValue().toString().equals("") || txtUnidadXPaquete1.getValue() == null || txtCompra1.getValue() == null || txtDescuentoCompra1.getValue() == null || txtPorcentajeUtilidad1.getValue() == null || txtComision1.getValue() == null || txtVentaReal1.getValue() == null || producto.getStockMinUni() == 0 || txtCantidadPaquete2.getValue() == null || txtDescripcionPaquete2.getValue().toString().equals("") || txtUnidadXPaquete2.getValue() == null || txtCompra2.getValue() == null || txtDescuentoCompra2.getValue() == null || txtPorcentajeUtilidad2.getValue() == null || txtComision2.getValue() == null || txtVentaReal2.getValue() == null || producto.getStockMinUni() == 0) {
                         context.execute("PF('dialogNuevoProducto').show();");
@@ -876,9 +835,9 @@ public class ProductoBean implements Serializable {
                                         try {
 
                                             ProductoController ProductoController = new ProductoController();
-                                            productoViejo = ProductoController.obtenerListaProductosPorCodigoBarras(producto.getCodBarras());
+                                            boolean existe = ProductoController.obtenerProductoPorCodigoBarras(producto.getCodBarras());
 
-                                            if (productoViejo == null) {
+                                            if (existe == false) {
                                                 //agrego solo el normal
                                                 Long cod_producto = 0L;
                                                 Producto p = new Producto();
@@ -936,7 +895,7 @@ public class ProductoBean implements Serializable {
 
                                                     BigDecimal cod1 = new BigDecimal(cod_producto1);
                                                     p1.setCodigo(cod1);
-
+                                                    p1.setCodBarras(producto.getCodBarras());
                                                     p1.setNombre(nombre_producto);
 
                                                     p1.setPaquete(txtDescripcionPaquete1.getValue().toString().toUpperCase());
@@ -980,7 +939,7 @@ public class ProductoBean implements Serializable {
 
                                                     BigDecimal cod2 = new BigDecimal(cod_producto2);
                                                     p2.setCodigo(cod2);
-
+                                                    p2.setCodBarras(producto.getCodBarras());
                                                     p2.setNombre(nombre_producto);
 
                                                     p2.setPaquete(txtDescripcionPaquete2.getValue().toString().toUpperCase());
@@ -999,9 +958,11 @@ public class ProductoBean implements Serializable {
                                                     BigDecimal venta_real2 = new BigDecimal(precio_venta_real2);
                                                     p2.setPrecioVentaReal(venta_real2);
 
-                                                    p1.setStockActUni((producto.getStockActUni() + (Long.valueOf(Integer.parseInt(txtCantidadPaquete1.getValue().toString())) * Integer.parseInt(txtUnidadXPaquete1.getValue().toString())) +  (Long.valueOf(Integer.parseInt(txtCantidadPaquete2.getValue().toString())) * Integer.parseInt(txtUnidadXPaquete2.getValue().toString())) ));
+                                                    p2.setStockActUni((producto.getStockActUni() + (Long.valueOf(Integer.parseInt(txtCantidadPaquete2.getValue().toString())) * Integer.parseInt(txtUnidadXPaquete2.getValue().toString()))));
                                                     producto.setStockActUni(p2.getStockActUni());
                                                     ProductoController.updateProducto(producto);
+                                                    p1.setStockActUni(producto.getStockActUni());
+                                                    ProductoController.updateProducto(p1);
 
                                                     p2.setStockMinUni(producto.getStockMinUni());
 
@@ -1050,57 +1011,254 @@ public class ProductoBean implements Serializable {
                             //agrego normal + check 1 + check 2 + check 3
 
                             //aqui va el codigo
+                            //agregar normal
+                            double precio_sugerido = Double.parseDouble(txtVentaSugerida.getValue().toString());
+                            double precio_venta_real = Double.parseDouble(txtVentaReal.getValue().toString());
+
+                            if (precio_venta_real < precio_sugerido) {
+                                context.execute("PF('dialogNuevoProducto').show();");
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El precio de venta real no puede ser menor al precio de venta sugerido"));
+                            } else {
+
+                                double precio_sugerido1 = Double.parseDouble(txtVentaSugerida1.getValue().toString());
+                                double precio_venta_real1 = Double.parseDouble(txtVentaReal1.getValue().toString());
+
+                                if (precio_venta_real1 < precio_sugerido1) {
+                                    context.execute("PF('dialogNuevoProducto').show();");
+                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El precio de venta real 1 no puede ser menor al precio de venta sugerido 1."));
+                                } else {
+
+                                    double precio_sugerido2 = Double.parseDouble(txtVentaSugerida2.getValue().toString());
+                                    double precio_venta_real2 = Double.parseDouble(txtVentaReal2.getValue().toString());
+
+                                    if (precio_venta_real2 < precio_sugerido2) {
+                                        context.execute("PF('dialogNuevoProducto').show();");
+                                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El precio de venta real 2 no puede ser menor al precio de venta sugerido 2."));
+                                    } else {
+
+                                        double precio_sugerido3 = Double.parseDouble(txtVentaSugerida3.getValue().toString());
+                                        double precio_venta_real3 = Double.parseDouble(txtVentaReal3.getValue().toString());
+
+                                        if (precio_venta_real3 < precio_sugerido3) {
+                                            context.execute("PF('dialogNuevoProducto').show();");
+                                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El precio de venta real 3 no puede ser menor al precio de venta sugerido 3."));
+                                        } else {
+
+                                            try {
+
+                                                ProductoController ProductoController = new ProductoController();
+                                                boolean existe = ProductoController.obtenerProductoPorCodigoBarras(producto.getCodBarras());
+
+                                                if (existe == false) {
+                                                    //agrego solo el normal
+                                                    Long cod_producto = 0L;
+                                                    Producto p = new Producto();
+
+                                                    p = ProductoController.obtenerUltimoRegistro();
+                                                    if (ProductoController.obtenerCuantosRegistrosHayEnProducto() == 0) {
+                                                        cod_producto = Long.parseLong("1");
+                                                    } else {
+                                                        Integer num = p.getCodigo().intValue() + 1;
+                                                        cod_producto = Long.parseLong(num.toString());
+                                                    }
+
+                                                    BigDecimal cod = new BigDecimal(cod_producto);
+                                                    producto.setCodigo(cod);
+
+                                                    String nombre_producto = producto.getNombre().toUpperCase();
+                                                    producto.setNombre(nombre_producto);
+
+                                                    producto.setPaquete(txtDescripcionPaquete.getValue().toString().toUpperCase());
+                                                    BigDecimal precio_compra = new BigDecimal(txtCompra.getValue().toString());
+                                                    producto.setPrecioCompra(precio_compra);
+
+                                                    BigDecimal prcentaje_descuento = new BigDecimal(txtDescuentoCompra.getValue().toString());
+                                                    producto.setPorcentajeDescuento(prcentaje_descuento);
+
+                                                    BigDecimal precio_compra_real = new BigDecimal(txtCompraReal.getValue().toString());
+                                                    producto.setPrecioCompraReal(precio_compra_real);
+
+                                                    BigDecimal porcentaje_utilidad = new BigDecimal(txtPorcentajeUtilidad.getValue().toString());
+                                                    producto.setPorcentajeUtilidad(porcentaje_utilidad);
+
+                                                    BigDecimal venta_real = new BigDecimal(precio_venta_real);
+                                                    producto.setPrecioVentaReal(venta_real);
+
+                                                    Long stock_actual = Long.valueOf(Integer.parseInt(txtCantidadPaquete.getValue().toString()) * Integer.parseInt(txtUnidadXPaquete.getValue().toString()));
+                                                    producto.setStockActUni(stock_actual);
+
+                                                    BigDecimal comision = new BigDecimal(txtPrecioComision.getValue().toString());
+                                                    producto.setComision(comision);
+
+                                                    ProductoController.newProducto(producto);
+
+                                                    //agrego check1
+                                                    try {
+                                                        Long cod_producto1 = 0L;
+                                                        Producto p1 = new Producto();
+
+                                                        p1 = ProductoController.obtenerUltimoRegistro();
+                                                        if (ProductoController.obtenerCuantosRegistrosHayEnProducto() == 0) {
+                                                            cod_producto1 = Long.parseLong("1");
+                                                        } else {
+                                                            Integer num = p1.getCodigo().intValue() + 1;
+                                                            cod_producto1 = Long.parseLong(num.toString());
+                                                        }
+
+                                                        BigDecimal cod1 = new BigDecimal(cod_producto1);
+                                                        p1.setCodigo(cod1);
+
+                                                        p1.setCodBarras(producto.getCodBarras());
+                                                        p1.setNombre(nombre_producto);
+
+                                                        p1.setPaquete(txtDescripcionPaquete1.getValue().toString().toUpperCase());
+                                                        BigDecimal precio_compra1 = new BigDecimal(txtCompra1.getValue().toString());
+                                                        p1.setPrecioCompra(precio_compra1);
+
+                                                        BigDecimal porcentaje_descuento1 = new BigDecimal(txtDescuentoCompra1.getValue().toString());
+                                                        p1.setPorcentajeDescuento(porcentaje_descuento1);
+
+                                                        BigDecimal precio_compra_real1 = new BigDecimal(txtCompraReal1.getValue().toString());
+                                                        p1.setPrecioCompraReal(precio_compra_real1);
+
+                                                        BigDecimal porcentaje_utilidad1 = new BigDecimal(txtPorcentajeUtilidad1.getValue().toString());
+                                                        p1.setPorcentajeUtilidad(porcentaje_utilidad1);
+
+                                                        BigDecimal venta_real1 = new BigDecimal(precio_venta_real1);
+                                                        p1.setPrecioVentaReal(venta_real1);
+
+                                                        Long stock_actual_p1 = Long.parseLong(txtCantidadPaquete1.getValue().toString()) * Long.parseLong(txtUnidadXPaquete1.getValue().toString());
+                                                        p1.setStockActUni(producto.getStockActUni() + stock_actual_p1);
+                                                        producto.setStockActUni(p1.getStockActUni());
+                                                        ProductoController.updateProducto(producto);
+
+                                                        p1.setStockMinUni(producto.getStockMinUni());
+
+                                                        BigDecimal comision1 = new BigDecimal(txtPrecioComision1.getValue().toString());
+                                                        p1.setComision(comision1);
+
+                                                        ProductoController.newProducto(p1);
+
+                                                        //agrego check2
+                                                        Long cod_producto2 = 0L;
+                                                        Producto p2 = new Producto();
+
+                                                        p2 = ProductoController.obtenerUltimoRegistro();
+                                                        if (ProductoController.obtenerCuantosRegistrosHayEnProducto() == 0) {
+                                                            cod_producto2 = Long.parseLong("1");
+                                                        } else {
+                                                            Integer num = p2.getCodigo().intValue() + 1;
+                                                            cod_producto2 = Long.parseLong(num.toString());
+                                                        }
+
+                                                        BigDecimal cod2 = new BigDecimal(cod_producto2);
+                                                        p2.setCodigo(cod2);
+
+                                                        p2.setCodBarras(producto.getCodBarras());
+
+                                                        p2.setNombre(nombre_producto);
+
+                                                        p2.setPaquete(txtDescripcionPaquete2.getValue().toString().toUpperCase());
+                                                        BigDecimal precio_compra2 = new BigDecimal(txtCompra2.getValue().toString());
+                                                        p2.setPrecioCompra(precio_compra2);
+
+                                                        BigDecimal porcentaje_descuento2 = new BigDecimal(txtDescuentoCompra2.getValue().toString());
+                                                        p2.setPorcentajeDescuento(porcentaje_descuento2);
+
+                                                        BigDecimal precio_compra_real2 = new BigDecimal(txtCompraReal2.getValue().toString());
+                                                        p2.setPrecioCompraReal(precio_compra_real2);
+
+                                                        BigDecimal porcentaje_utilidad2 = new BigDecimal(txtPorcentajeUtilidad2.getValue().toString());
+                                                        p2.setPorcentajeUtilidad(porcentaje_utilidad2);
+
+                                                        BigDecimal venta_real2 = new BigDecimal(precio_venta_real2);
+                                                        p2.setPrecioVentaReal(venta_real2);
+
+                                                        Long stock_actual_p2 = Long.parseLong(txtCantidadPaquete2.getValue().toString()) * Long.parseLong(txtUnidadXPaquete2.getValue().toString());
+                                                        p2.setStockActUni(producto.getStockActUni() + stock_actual_p2);
+                                                        producto.setStockActUni(p2.getStockActUni());
+                                                        ProductoController.updateProducto(producto);
+
+                                                        p2.setStockMinUni(producto.getStockMinUni());
+
+                                                        BigDecimal comision2 = new BigDecimal(txtPrecioComision2.getValue().toString());
+                                                        p2.setComision(comision2);
+
+                                                        ProductoController.newProducto(p2);
+
+                                                        //agrego check3
+                                                        Long cod_producto3 = 0L;
+                                                        Producto p3 = new Producto();
+
+                                                        p3 = ProductoController.obtenerUltimoRegistro();
+                                                        if (ProductoController.obtenerCuantosRegistrosHayEnProducto() == 0) {
+                                                            cod_producto3 = Long.parseLong("1");
+                                                        } else {
+                                                            Integer num = p3.getCodigo().intValue() + 1;
+                                                            cod_producto3 = Long.parseLong(num.toString());
+                                                        }
+
+                                                        BigDecimal cod3 = new BigDecimal(cod_producto3);
+                                                        p3.setCodigo(cod3);
+
+                                                        p3.setCodBarras(producto.getCodBarras());
+
+                                                        p3.setNombre(nombre_producto);
+
+                                                        p3.setPaquete(txtDescripcionPaquete3.getValue().toString().toUpperCase());
+                                                        BigDecimal precio_compra3 = new BigDecimal(txtCompra3.getValue().toString());
+                                                        p3.setPrecioCompra(precio_compra3);
+
+                                                        BigDecimal porcentaje_descuento3 = new BigDecimal(txtDescuentoCompra3.getValue().toString());
+                                                        p3.setPorcentajeDescuento(porcentaje_descuento3);
+
+                                                        BigDecimal precio_compra_real3 = new BigDecimal(txtCompraReal3.getValue().toString());
+                                                        p3.setPrecioCompraReal(precio_compra_real3);
+
+                                                        BigDecimal porcentaje_utilidad3 = new BigDecimal(txtPorcentajeUtilidad3.getValue().toString());
+                                                        p3.setPorcentajeUtilidad(porcentaje_utilidad3);
+
+                                                        BigDecimal venta_real3 = new BigDecimal(precio_venta_real3);
+                                                        p3.setPrecioVentaReal(venta_real3);
+
+                                                        Long stock_actual_p3 = Long.parseLong(txtCantidadPaquete3.getValue().toString()) * Long.parseLong(txtUnidadXPaquete3.getValue().toString());
+                                                        p3.setStockActUni(producto.getStockActUni() + stock_actual_p3);
+                                                        producto.setStockActUni(p3.getStockActUni());
+                                                        ProductoController.updateProducto(producto);
+                                                        p1.setStockActUni(producto.getStockActUni());
+                                                        p2.setStockActUni(producto.getStockActUni());
+                                                        ProductoController.updateProducto(p1);
+                                                        ProductoController.updateProducto(p2);
+
+                                                        p3.setStockMinUni(producto.getStockMinUni());
+
+                                                        BigDecimal comision3 = new BigDecimal(txtPrecioComision3.getValue().toString());
+                                                        p3.setComision(comision3);
+
+                                                        ProductoController.newProducto(p3);
+
+                                                        cancelarRegistroProducto();
+
+                                                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operacion exitosa:", "Los productos se agregaron correctamente."));
+
+                                                    } catch (Exception ex) {
+                                                        Logger.getLogger(ProductoBean.class.getName()).log(Level.SEVERE, null, ex);
+                                                    }
+                                                } else {
+                                                    context.execute("PF('dialogNuevoProducto').show();");
+                                                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Ya existe un producto con el mismo código de barras."));
+                                                }
+                                            } catch (Exception ex) {
+                                                Logger.getLogger(ProductoBean.class.getName()).log(Level.SEVERE, null, ex);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
-
-                    }
-//agrego normal + check 1 y 3
-                } else if (check1 == true && check2 == false && check3 == true) {
-                    if (txtCantidadPaquete1.getValue() == null || txtDescripcionPaquete1.getValue().toString().equals("") || txtUnidadXPaquete1.getValue() == null || txtCompra1.getValue() == null || txtDescuentoCompra1.getValue() == null || txtPorcentajeUtilidad1.getValue() == null || txtComision1.getValue() == null || txtVentaReal1.getValue() == null || producto.getStockMinUni() == 0 || txtCantidadPaquete3.getValue() == null || txtDescripcionPaquete3.getValue().toString().equals("") || txtUnidadXPaquete3.getValue() == null || txtCompra3.getValue() == null || txtDescuentoCompra3.getValue() == null || txtPorcentajeUtilidad3.getValue() == null || txtComision3.getValue() == null || txtVentaReal3.getValue() == null || producto.getStockMinUni() == 0) {
-
-                        context.execute("PF('dialogNuevoProducto').show();");
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 1 y 3 son obligatorios."));
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
-
-                    } else {
-
-                        if (txtCantidadPaquete1.getValue().equals("0") || txtUnidadXPaquete1.getValue().equals("0") || txtCompra1.getValue().equals("0") || txtPorcentajeUtilidad1.getValue().equals("0") || txtVentaReal1.getValue().equals("0") || txtCantidadPaquete3.getValue().equals("0") || txtUnidadXPaquete3.getValue().equals("0") || txtCompra3.getValue().equals("0") || txtPorcentajeUtilidad3.getValue().equals("0") || txtVentaReal3.getValue().equals("0")) {
-
-                            context.execute("PF('dialogNuevoProducto').show();");
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 1 y 3 son obligatorios."));
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
-
-                        } else {
-                            //agrego normal + check 1 + check 3
-
-                            //aqui va el codigo
-                        }
-                    }
-//agrego normal + check 2 + check 3
-                } else if (check1 == false && check2 == true && check3 == true) {
-                    if (txtCantidadPaquete2.getValue() == null || txtDescripcionPaquete2.getValue().toString().equals("") || txtUnidadXPaquete2.getValue() == null || txtCompra2.getValue() == null || txtDescuentoCompra2.getValue() == null || txtPorcentajeUtilidad2.getValue() == null || txtComision2.getValue() == null || txtVentaReal2.getValue() == null || producto.getStockMinUni() == 0 || txtCantidadPaquete3.getValue() == null || txtDescripcionPaquete3.getValue().toString().equals("") || txtUnidadXPaquete3.getValue() == null || txtCompra3.getValue() == null || txtDescuentoCompra3.getValue() == null || txtPorcentajeUtilidad3.getValue() == null || txtComision3.getValue() == null || txtVentaReal3.getValue() == null || producto.getStockMinUni() == 0) {
-
-                        context.execute("PF('dialogNuevoProducto').show();");
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 2 y 3 son obligatorios."));
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
-
-                    } else {
-
-                        if (txtCantidadPaquete2.getValue().equals("0") || txtUnidadXPaquete2.getValue().equals("0") || txtCompra2.getValue().equals("0") || txtPorcentajeUtilidad2.getValue().equals("0") || txtVentaReal2.getValue().equals("0") || txtCantidadPaquete3.getValue().equals("0") || txtUnidadXPaquete3.getValue().equals("0") || txtCompra3.getValue().equals("0") || txtPorcentajeUtilidad3.getValue().equals("0") || txtVentaReal3.getValue().equals("0")) {
-
-                            context.execute("PF('dialogNuevoProducto').show();");
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 2 y 3 son obligatorios."));
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
-
-                        } else {
-                            //agrego normal + check 2 + check 3
-
-                            //aqui va el codigo
-                        }
-
                     }
                 }
             }
-
         }
 
     }
@@ -1108,6 +1266,7 @@ public class ProductoBean implements Serializable {
     public void selectCheck1() {
 
         if (check1 == true) {
+
             txtCantidadPaquete1.setDisabled(false);
             txtDescripcionPaquete1.setDisabled(false);
             txtUnidadXPaquete1.setDisabled(false);
@@ -1119,28 +1278,40 @@ public class ProductoBean implements Serializable {
 
         } else {
 
-            txtCantidadPaquete1.setValue(null);
-            txtDescripcionPaquete1.setValue(null);
-            txtUnidadXPaquete1.setValue(null);
-            txtCompra1.setValue(null);
-            txtDescuentoCompra1.setValue(null);
-            txtCompraReal1.setValue(null);
-            txtPorcentajeUtilidad1.setValue(null);
-            txtVentaSugerida1.setValue(null);
-            txtVentaReal1.setValue(null);
-            txtComision1.setValue(null);
-            txtPrecioComision1.setValue(null);
+            if (check2 == true || check3 == true) {
+                setCheck1(true);
+                txtCantidadPaquete1.setDisabled(false);
+                txtDescripcionPaquete1.setDisabled(false);
+                txtUnidadXPaquete1.setDisabled(false);
+                txtCompra1.setDisabled(false);
+                txtDescuentoCompra1.setDisabled(false);
+                txtPorcentajeUtilidad1.setDisabled(false);
+                txtComision1.setDisabled(false);
+                txtVentaReal1.setDisabled(false);
+            } else {
+                txtCantidadPaquete1.setValue(null);
+                txtDescripcionPaquete1.setValue(null);
+                txtUnidadXPaquete1.setValue(null);
+                txtCompra1.setValue(null);
+                txtDescuentoCompra1.setValue(null);
+                txtCompraReal1.setValue(null);
+                txtPorcentajeUtilidad1.setValue(null);
+                txtVentaSugerida1.setValue(null);
+                txtVentaReal1.setValue(null);
+                txtComision1.setValue(null);
+                txtPrecioComision1.setValue(null);
 
-            cambioTxtCantidadPaquete();
+                cambioTxtCantidadPaquete();
 
-            txtCantidadPaquete1.setDisabled(true);
-            txtDescripcionPaquete1.setDisabled(true);
-            txtUnidadXPaquete1.setDisabled(true);
-            txtCompra1.setDisabled(true);
-            txtDescuentoCompra1.setDisabled(true);
-            txtPorcentajeUtilidad1.setDisabled(true);
-            txtComision1.setDisabled(true);
-            txtVentaReal1.setDisabled(true);
+                txtCantidadPaquete1.setDisabled(true);
+                txtDescripcionPaquete1.setDisabled(true);
+                txtUnidadXPaquete1.setDisabled(true);
+                txtCompra1.setDisabled(true);
+                txtDescuentoCompra1.setDisabled(true);
+                txtPorcentajeUtilidad1.setDisabled(true);
+                txtComision1.setDisabled(true);
+                txtVentaReal1.setDisabled(true);
+            }
 
         }
 
@@ -1148,53 +1319,91 @@ public class ProductoBean implements Serializable {
 
     public void selectCheck2() {
         if (check2 == true) {
-            txtCantidadPaquete2.setDisabled(false);
-            txtDescripcionPaquete2.setDisabled(false);
-            txtUnidadXPaquete2.setDisabled(false);
-            txtCompra2.setDisabled(false);
-            txtDescuentoCompra2.setDisabled(false);
-            txtPorcentajeUtilidad2.setDisabled(false);
-            txtComision2.setDisabled(false);
-            txtVentaReal2.setDisabled(false);
+
+            if (check1 == false) {
+                setCheck2(false);
+                txtCantidadPaquete2.setDisabled(true);
+                txtDescripcionPaquete2.setDisabled(true);
+                txtUnidadXPaquete2.setDisabled(true);
+                txtCompra2.setDisabled(true);
+                txtDescuentoCompra2.setDisabled(true);
+                txtPorcentajeUtilidad2.setDisabled(true);
+                txtComision2.setDisabled(true);
+                txtVentaReal2.setDisabled(true);
+            } else {
+                txtCantidadPaquete2.setDisabled(false);
+                txtDescripcionPaquete2.setDisabled(false);
+                txtUnidadXPaquete2.setDisabled(false);
+                txtCompra2.setDisabled(false);
+                txtDescuentoCompra2.setDisabled(false);
+                txtPorcentajeUtilidad2.setDisabled(false);
+                txtComision2.setDisabled(false);
+                txtVentaReal2.setDisabled(false);
+            }
 
         } else {
 
-            txtCantidadPaquete2.setValue(null);
-            txtDescripcionPaquete2.setValue(null);
-            txtUnidadXPaquete2.setValue(null);
-            txtCompra2.setValue(null);
-            txtDescuentoCompra2.setValue(null);
-            txtCompraReal2.setValue(null);
-            txtPorcentajeUtilidad2.setValue(null);
-            txtVentaSugerida2.setValue(null);
-            txtVentaReal2.setValue(null);
-            txtComision2.setValue(null);
-            txtPrecioComision2.setValue(null);
+            if (check3 == true) {
+                setCheck2(true);
+                txtCantidadPaquete2.setDisabled(false);
+                txtDescripcionPaquete2.setDisabled(false);
+                txtUnidadXPaquete2.setDisabled(false);
+                txtCompra2.setDisabled(false);
+                txtDescuentoCompra2.setDisabled(false);
+                txtPorcentajeUtilidad2.setDisabled(false);
+                txtComision2.setDisabled(false);
+                txtVentaReal2.setDisabled(false);
+            } else {
+                txtCantidadPaquete2.setValue(null);
+                txtDescripcionPaquete2.setValue(null);
+                txtUnidadXPaquete2.setValue(null);
+                txtCompra2.setValue(null);
+                txtDescuentoCompra2.setValue(null);
+                txtCompraReal2.setValue(null);
+                txtPorcentajeUtilidad2.setValue(null);
+                txtVentaSugerida2.setValue(null);
+                txtVentaReal2.setValue(null);
+                txtComision2.setValue(null);
+                txtPrecioComision2.setValue(null);
 
-            cambioTxtCantidadPaquete();
+                cambioTxtCantidadPaquete();
 
-            txtCantidadPaquete2.setDisabled(true);
-            txtDescripcionPaquete2.setDisabled(true);
-            txtUnidadXPaquete2.setDisabled(true);
-            txtCompra2.setDisabled(true);
-            txtDescuentoCompra2.setDisabled(true);
-            txtPorcentajeUtilidad2.setDisabled(true);
-            txtComision2.setDisabled(true);
-            txtVentaReal2.setDisabled(true);
+                txtCantidadPaquete2.setDisabled(true);
+                txtDescripcionPaquete2.setDisabled(true);
+                txtUnidadXPaquete2.setDisabled(true);
+                txtCompra2.setDisabled(true);
+                txtDescuentoCompra2.setDisabled(true);
+                txtPorcentajeUtilidad2.setDisabled(true);
+                txtComision2.setDisabled(true);
+                txtVentaReal2.setDisabled(true);
+            }
 
         }
     }
 
     public void selectCheck3() {
         if (check3 == true) {
-            txtCantidadPaquete3.setDisabled(false);
-            txtDescripcionPaquete3.setDisabled(false);
-            txtUnidadXPaquete3.setDisabled(false);
-            txtCompra3.setDisabled(false);
-            txtDescuentoCompra3.setDisabled(false);
-            txtPorcentajeUtilidad3.setDisabled(false);
-            txtComision3.setDisabled(false);
-            txtVentaReal3.setDisabled(false);
+
+            if (check1 == false || check2 == false) {
+                setCheck3(false);
+                txtCantidadPaquete3.setDisabled(true);
+                txtDescripcionPaquete3.setDisabled(true);
+                txtUnidadXPaquete3.setDisabled(true);
+                txtCompra3.setDisabled(true);
+                txtDescuentoCompra3.setDisabled(true);
+                txtPorcentajeUtilidad3.setDisabled(true);
+                txtComision3.setDisabled(true);
+                txtVentaReal3.setDisabled(true);
+            } else {
+                txtCantidadPaquete3.setDisabled(false);
+                txtDescripcionPaquete3.setDisabled(false);
+                txtUnidadXPaquete3.setDisabled(false);
+                txtCompra3.setDisabled(false);
+                txtDescuentoCompra3.setDisabled(false);
+                txtPorcentajeUtilidad3.setDisabled(false);
+                txtComision3.setDisabled(false);
+                txtVentaReal3.setDisabled(false);
+            }
 
         } else {
 
