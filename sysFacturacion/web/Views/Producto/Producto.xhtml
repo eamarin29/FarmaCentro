@@ -9,6 +9,7 @@
         <ui:composition template="./../../Plantilla/Plantilla.xhtml">
             <ui:define name="content">
                 <h3 class="titulo_gestion"> Gestión de Productos</h3>
+
                 <h:form id="frmNuevoProducto">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgNuevoProducto" widgetVar="dialogNuevoProducto" resizable="false"
@@ -17,22 +18,12 @@
                         <p:messages id="messageAgregarProductos"  showDetail="true" autoUpdate="true" closable="true"  /> 
                         <table>
                             <tr>
-                                <td> <p:outputLabel value="Código de barras:"></p:outputLabel> </td> 
+                                <td> <p:outputLabel value="Codigo de barras:"></p:outputLabel> </td> 
                                 <p:spacer></p:spacer>
                                 <td> <p:inputText  value="#{productoBean.producto.codBarras}"></p:inputText>  </td> 
 
                                 <td> <p:outputLabel value="Nombre:"></p:outputLabel> </td> 
                                 <td>   <p:inputText style="text-transform:uppercase;"  value="#{productoBean.producto.nombre}"></p:inputText> </td> 
-                            </tr>
-                            <tr>
-                                <td>  <p:outputLabel value="Stock mínimo (U):"></p:outputLabel> </td> 
-                                <td>  <p:inputNumber decimalPlaces="0"  value="#{productoBean.producto.stockMinUni}">
-                                        <f:convertNumber type="number" pattern="#0" />
-                                    </p:inputNumber> </td> 
-                                <td>   <p:outputLabel value="Stock actual (U):"></p:outputLabel> </td> 
-                                <td>   <p:inputNumber id="txtStockActual" decimalPlaces="0" disabled="true"  value="#{productoBean.producto.stockActUni}">
-                                        <f:convertNumber type="number" pattern="#0" />
-                                    </p:inputNumber>  </td> 
                             </tr>
                         </table>
                         <br></br>
@@ -68,31 +59,24 @@
                                     $Venta Real*
                                 </td>
                                 <td width="100px;">
-                                    % de Comisión
+                                    % de Comision
                                 </td>
                                 <td width="120px;">
-                                    $ de Comisión
+                                    $ de Comision
+                                </td>
+                                <td width="90px;">
+                                    Stock Mínimo*
                                 </td>
                             </tr>
                             <tr>
                                 <td>  
                                 </td> 
-                                <td> <p:inputNumber onkeypress="if (event.keyCode === 13) {
-                                            onchange();
-                                            return false;
-                                        }" decimalPlaces="0" size="2" binding="#{productoBean.txtCantidadPaquete}" placeholder="100"  >
-                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCantidadPaquete()}"
-                                                 update=":frmNuevoProducto:txtStockActual"></p:ajax>  
+                                <td> <p:inputNumber  decimalPlaces="0" size="2" binding="#{productoBean.txtCantidadPaquete}" placeholder="100"  >
                                     </p:inputNumber>
                                 </td> 
                                 <td> <p:inputText binding="#{productoBean.txtDescripcionPaquete}" style="width: 70px; text-transform:uppercase;" placeholder="UNI" ></p:inputText>
                                 </td> 
-                                <td> <p:outputLabel  value="X"  ></p:outputLabel> <p:inputNumber onkeypress="if (event.keyCode === 13) {
-                                            onchange();
-                                            return false;
-                                        }" decimalPlaces="0" size="3" binding="#{productoBean.txtUnidadXPaquete}" placeholder="1">
-                                                                                                     <p:ajax  event="change" listener="#{productoBean.cambioTxtCantidadPaquete()}"
-                                                                                                              update=":frmNuevoProducto:txtStockActual"></p:ajax>  </p:inputNumber>
+                                <td> <p:outputLabel  value="X"  ></p:outputLabel> <p:inputNumber  decimalPlaces="0" size="3" binding="#{productoBean.txtUnidadXPaquete}" placeholder="1"> </p:inputNumber>
                                 </td> 
                                 <td> <p:inputNumber onblur="{
                                             onchange();
@@ -140,32 +124,24 @@
                                 </td>
                                 <td> <p:inputNumber id="txtPrecioComision" decimalPlaces="2" size="5" disabled="true" binding="#{productoBean.txtPrecioComision}" ></p:inputNumber>
                                 </td> 
+                                <td> <p:inputNumber id="txtStockMinimo" decimalPlaces="0" size="2"  binding="#{productoBean.txtStockMinimo}" ></p:inputNumber>
+                                </td> 
 
                             </tr>
 
                             <tr>
                                 <td>
                                     <p:selectBooleanCheckbox id="check1" style="background-color: white;" value="#{productoBean.check1}">
-                                        <p:ajax update=":frmNuevoProducto:check1, :frmNuevoProducto:txtCantidadPaquete1, :frmNuevoProducto:txtDescripcionPaquete1, :frmNuevoProducto:txtUnidadXPaquete1, :frmNuevoProducto:txtCompra1, :frmNuevoProducto:txtDescuentoCompra1, :frmNuevoProducto:txtCompraReal1, :frmNuevoProducto:txtVentaSugerida1, :frmNuevoProducto:txtPrecioComision1, :frmNuevoProducto:txtPorcentajeUtilidad1, :frmNuevoProducto:txtVentaReal1, frmNuevoProducto:txtComision1, frmNuevoProducto:txtStockActual" listener="#{productoBean.selectCheck1()}" />
+                                        <p:ajax update=":frmNuevoProducto:txtStockMinimo1, :frmNuevoProducto:check1, :frmNuevoProducto:txtCantidadPaquete1, :frmNuevoProducto:txtDescripcionPaquete1, :frmNuevoProducto:txtUnidadXPaquete1, :frmNuevoProducto:txtCompra1, :frmNuevoProducto:txtDescuentoCompra1, :frmNuevoProducto:txtCompraReal1, :frmNuevoProducto:txtVentaSugerida1, :frmNuevoProducto:txtPrecioComision1, :frmNuevoProducto:txtPorcentajeUtilidad1, :frmNuevoProducto:txtVentaReal1, frmNuevoProducto:txtComision1" listener="#{productoBean.selectCheck1()}" />
                                     </p:selectBooleanCheckbox>
                                 </td> 
-                                <td> <p:inputNumber onkeypress="if (event.keyCode === 13) {
-                                            onchange();
-                                            return false;
-                                        }" decimalPlaces="0" size="2" id="txtCantidadPaquete1" binding="#{productoBean.txtCantidadPaquete1}" disabled="true" >
-                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCantidadPaquete()}"
-                                                 update=":frmNuevoProducto:txtStockActual"></p:ajax>  
+                                <td> <p:inputNumber decimalPlaces="0" size="2" id="txtCantidadPaquete1" binding="#{productoBean.txtCantidadPaquete1}" disabled="true" >
                                     </p:inputNumber>
                                 </td> 
                                 <td> <p:inputText id="txtDescripcionPaquete1" binding="#{productoBean.txtDescripcionPaquete1}" disabled="true" style="width: 70px; text-transform:uppercase;" ></p:inputText>
                                 </td> 
-                                <td> <p:outputLabel id="x1" binding="#{productoBean.x1}" value="X"  ></p:outputLabel> <p:inputNumber  onkeypress="if (event.keyCode === 13) {
-                                            onchange();
-                                            return false;
-                                        }" decimalPlaces="0" size="3" id="txtUnidadXPaquete1" binding="#{productoBean.txtUnidadXPaquete1}" disabled="true" >
-                                                                                                                                          <p:ajax  event="change" listener="#{productoBean.cambioTxtCantidadPaquete()}"
-                                                                                                                                                   update=":frmNuevoProducto:txtStockActual"></p:ajax>  
-                                                                                                                                      </p:inputNumber>
+                                <td> <p:outputLabel id="x1" binding="#{productoBean.x1}" value="X"  ></p:outputLabel> <p:inputNumber  decimalPlaces="0" size="3" id="txtUnidadXPaquete1" binding="#{productoBean.txtUnidadXPaquete1}" disabled="true" >
+                                    </p:inputNumber>
                                 </td> 
                                 <td> <p:inputNumber onblur="{
                                             onchange();
@@ -213,31 +189,23 @@
                                 </td>
                                 <td> <p:inputNumber id="txtPrecioComision1" decimalPlaces="2" size="5" disabled="true" binding="#{productoBean.txtPrecioComision1}" ></p:inputNumber>
                                 </td> 
+                                <td> <p:inputNumber id="txtStockMinimo1" decimalPlaces="0" size="2"  binding="#{productoBean.txtStockMinimo1}" disabled="true" ></p:inputNumber>
+                                </td> 
                             </tr>
 
                             <tr>
                                 <td>
                                     <p:selectBooleanCheckbox id="check2" style="background-color: white;" value="#{productoBean.check2}">
-                                        <p:ajax  update=":frmNuevoProducto:check2, :frmNuevoProducto:txtCantidadPaquete2, :frmNuevoProducto:txtDescripcionPaquete2, :frmNuevoProducto:txtUnidadXPaquete2, :frmNuevoProducto:txtCompra2, :frmNuevoProducto:txtDescuentoCompra2, :frmNuevoProducto:txtPorcentajeUtilidad2, :frmNuevoProducto:txtVentaReal2, frmNuevoProducto:txtComision2, frmNuevoProducto:txtStockActual, :frmNuevoProducto:txtCompraReal2, :frmNuevoProducto:txtVentaSugerida2, :frmNuevoProducto:txtPrecioComision2" listener="#{productoBean.selectCheck2()}" />
+                                        <p:ajax  update=":frmNuevoProducto:txtStockMinimo2, :frmNuevoProducto:check2, :frmNuevoProducto:txtCantidadPaquete2, :frmNuevoProducto:txtDescripcionPaquete2, :frmNuevoProducto:txtUnidadXPaquete2, :frmNuevoProducto:txtCompra2, :frmNuevoProducto:txtDescuentoCompra2, :frmNuevoProducto:txtPorcentajeUtilidad2, :frmNuevoProducto:txtVentaReal2, frmNuevoProducto:txtComision2, :frmNuevoProducto:txtCompraReal2, :frmNuevoProducto:txtVentaSugerida2, :frmNuevoProducto:txtPrecioComision2" listener="#{productoBean.selectCheck2()}" />
                                     </p:selectBooleanCheckbox>
                                 </td> 
-                                <td> <p:inputNumber onkeypress="if (event.keyCode === 13) {
-                                            onchange();
-                                            return false;
-                                        }" decimalPlaces="0" size="2" id="txtCantidadPaquete2" binding="#{productoBean.txtCantidadPaquete2}" disabled="true" >
-                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCantidadPaquete()}"
-                                                 update=":frmNuevoProducto:txtStockActual"></p:ajax>  
+                                <td> <p:inputNumber  decimalPlaces="0" size="2" id="txtCantidadPaquete2" binding="#{productoBean.txtCantidadPaquete2}" disabled="true" > 
                                     </p:inputNumber>
                                 </td> 
                                 <td> <p:inputText  id="txtDescripcionPaquete2" binding="#{productoBean.txtDescripcionPaquete2}" disabled="true" style="width: 70px; text-transform:uppercase;" ></p:inputText>
                                 </td> 
-                                <td> <p:outputLabel id="x2" binding="#{productoBean.x2}" value="X" ></p:outputLabel> <p:inputNumber onkeypress="if (event.keyCode === 13) {
-                                            onchange();
-                                            return false;
-                                        }" decimalPlaces="0" size="3" id="txtUnidadXPaquete2" binding="#{productoBean.txtUnidadXPaquete2}" disabled="true" >
-                                                                                                                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCantidadPaquete()}"
-                                                                                                                                                 update=":frmNuevoProducto:txtStockActual"></p:ajax>  
-                                                                                                                                    </p:inputNumber>
+                                <td> <p:outputLabel id="x2" binding="#{productoBean.x2}" value="X" ></p:outputLabel> <p:inputNumber  decimalPlaces="0" size="3" id="txtUnidadXPaquete2" binding="#{productoBean.txtUnidadXPaquete2}" disabled="true" >
+                                    </p:inputNumber>
                                 </td> 
                                 <td> <p:inputNumber onblur="{
                                             onchange();
@@ -285,31 +253,23 @@
                                 </td>
                                 <td> <p:inputNumber id="txtPrecioComision2" decimalPlaces="2" size="5" disabled="true" binding="#{productoBean.txtPrecioComision2}" ></p:inputNumber>
                                 </td> 
+                                <td> <p:inputNumber id="txtStockMinimo2" decimalPlaces="0" size="2"  binding="#{productoBean.txtStockMinimo2}" disabled="true" ></p:inputNumber>
+                                </td> 
                             </tr>
 
                             <tr>
                                 <td>
                                     <p:selectBooleanCheckbox id="check3" style="background-color: white;" value="#{productoBean.check3}">
-                                        <p:ajax update=":frmNuevoProducto:check3, :frmNuevoProducto:txtCantidadPaquete3, :frmNuevoProducto:txtDescripcionPaquete3, :frmNuevoProducto:txtUnidadXPaquete3, :frmNuevoProducto:txtCompra3, :frmNuevoProducto:txtDescuentoCompra3, :frmNuevoProducto:txtPorcentajeUtilidad3, :frmNuevoProducto:txtVentaReal3, frmNuevoProducto:txtComision3, frmNuevoProducto:txtStockActual, :frmNuevoProducto:txtCompraReal3, :frmNuevoProducto:txtVentaSugerida3, :frmNuevoProducto:txtPrecioComision3" listener="#{productoBean.selectCheck3()}" />
+                                        <p:ajax update=":frmNuevoProducto:txtStockMinimo3, :frmNuevoProducto:check3, :frmNuevoProducto:txtCantidadPaquete3, :frmNuevoProducto:txtDescripcionPaquete3, :frmNuevoProducto:txtUnidadXPaquete3, :frmNuevoProducto:txtCompra3, :frmNuevoProducto:txtDescuentoCompra3, :frmNuevoProducto:txtPorcentajeUtilidad3, :frmNuevoProducto:txtVentaReal3, frmNuevoProducto:txtComision3, :frmNuevoProducto:txtCompraReal3, :frmNuevoProducto:txtVentaSugerida3, :frmNuevoProducto:txtPrecioComision3" listener="#{productoBean.selectCheck3()}" />
                                     </p:selectBooleanCheckbox>
                                 </td> 
-                                <td> <p:inputNumber onkeypress="if (event.keyCode === 13) {
-                                            onchange();
-                                            return false;
-                                        }" decimalPlaces="0" size="2" id="txtCantidadPaquete3" binding="#{productoBean.txtCantidadPaquete3}" disabled="true">
-                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCantidadPaquete()}"
-                                                 update=":frmNuevoProducto:txtStockActual"></p:ajax>  
+                                <td> <p:inputNumber  decimalPlaces="0" size="2" id="txtCantidadPaquete3" binding="#{productoBean.txtCantidadPaquete3}" disabled="true">
                                     </p:inputNumber>
                                 </td> 
                                 <td> <p:inputText id="txtDescripcionPaquete3"  binding="#{productoBean.txtDescripcionPaquete3}" disabled="true" style="width: 70px; text-transform:uppercase;" ></p:inputText>
                                 </td> 
-                                <td> <p:outputLabel id="x3"  binding="#{productoBean.x3}" value="X" ></p:outputLabel> <p:inputNumber onkeypress="if (event.keyCode === 13) {
-                                            onchange();
-                                            return false;
-                                        }" decimalPlaces="0" size="3" id="txtUnidadXPaquete3"  binding="#{productoBean.txtUnidadXPaquete3}" disabled="true" >
-                                                                                                                                         <p:ajax  event="change" listener="#{productoBean.cambioTxtCantidadPaquete()}"
-                                                                                                                                                  update=":frmNuevoProducto:txtStockActual"></p:ajax>  
-                                                                                                                                     </p:inputNumber>
+                                <td> <p:outputLabel id="x3"  binding="#{productoBean.x3}" value="X" ></p:outputLabel> <p:inputNumber  decimalPlaces="0" size="3" id="txtUnidadXPaquete3"  binding="#{productoBean.txtUnidadXPaquete3}" disabled="true" >
+                                    </p:inputNumber>
                                 </td> 
                                 <td> <p:inputNumber onblur="{
                                             onchange();
@@ -357,6 +317,8 @@
                                 </td>
                                 <td> <p:inputNumber id="txtPrecioComision3" decimalPlaces="2" size="5" disabled="true" binding="#{productoBean.txtPrecioComision3}" ></p:inputNumber>
                                 </td> 
+                                <td> <p:inputNumber id="txtStockMinimo3" decimalPlaces="0" size="2"  binding="#{productoBean.txtStockMinimo3}" disabled="true" ></p:inputNumber>
+                                </td> 
                             </tr>
                         </table>
                         <br></br>
@@ -373,39 +335,131 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>
+
                 <h:form id="frmModificarProducto">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgModificarProducto" widgetVar="dialogModificarProducto" resizable="false" showEffect="explode"
                               hideEffect="explode" modal="true" header="Modificar producto">
-                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
 
-                            <p:outputLabel value="Nombre"></p:outputLabel>
-                            <p:inputText style="width: 100%; text-transform:uppercase;" value="#{productoBean.producto.nombre}"></p:inputText>
+                        <table>
+                            <tr>
+                                <td> <p:outputLabel value="Nombre:"></p:outputLabel> </td> 
+                                <td> <p:inputText style="width: 100%; text-transform:uppercase;" value="#{productoBean.producto.nombre}"></p:inputText>  </td> 
+                            </tr>
+                            <tr>
+                                <td>  <p:outputLabel value="Stock minimo (U):"></p:outputLabel> </td> 
+                                <td>  <p:inputNumber decimalPlaces="0" style="width: 100%;" value="#{productoBean.producto.stockMinUni}">
+                                        <f:convertNumber type="number" pattern="#0" />
+                                    </p:inputNumber> </td> 
+                                <td>   <p:outputLabel value="Stock actual (U):"></p:outputLabel> </td> 
+                                <td>   <p:inputNumber decimalPlaces="0" id="txtStockActualUniModificar" style="width: 100%;" value="#{productoBean.producto.stockActUni}">
+                                        <f:convertNumber type="number" pattern="#0" />
+                                    </p:inputNumber>  </td> 
+                            </tr>
+                        </table>
+                        <br></br>
+                        <table> 
+                            <tr>
+                                <td width="50px;">
+                                </td>
+                                <td width="90px;">
+                                    Descrip. paquete*
+                                </td>
+                                <td width="100px;">
+                                    Uni. paquete*
+                                </td>
+                                <td width="120px;">
+                                    $Compra*
+                                </td>
+                                <td width="90px;">
+                                    %Dto. Compra
+                                </td>
+                                <td width="120px;">
+                                    $Compra Real
+                                </td>
+                                <td width="90px;"> 
+                                    % de Utilidad*
+                                </td>
+                                <td width="120px;">
+                                    $Venta Sugerido
+                                </td>
+                                <td width="120px;">
+                                    $Venta Real*
+                                </td>
+                                <td width="100px;">
+                                    % de Comision
+                                </td>
+                                <td width="120px;">
+                                    $ de Comision
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>  
+                                </td> 
+                                <td> <p:inputText value="#{productoBean.producto.paquete}" binding="#{productoBean.txtDescripcionPaqueteModificar}" style="width: 70px; text-transform:uppercase;" placeholder="UNI" ></p:inputText>
+                                </td> 
+                                <td> <p:outputLabel  value="X"  ></p:outputLabel> <p:inputNumber value="#{productoBean.producto.unidadXPaquete}"  decimalPlaces="0" size="3" binding="#{productoBean.txtUnidadXPaqueteModificar}" placeholder="1"> </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }"  decimalPlaces="2" size="6" binding="#{productoBean.txtCompraModificar}" value="#{productoBean.producto.precioCompra}">
+                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCompraModificar()}"
+                                                 update=":frmModificarProducto:txtCompraRealModificar, :frmModificarProducto:txtVentaSugeridaModificar"></p:ajax> 
+                                    </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }" decimalPlaces="2" size="2" binding="#{productoBean.txtDescuentoCompraModificar}" value="#{productoBean.producto.porcentajeDescuento}" >
+                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCompraModificar()}"
+                                                 update=":frmModificarProducto:txtCompraRealModificar, :frmModificarProducto:txtVentaSugeridaModificar"></p:ajax> 
+                                    </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber  id="txtCompraRealModificar" decimalPlaces="2" size="6" binding="#{productoBean.txtCompraRealModificar}" disabled="true" value="#{productoBean.producto.precioCompraReal}"></p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }" decimalPlaces="2" size="2" binding="#{productoBean.txtPorcentajeUtilidadModificar}" value="#{productoBean.producto.porcentajeUtilidad}">
+                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCompraModificar()}"
+                                                 update=":frmModificarProducto:txtCompraRealModificar, :frmModificarProducto:txtVentaSugeridaModificar"></p:ajax> 
+                                    </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber value="#{productoBean.producto.ventaSugerida}" id="txtVentaSugeridaModificar" decimalPlaces="2" size="6" binding="#{productoBean.txtVentaSugeridaModificar}" disabled="true" ></p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }" decimalPlaces="2" size="6" binding="#{productoBean.txtVentaRealModificar}" value="#{productoBean.producto.precioVentaReal}" >
+                                        <p:ajax  event="change" listener="#{productoBean.cambioComisionModificar()}"
+                                                 update=":frmModificarProducto:txtPrecioComisionModificar"></p:ajax> 
+                                    </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }" value="#{productoBean.producto.porcentajeComision}" decimalPlaces="2" size="2" binding="#{productoBean.txtComisionModificar}" >
+                                        <p:ajax  event="change" listener="#{productoBean.cambioComisionModificar()}"
+                                                 update=":frmModificarProducto:txtPrecioComisionModificar"></p:ajax> 
+                                    </p:inputNumber>
+                                </td>
+                                <td> <p:inputNumber value="#{productoBean.producto.comision}" id="txtPrecioComisionModificar" decimalPlaces="2" size="5" disabled="true" binding="#{productoBean.txtPrecioComisionModificar}" ></p:inputNumber>
+                                </td> 
 
-                            <p:outputLabel value="Precio Compra $"></p:outputLabel>
-                            <p:inputNumber style="width: 100%;" value="#{productoBean.producto.precioCompra}"></p:inputNumber>
-
-                            <p:outputLabel value="Stock mínimo (Un)"></p:outputLabel>
-                            <p:inputNumber style="width: 100%;" value="#{productoBean.producto.stockMinUni}">
-                                <f:convertNumber type="number" pattern="#0" />
-                            </p:inputNumber>
-
-                            <p:outputLabel value="Stock actual (Un)"></p:outputLabel>
-                            <p:inputNumber style="width: 100%;"  value="#{productoBean.producto.stockActUni}">
-                                <f:convertNumber type="number" pattern="#0" />
-                            </p:inputNumber>
-
-                        </p:panelGrid>
+                            </tr>
+                        </table>
                         <br></br>
                         <p:commandButton id="btnGuardarPoductoModificado" 
                                          action="#{productoBean.modificarProducto()}" 
-                                         update="frmMostrarProductos:tablaProductos, message"
+                                         update="frmMostrarProductos:tablaProductos, message, frmModificarProducto"
                                          title="Guardar cambios" icon="ui-icon-guardar2">
                         </p:commandButton>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogModificarProducto').hide();">
                         </p:commandButton>
                     </p:dialog>
-                </h:form>          
+                </h:form>      
+                
                 <h:form id="frmEliminarProducto">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgEliminarProducto" widgetVar="dialogEliminarProducto" resizable="false" showEffect="explode"
@@ -471,14 +525,20 @@
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:column style="text-align: center;  width: 180px;"  filterBy="#{pr.codBarras}" filterMatchMode="contains" headerText="Código de Barras">
+                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{pr.codBarras}" filterMatchMode="exact" headerText="Código de Barras:">
                             <h:outputText value="#{pr.codBarras}"></h:outputText>
                         </p:column>
-                        <p:column style="text-align: center; width: 250px;" filterBy="#{pr.nombre}" filterMatchMode="contains"  headerText="Descripción del Producto">
+                        <p:column style="text-align: center; width: 300px;" filterBy="#{pr.nombre}" filterMatchMode="contains"  headerText="Descripción del Producto:">
                             <h:outputText value="#{pr.nombre}"></h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockActUni}" filterMatchMode="contains" headerText="Stock actual (U)">
+                            <h:outputText value="#{pr.stockActUni}"></h:outputText>
                         </p:column>
                         <p:column style="text-align: center; width: 130px;" filterBy="#{pr.paquete}" filterMatchMode="contains"  headerText="Descripción Paquete">
                             <h:outputText value="#{pr.paquete}"></h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.unidadXPaquete}" filterMatchMode="contains" headerText="Unidades x paquete">
+                            <h:outputText value="#{pr.unidadXPaquete}"></h:outputText>
                         </p:column>
                         <p:column style="text-align: center; width: 140px;" filterBy="#{pr.precioCompra}" filterMatchMode="contains" headerText="Precio Compra">
                             <h:outputText value="#{pr.precioCompra}">
@@ -496,19 +556,24 @@
                         <p:column style="text-align: center; width: 140px;" filterBy="#{pr.porcentajeUtilidad}" filterMatchMode="contains"  headerText="% de Utilidad">
                             <h:outputText value="#{pr.porcentajeUtilidad}"></h:outputText>
                         </p:column>
+                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.ventaSugerida}" filterMatchMode="contains" headerText="Precio Venta Sugerido">
+                            <h:outputText value="#{pr.ventaSugerida}">
+                                <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                            </h:outputText>    
+                        </p:column>
                         <p:column style="text-align: center; width: 140px;" filterBy="#{pr.precioVentaReal}" filterMatchMode="contains" headerText="Precio Venta Real">
                             <h:outputText value="#{pr.precioVentaReal}">
                                 <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
                             </h:outputText>    
                         </p:column>
-                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockMinUni}" filterMatchMode="contains" headerText="Stock mínimo (U)">
-                            <h:outputText value="#{pr.stockMinUni}"></h:outputText>
-                        </p:column>
-                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.comision}" filterMatchMode="contains" headerText="% de Comisión">
+                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.comision}" filterMatchMode="contains" headerText="$ de Comisión">
                             <h:outputText value="#{pr.comision}"></h:outputText>
                         </p:column>
-                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockActUni}" filterMatchMode="contains" headerText="Stock actual (U)">
-                            <h:outputText value="#{pr.stockActUni}"></h:outputText>
+                        <p:column style="text-align: center; width: 130px;" filterBy="#{pr.porcentajeComision}" filterMatchMode="contains"  headerText="% de Comisión">
+                            <h:outputText value="#{pr.porcentajeComision}"></h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockMinUni}" filterMatchMode="contains" headerText="Stock mínimo (U)">
+                            <h:outputText value="#{pr.stockMinUni}"></h:outputText>
                         </p:column>
                         <p:column headerText="Acciones" style="width: 200px;">
                             <p:commandButton title="Modificar registro" oncomplete="PF('dialogModificarProducto').show();"

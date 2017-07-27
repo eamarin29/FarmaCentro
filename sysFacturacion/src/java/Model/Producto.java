@@ -1,5 +1,5 @@
 package Model;
-// Generated 22-jul-2017 17:32:23 by Hibernate Tools 4.3.1
+// Generated 26-jul-2017 17:58:10 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -24,6 +24,9 @@ public class Producto  implements java.io.Serializable {
      private Long stockMinUni;
      private Long stockActUni;
      private BigDecimal comision;
+     private BigDecimal ventaSugerida;
+     private BigDecimal porcentajeComision;
+     private Long unidadXPaquete;
      private Set<DetalleFactura> detalleFacturas = new HashSet<DetalleFactura>(0);
 
     public Producto() {
@@ -33,7 +36,7 @@ public class Producto  implements java.io.Serializable {
     public Producto(BigDecimal codigo) {
         this.codigo = codigo;
     }
-    public Producto(BigDecimal codigo, String codBarras, String nombre, String paquete, BigDecimal precioCompra, BigDecimal porcentajeDescuento, BigDecimal precioCompraReal, BigDecimal porcentajeUtilidad, BigDecimal precioVentaReal, Long stockMinUni, Long stockActUni, BigDecimal comision, Set<DetalleFactura> detalleFacturas) {
+    public Producto(BigDecimal codigo, String codBarras, String nombre, String paquete, BigDecimal precioCompra, BigDecimal porcentajeDescuento, BigDecimal precioCompraReal, BigDecimal porcentajeUtilidad, BigDecimal precioVentaReal, Long stockMinUni, Long stockActUni, BigDecimal comision, BigDecimal ventaSugerida, BigDecimal porcentajeComision, Long unidadXPaquete, Set<DetalleFactura> detalleFacturas) {
        this.codigo = codigo;
        this.codBarras = codBarras;
        this.nombre = nombre;
@@ -46,6 +49,9 @@ public class Producto  implements java.io.Serializable {
        this.stockMinUni = stockMinUni;
        this.stockActUni = stockActUni;
        this.comision = comision;
+       this.ventaSugerida = ventaSugerida;
+       this.porcentajeComision = porcentajeComision;
+       this.unidadXPaquete = unidadXPaquete;
        this.detalleFacturas = detalleFacturas;
     }
    
@@ -132,6 +138,27 @@ public class Producto  implements java.io.Serializable {
     
     public void setComision(BigDecimal comision) {
         this.comision = comision;
+    }
+    public BigDecimal getVentaSugerida() {
+        return this.ventaSugerida;
+    }
+    
+    public void setVentaSugerida(BigDecimal ventaSugerida) {
+        this.ventaSugerida = ventaSugerida;
+    }
+    public BigDecimal getPorcentajeComision() {
+        return this.porcentajeComision;
+    }
+    
+    public void setPorcentajeComision(BigDecimal porcentajeComision) {
+        this.porcentajeComision = porcentajeComision;
+    }
+    public Long getUnidadXPaquete() {
+        return this.unidadXPaquete;
+    }
+    
+    public void setUnidadXPaquete(Long unidadXPaquete) {
+        this.unidadXPaquete = unidadXPaquete;
     }
     public Set<DetalleFactura> getDetalleFacturas() {
         return this.detalleFacturas;
