@@ -2166,12 +2166,14 @@ public class ProductoBean implements Serializable {
             //se elimina
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('dialogEliminarProducto').hide();");
+            context.execute("PF('parametrosTabla').filter();");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operacion Exitosa:", "El Producto se ha eliminado correctamente."));
             producto = new Producto();
         } else {
             //no se elimina
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('dialogEliminarProducto').hide();");
+            context.execute("PF('parametrosTabla').filter();");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El Producto no puede eliminarse, puede que este asociado a una factura."));
             producto = new Producto();
         }
@@ -2180,6 +2182,8 @@ public class ProductoBean implements Serializable {
     public void modificarProducto() {
 
         if (producto.getNombre().equals("") || producto.getStockMinUni() == null || producto.getStockActUni() == null || producto.getPaquete().equals("") || producto.getUnidadXPaquete() == null || producto.getPrecioCompra() == null || producto.getPorcentajeDescuento() == null || producto.getPorcentajeUtilidad() == null || producto.getPrecioVentaReal() == null || producto.getPorcentajeComision() == null) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('dialogModificarProducto').show();");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios, los campos con * no pueden ser 0."));
         } else {
 
@@ -2192,23 +2196,43 @@ public class ProductoBean implements Serializable {
             double precio_venta_sugerida_doble = Double.parseDouble(precio_venta_sugerida);
 
             if (producto.getStockMinUni() == 0 || producto.getStockActUni() == 0 || producto.getUnidadXPaquete() == 0 || precio_compra.equals("0") || porcentaje_utilidad.equals("0") || precio_venta_real.equals("0")) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('dialogModificarProducto').show();");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios, los campos con * no pueden ser 0."));
             } else {
 
                 if (precio_venta_real_doble < precio_venta_sugerida_doble) {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("PF('dialogModificarProducto').show();");
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El precio de venta real no puede ser menor al sugerido"));
                 } else {
                     String nombre = producto.getNombre().toUpperCase();
                     producto.setNombre(nombre);
+                    
+                    String descripcion_paquete = producto.getPaquete().toUpperCase();
+                    producto.setPaquete(descripcion_paquete);
+                    
                     ProductoController ProductoController = new ProductoController();
                     ProductoController.updateProducto(producto);
                     RequestContext context = RequestContext.getCurrentInstance();
-                    context.execute("PF('dialogNuevoProducto').hide();");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "El producto se actualizó correctamente."));
+                    context.execute("PF('dialogModificarProducto').hide();");
+                    context.execute("PF('parametrosTabla').filter();");
+                    
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operacion exitosa:", "El producto se actualizo correctamente."));
                     producto = new Producto();
+
                 }
             }
         }
+        getFiltroProductos();
+    }
+
+    public void cancelarModificar() {
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogModificarProducto').hide();");
+        context.execute("PF('parametrosTabla').filter();");
+
     }
 
 }

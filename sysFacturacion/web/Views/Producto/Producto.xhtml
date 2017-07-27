@@ -337,10 +337,10 @@
                 </h:form>
 
                 <h:form id="frmModificarProducto">
-                    <p:growl id="message" showDetail="true" />
+
                     <p:dialog id="dgModificarProducto" widgetVar="dialogModificarProducto" resizable="false" showEffect="explode"
                               hideEffect="explode" modal="true" header="Modificar producto">
-
+                        <p:messages id="messageModificarProductos"  showDetail="true" autoUpdate="true" closable="true"  /> 
                         <table>
                             <tr>
                                 <td> <p:outputLabel value="Nombre:"></p:outputLabel> </td> 
@@ -451,15 +451,17 @@
                         </table>
                         <br></br>
                         <p:commandButton id="btnGuardarPoductoModificado" 
-                                         action="#{productoBean.modificarProducto()}" 
-                                         update="frmMostrarProductos:tablaProductos, message, frmModificarProducto"
+                                         actionListener="#{productoBean.modificarProducto()}"
+                                         update=":frmMostrarProductos, :frmModificarProducto"
                                          title="Guardar cambios" icon="ui-icon-guardar2">
                         </p:commandButton>
-                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogModificarProducto').hide();">
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" actionListener="#{productoBean.cancelarModificar()}"
+                                         update=":frmMostrarProductos, :frmModificarProducto"
+                                          >
                         </p:commandButton>
                     </p:dialog>
                 </h:form>      
-                
+
                 <h:form id="frmEliminarProducto">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgEliminarProducto" widgetVar="dialogEliminarProducto" resizable="false" showEffect="explode"
@@ -477,12 +479,14 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>
+
                 <h:form>
                     <p:commandButton value="Nuevo Producto" actionListener="#{productoBean.prepararNuevoProdcuto()}" 
                                      oncomplete="PF('dialogNuevoProducto').show();"
                                      update=":frmNuevoProducto">
                     </p:commandButton> 
                 </h:form>  
+
                 <h:form id="frmAgregarProducto">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgAgregarProducto" widgetVar="dialogAgregarProducto" resizable="false" showEffect="explode"
@@ -508,7 +512,9 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>  
+
                 <br></br>
+
                 <h:form id="frmMostrarProductos">
                     <p:dataTable id="tablaProductos" var="pr" value="#{productoBean.listaProductos}" rows="3"
                                  paginator="true" rowsPerPageTemplate="3,5,10,20,40,80,160,320"
@@ -594,6 +600,7 @@
                         </p:column> 
                     </p:dataTable>    
                 </h:form> 
+
             </ui:define>
         </ui:composition>
     </body>
