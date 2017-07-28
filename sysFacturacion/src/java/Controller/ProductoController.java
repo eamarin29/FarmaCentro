@@ -34,6 +34,32 @@ public class ProductoController {
         return lista;
     }
 
+    public int listarProductosPorCodBarras(String codBarras) {
+
+        int ret = 0;
+
+        try {
+            Conexion c = new Conexion();
+            Connection conn = c.Conectar();
+
+            //consultar si cedula existe
+            PreparedStatement consulta = conn.prepareStatement("SELECT COD_BARRAS FROM PRODUCTO WHERE COD_BARRAS=?");
+            consulta.setString(1, codBarras);
+            ResultSet rs = consulta.executeQuery();
+
+            while (rs.next()) {  
+                ret++;
+            }
+                conn.close();
+                rs.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return ret;
+    }
+
     public void newProducto(Producto producto) {
 
         Session session = null;
@@ -100,7 +126,7 @@ public class ProductoController {
     public boolean obtenerProductoPorCodigoBarras(String codBarras) {
 
         boolean ret = false;
-        
+
         try {
 
             Conexion c = new Conexion();

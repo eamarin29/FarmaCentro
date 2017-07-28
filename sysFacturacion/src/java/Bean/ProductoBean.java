@@ -27,7 +27,6 @@ public class ProductoBean implements Serializable {
     private List<Producto> filtroProductos;
 
     private List<Producto> listaProductosStockMayorCero;
-    public Long adicionarProductos = 0L;
 
     private boolean check1;
     private boolean check2;
@@ -101,6 +100,21 @@ public class ProductoBean implements Serializable {
     private InputNumber txtVentaRealModificar;
     private InputNumber txtPrecioComisionModificar;
 
+    private InputNumber txtAdicionarProductos;
+
+    private InputNumber txtCantidadPaqueteNuevo;
+    private InputText txtDescripcionPaqueteNuevo;
+    private InputNumber txtUnidadXPaqueteNuevo;
+    private InputNumber txtCompraNuevo;
+    private InputNumber txtDescuentoCompraNuevo;
+    private InputNumber txtCompraRealNuevo;
+    private InputNumber txtPorcentajeUtilidadNuevo;
+    private InputNumber txtVentaSugeridaNuevo;
+    private InputNumber txtComisionNuevo;
+    private InputNumber txtVentaRealNuevo;
+    private InputNumber txtPrecioComisionNuevo;
+    private InputNumber txtStockMinimoNuevo;
+
     public ProductoBean() {
     }
 
@@ -111,8 +125,112 @@ public class ProductoBean implements Serializable {
 
     }
 
+    public InputNumber getTxtCantidadPaqueteNuevo() {
+        return txtCantidadPaqueteNuevo;
+    }
+
+    public void setTxtCantidadPaqueteNuevo(InputNumber txtCantidadPaqueteNuevo) {
+        this.txtCantidadPaqueteNuevo = txtCantidadPaqueteNuevo;
+    }
+
+    public InputText getTxtDescripcionPaqueteNuevo() {
+        return txtDescripcionPaqueteNuevo;
+    }
+
+    public void setTxtDescripcionPaqueteNuevo(InputText txtDescripcionPaqueteNuevo) {
+        this.txtDescripcionPaqueteNuevo = txtDescripcionPaqueteNuevo;
+    }
+
+    public InputNumber getTxtUnidadXPaqueteNuevo() {
+        return txtUnidadXPaqueteNuevo;
+    }
+
+    public void setTxtUnidadXPaqueteNuevo(InputNumber txtUnidadXPaqueteNuevo) {
+        this.txtUnidadXPaqueteNuevo = txtUnidadXPaqueteNuevo;
+    }
+
+    public InputNumber getTxtCompraNuevo() {
+        return txtCompraNuevo;
+    }
+
+    public void setTxtCompraNuevo(InputNumber txtCompraNuevo) {
+        this.txtCompraNuevo = txtCompraNuevo;
+    }
+
+    public InputNumber getTxtDescuentoCompraNuevo() {
+        return txtDescuentoCompraNuevo;
+    }
+
+    public void setTxtDescuentoCompraNuevo(InputNumber txtDescuentoCompraNuevo) {
+        this.txtDescuentoCompraNuevo = txtDescuentoCompraNuevo;
+    }
+
+    public InputNumber getTxtCompraRealNuevo() {
+        return txtCompraRealNuevo;
+    }
+
+    public void setTxtCompraRealNuevo(InputNumber txtCompraRealNuevo) {
+        this.txtCompraRealNuevo = txtCompraRealNuevo;
+    }
+
+    public InputNumber getTxtPorcentajeUtilidadNuevo() {
+        return txtPorcentajeUtilidadNuevo;
+    }
+
+    public void setTxtPorcentajeUtilidadNuevo(InputNumber txtPorcentajeUtilidadNuevo) {
+        this.txtPorcentajeUtilidadNuevo = txtPorcentajeUtilidadNuevo;
+    }
+
+    public InputNumber getTxtVentaSugeridaNuevo() {
+        return txtVentaSugeridaNuevo;
+    }
+
+    public void setTxtVentaSugeridaNuevo(InputNumber txtVentaSugeridaNuevo) {
+        this.txtVentaSugeridaNuevo = txtVentaSugeridaNuevo;
+    }
+
+    public InputNumber getTxtComisionNuevo() {
+        return txtComisionNuevo;
+    }
+
+    public void setTxtComisionNuevo(InputNumber txtComisionNuevo) {
+        this.txtComisionNuevo = txtComisionNuevo;
+    }
+
+    public InputNumber getTxtVentaRealNuevo() {
+        return txtVentaRealNuevo;
+    }
+
+    public void setTxtVentaRealNuevo(InputNumber txtVentaRealNuevo) {
+        this.txtVentaRealNuevo = txtVentaRealNuevo;
+    }
+
+    public InputNumber getTxtPrecioComisionNuevo() {
+        return txtPrecioComisionNuevo;
+    }
+
+    public void setTxtPrecioComisionNuevo(InputNumber txtPrecioComisionNuevo) {
+        this.txtPrecioComisionNuevo = txtPrecioComisionNuevo;
+    }
+
+    public InputNumber getTxtStockMinimoNuevo() {
+        return txtStockMinimoNuevo;
+    }
+
+    public void setTxtStockMinimoNuevo(InputNumber txtStockMinimoNuevo) {
+        this.txtStockMinimoNuevo = txtStockMinimoNuevo;
+    }
+
     public InputNumber getTxtStockMinimo() {
         return txtStockMinimo;
+    }
+
+    public InputNumber getTxtAdicionarProductos() {
+        return txtAdicionarProductos;
+    }
+
+    public void setTxtAdicionarProductos(InputNumber txtAdicionarProductos) {
+        this.txtAdicionarProductos = txtAdicionarProductos;
     }
 
     public void setTxtStockMinimo(InputNumber txtStockMinimo) {
@@ -629,14 +747,6 @@ public class ProductoBean implements Serializable {
 
     public void setCheck1(boolean check1) {
         this.check1 = check1;
-    }
-
-    public Long getAdicionarProductos() {
-        return adicionarProductos;
-    }
-
-    public void setAdicionarProductos(Long adicionarProductos) {
-        this.adicionarProductos = adicionarProductos;
     }
 
     public List<Producto> getListaProductosStockMayorCero() {
@@ -1862,13 +1972,13 @@ public class ProductoBean implements Serializable {
         }
 
         if (txtCompraRealModificar.getValue() == null) {
-            txtVentaSugerida.setValue("0");
+            txtVentaSugeridaModificar.setValue("0");
         } else {
             if (txtCompraRealModificar.getValue().equals("0")) {
                 txtVentaSugeridaModificar.setValue("0");
             } else {
                 if (txtPorcentajeUtilidadModificar.getValue() == null) {
-                    txtVentaSugerida.setValue(txtCompraReal.getValue());
+                    txtVentaSugeridaModificar.setValue(txtCompraRealModificar.getValue());
                 } else {
                     if (txtPorcentajeUtilidadModificar.getValue().equals("0")) {
                         txtVentaSugeridaModificar.setValue(txtCompraRealModificar.getValue());
@@ -1876,6 +1986,51 @@ public class ProductoBean implements Serializable {
                         double compra_real = Double.parseDouble(txtCompraRealModificar.getValue().toString());
                         double utilidad = Double.parseDouble(txtPorcentajeUtilidadModificar.getValue().toString());
                         txtVentaSugeridaModificar.setValue(compra_real + ((compra_real * utilidad) / 100));
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void cambioTxtCompraNuevo() {
+
+        if (txtCompraNuevo.getValue() == null) {
+            txtCompraRealNuevo.setValue("0");
+        } else {
+            if (txtCompraNuevo.getValue().equals("0")) {
+                txtCompraRealNuevo.setValue("0");
+            } else {
+                if (txtDescuentoCompraNuevo.getValue() == null) {
+                    txtCompraRealNuevo.setValue(txtCompraNuevo.getValue());
+                } else {
+                    if (txtDescuentoCompraNuevo.getValue().equals("0")) {
+                        txtCompraRealNuevo.setValue(txtCompraNuevo.getValue());
+                    } else {
+                        double txt_compra = Double.parseDouble(txtCompraNuevo.getValue().toString());
+                        double txt_descuento = Double.parseDouble(txtDescuentoCompraNuevo.getValue().toString());
+                        double descuento = (txt_compra * txt_descuento) / 100;
+                        txtCompraRealNuevo.setValue(txt_compra - descuento);
+                    }
+                }
+            }
+        }
+
+        if (txtCompraRealNuevo.getValue() == null) {
+            txtVentaSugeridaNuevo.setValue("0");
+        } else {
+            if (txtCompraRealNuevo.getValue().equals("0")) {
+                txtVentaSugeridaNuevo.setValue("0");
+            } else {
+                if (txtPorcentajeUtilidadNuevo.getValue() == null) {
+                    txtVentaSugeridaNuevo.setValue(txtCompraRealNuevo.getValue());
+                } else {
+                    if (txtPorcentajeUtilidadNuevo.getValue().equals("0")) {
+                        txtVentaSugeridaNuevo.setValue(txtCompraRealNuevo.getValue());
+                    } else {
+                        double compra_real = Double.parseDouble(txtCompraRealNuevo.getValue().toString());
+                        double utilidad = Double.parseDouble(txtPorcentajeUtilidadNuevo.getValue().toString());
+                        txtVentaSugeridaNuevo.setValue(compra_real + ((compra_real * utilidad) / 100));
                     }
                 }
             }
@@ -1949,6 +2104,20 @@ public class ProductoBean implements Serializable {
                 double txt_venta_real = Double.parseDouble(txtVentaRealModificar.getValue().toString());
                 double txt_porcentaje_comision = Double.parseDouble(txtComisionModificar.getValue().toString());
                 txtPrecioComisionModificar.setValue((txt_venta_real * txt_porcentaje_comision) / 100);
+            }
+        }
+    }
+
+    public void cambioComisionNuevo() {
+
+        if (txtVentaRealNuevo.getValue() == null || txtComisionNuevo.getValue() == null) {
+        } else {
+            if (txtVentaRealNuevo.getValue().equals("0") || txtComisionNuevo.getValue().equals("0")) {
+                txtPrecioComisionNuevo.setValue("0");
+            } else {
+                double txt_venta_real = Double.parseDouble(txtVentaRealNuevo.getValue().toString());
+                double txt_porcentaje_comision = Double.parseDouble(txtComisionNuevo.getValue().toString());
+                txtPrecioComisionNuevo.setValue((txt_venta_real * txt_porcentaje_comision) / 100);
             }
         }
     }
@@ -2208,16 +2377,16 @@ public class ProductoBean implements Serializable {
                 } else {
                     String nombre = producto.getNombre().toUpperCase();
                     producto.setNombre(nombre);
-                    
+
                     String descripcion_paquete = producto.getPaquete().toUpperCase();
                     producto.setPaquete(descripcion_paquete);
-                    
+
                     ProductoController ProductoController = new ProductoController();
                     ProductoController.updateProducto(producto);
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.execute("PF('dialogModificarProducto').hide();");
                     context.execute("PF('parametrosTabla').filter();");
-                    
+
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operacion exitosa:", "El producto se actualizo correctamente."));
                     producto = new Producto();
 
@@ -2232,6 +2401,196 @@ public class ProductoBean implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogModificarProducto').hide();");
         context.execute("PF('parametrosTabla').filter();");
+
+    }
+
+    public void adicionarProductosStock() {
+
+        if (txtAdicionarProductos.getValue() == null) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('dialogAgregarProducto').show();");
+            context.execute("PF('parametrosTabla').filter();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El valor no puede quedar vacío."));
+        } else {
+            if (txtAdicionarProductos.getValue().toString().equals("0")) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('dialogAgregarProducto').show();");
+                context.execute("PF('parametrosTabla').filter();");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El valor no puede ser 0."));
+            } else {
+                //agrega
+
+                if (producto.getStockActUni() != null) {
+                    int adicionar = Integer.parseInt(txtAdicionarProductos.getValue().toString());
+                    producto.setStockActUni(producto.getStockActUni() + adicionar);
+                    ProductoController ProductoController = new ProductoController();
+                    ProductoController.updateProducto(producto);
+
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("PF('dialogAgregarProducto').hide();");
+                    context.execute("PF('parametrosTabla').filter();");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "Se actualizó el stock correctamente."));
+                    producto = new Producto();
+                } else {
+                    Long adicionar = Long.valueOf(txtAdicionarProductos.getValue().toString());
+                    producto.setStockActUni(adicionar);
+                    ProductoController ProductoController = new ProductoController();
+                    ProductoController.updateProducto(producto);
+
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("PF('dialogAgregarProducto').hide();");
+                    context.execute("PF('parametrosTabla').filter();");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "Se actualizó el stock correctamente."));
+                    producto = new Producto();
+                }
+
+            }
+        }
+
+    }
+
+    public void cancelarAdicionarProductosStock() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogAgregarProducto').hide();");
+        producto = new Producto();
+
+    }
+
+    public void verificarAgregarPaquetes() {
+
+        ProductoController ProductoController = new ProductoController();
+        int ret = ProductoController.listarProductosPorCodBarras(producto.getCodBarras());
+
+        if (ret >= 4) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('parametrosTabla').filter();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Este producto ya tiene demasiados paquetes."));
+            producto = new Producto();
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('dialogAgregarPaquetes').show();");
+            context.execute("PF('parametrosTabla').filter();");
+        }
+
+    }
+
+    public void agregarPaquetes() {
+
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (txtStockMinimoNuevo.getValue() == null || txtCantidadPaqueteNuevo.getValue() == null || txtDescripcionPaqueteNuevo.getValue().toString().equals("") || txtUnidadXPaqueteNuevo.getValue() == null || txtCompraNuevo.getValue() == null || txtDescuentoCompraNuevo.getValue() == null || txtPorcentajeUtilidadNuevo.getValue() == null || txtComisionNuevo.getValue() == null || txtVentaRealNuevo.getValue() == null) {
+            context.execute("PF('dialogAgregarPaquetes').show();");
+            context.execute("PF('parametrosTabla').filter();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos con * no pueden ser 0."));
+        } else {
+            if (txtStockMinimoNuevo.getValue().equals("0") || txtCantidadPaqueteNuevo.getValue().equals("0") || txtUnidadXPaqueteNuevo.getValue().equals("0") || txtCompraNuevo.getValue().equals("0") || txtPorcentajeUtilidadNuevo.getValue().equals("0") || txtVentaRealNuevo.getValue().equals("0")) {
+                context.execute("PF('dialogAgregarPaquetes').show();");
+                context.execute("PF('parametrosTabla').filter();");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El precio de venta real no puede ser menor al precio de venta sugerido"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos con * no pueden ser 0."));
+            } else {
+                double precio_sugerido = Double.parseDouble(txtVentaSugeridaNuevo.getValue().toString());
+                double precio_venta_real = Double.parseDouble(txtVentaRealNuevo.getValue().toString());
+
+                if (precio_venta_real < precio_sugerido) {
+                    context.execute("PF('dialogAgregarPaquetes').show();");
+                    context.execute("PF('parametrosTabla').filter();");
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El precio de venta real no puede ser menor al precio de venta sugerido"));
+                } else {
+                    try {
+                        Long cod_producto = 0L;
+                        Producto p = new Producto();
+                        ProductoController ProductoController = new ProductoController();
+
+                        p = ProductoController.obtenerUltimoRegistro();
+                        if (ProductoController.obtenerCuantosRegistrosHayEnProducto() == 0) {
+                            cod_producto = Long.parseLong("1");
+                        } else {
+                            Integer num = p.getCodigo().intValue() + 1;
+                            cod_producto = Long.parseLong(num.toString());
+                        }
+
+                        BigDecimal cod = new BigDecimal(cod_producto);
+                        producto.setCodigo(cod);
+
+                        Long stock_actual = Long.valueOf(Integer.parseInt(txtCantidadPaqueteNuevo.getValue().toString()));
+                        producto.setStockActUni(stock_actual);
+
+                        producto.setPaquete(txtDescripcionPaqueteNuevo.getValue().toString().toUpperCase());
+
+                        producto.setUnidadXPaquete(Long.parseLong(txtUnidadXPaqueteNuevo.getValue().toString()));
+
+                        BigDecimal precio_compra = new BigDecimal(txtCompraNuevo.getValue().toString());
+                        producto.setPrecioCompra(precio_compra);
+
+                        BigDecimal prcentaje_descuento = new BigDecimal(txtDescuentoCompraNuevo.getValue().toString());
+                        producto.setPorcentajeDescuento(prcentaje_descuento);
+
+                        BigDecimal precio_compra_real = new BigDecimal(txtCompraRealNuevo.getValue().toString());
+                        producto.setPrecioCompraReal(precio_compra_real);
+
+                        BigDecimal porcentaje_utilidad = new BigDecimal(txtPorcentajeUtilidadNuevo.getValue().toString());
+                        producto.setPorcentajeUtilidad(porcentaje_utilidad);
+
+                        BigDecimal venta_sugerida = new BigDecimal(precio_sugerido);
+                        producto.setVentaSugerida(venta_sugerida);
+
+                        BigDecimal venta_real = new BigDecimal(precio_venta_real);
+                        producto.setPrecioVentaReal(venta_real);
+
+                        Long stock_minimo = Long.valueOf(Integer.parseInt(txtStockMinimoNuevo.getValue().toString()));
+                        producto.setStockMinUni(stock_minimo);
+
+                        BigDecimal comision = new BigDecimal(txtPrecioComisionNuevo.getValue().toString());
+                        producto.setComision(comision);
+
+                        BigDecimal porcentaje_comision = new BigDecimal(txtComisionNuevo.getValue().toString());
+                        producto.setPorcentajeComision(porcentaje_comision);
+
+                        ProductoController.newProducto(producto);
+
+                        limpiarNuevoPaquete();
+
+                        context.execute("PF('dialogAgregarPaquetes').hide();");
+                        context.execute("PF('parametrosTabla').filter();");
+
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "El producto fue agregado exitosamente."));
+                    } catch (Exception ex) {
+                        Logger.getLogger(ProductoBean.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public void cancelarAgregarPaquetes() {
+
+       limpiarNuevoPaquete();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogAgregarPaquetes').hide();");
+        context.execute("PF('parametrosTabla').filter();");
+
+    }
+
+    public void limpiarNuevoPaquete() {
+
+        producto = new Producto();
+        productoViejo = null;
+
+        txtCantidadPaqueteNuevo.setValue(null);
+        txtDescripcionPaqueteNuevo.setValue(null);
+        txtUnidadXPaqueteNuevo.setValue(null);
+        txtCompraNuevo.setValue(null);
+        txtDescuentoCompraNuevo.setValue(null);
+        txtCompraRealNuevo.setValue(null);
+        txtPorcentajeUtilidadNuevo.setValue(null);
+        txtVentaSugeridaNuevo.setValue(null);
+        txtVentaRealNuevo.setValue(null);
+        txtComisionNuevo.setValue(null);
+        txtPrecioComisionNuevo.setValue(null);
+        txtStockMinimoNuevo.setValue(null);
 
     }
 

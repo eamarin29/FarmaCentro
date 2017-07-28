@@ -10,6 +10,8 @@
             <ui:define name="content">
                 <h3 class="titulo_gestion"> Gestión de Productos</h3>
 
+                <p:growl id="message" showDetail="true" />
+
                 <h:form id="frmNuevoProducto">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgNuevoProducto" widgetVar="dialogNuevoProducto" resizable="false"
@@ -457,7 +459,7 @@
                         </p:commandButton>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" actionListener="#{productoBean.cancelarModificar()}"
                                          update=":frmMostrarProductos, :frmModificarProducto"
-                                          >
+                                         >
                         </p:commandButton>
                     </p:dialog>
                 </h:form>      
@@ -491,25 +493,159 @@
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgAgregarProducto" widgetVar="dialogAgregarProducto" resizable="false" showEffect="explode"
                               hideEffect="explode" modal="true" header="Agregar producto">
+
+                        <p:messages id="messageAgregarProductos"  showDetail="true" autoUpdate="true" closable="true"  /> 
                         <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
 
                             <p:outputLabel value="Adicionar al Stock actual (U)"></p:outputLabel>
-                            <p:inputNumber style="width: 100%;" value="#{productoBean.adicionarProductos}">
+                            <p:inputNumber binding="#{productoBean.txtAdicionarProductos}" decimalPlaces="0" style="width: 100%;" >
                                 <f:convertNumber type="number" pattern="#0" />
                             </p:inputNumber>
-
 
                         </p:panelGrid>
                         <br></br>
                         <p:commandButton id="btnGuardarPoductoModificado" 
                                          action="#{productoBean.adicionarProductosStock()}" 
-                                         update="frmMostrarProductos:tablaProductos, message"
+                                         update="frmMostrarProductos:tablaProductos, frmAgregarProducto:messageAgregarProductos, frmAgregarProducto"
                                          title="Guardar cambios" icon="ui-icon-guardar2">
                         </p:commandButton>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar"
                                          action="#{productoBean.cancelarAdicionarProductosStock()}" 
-                                         update="frmMostrarProductos:tablaProductos, message">
+                                         update="frmMostrarProductos:tablaProductos, frmAgregarProducto:messageAgregarProductos, frmAgregarProducto">
                         </p:commandButton>
+                    </p:dialog>
+                </h:form>  
+
+                <h:form id="frmAgregarPaquetes">
+                    <p:dialog id="dgAgregarPaquetes" widgetVar="dialogAgregarPaquetes" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Agregar Paquetes">
+                   
+                        <p:messages id="messageAgregarPaquetes"  showDetail="true" autoUpdate="true" closable="true"  /> 
+
+                        <table>
+                            <tr>
+                                <td> <p:outputLabel value="Codigo de barras:"></p:outputLabel> </td> 
+                                <p:spacer></p:spacer>
+                                <td> <p:inputText disabled="true" value="#{productoBean.producto.codBarras}"></p:inputText>  </td> 
+
+                                <td> <p:outputLabel value="Nombre:"></p:outputLabel> </td> 
+                                <td>   <p:inputText disabled="true" style="text-transform:uppercase;"  value="#{productoBean.producto.nombre}"></p:inputText> </td> 
+                            </tr>
+                        </table>
+                        <br></br>
+                        <table> 
+                            <tr>
+                                <td width="50px;">
+                                </td>
+                                <td width="90px;">
+                                    Cant. paquete*
+                                </td> 
+                                <td width="90px;">
+                                    Descrip. paquete*
+                                </td>
+                                <td width="100px;">
+                                    Uni. paquete*
+                                </td>
+                                <td width="120px;">
+                                    $Compra*
+                                </td>
+                                <td width="90px;">
+                                    %Dto. Compra
+                                </td>
+                                <td width="120px;">
+                                    $Compra Real
+                                </td>
+                                <td width="90px;"> 
+                                    % de Utilidad*
+                                </td>
+                                <td width="120px;">
+                                    $Venta Sugerido
+                                </td>
+                                <td width="120px;">
+                                    $Venta Real*
+                                </td>
+                                <td width="100px;">
+                                    % de Comision
+                                </td>
+                                <td width="120px;">
+                                    $ de Comision
+                                </td>
+                                <td width="90px;">
+                                    Stock Mínimo*
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>  
+                                </td> 
+                                <td> <p:inputNumber  decimalPlaces="0" size="2" binding="#{productoBean.txtCantidadPaqueteNuevo}" placeholder="100"  >
+                                    </p:inputNumber>
+                                </td> 
+                                <td> <p:inputText binding="#{productoBean.txtDescripcionPaqueteNuevo}" style="width: 70px; text-transform:uppercase;" placeholder="UNI" ></p:inputText>
+                                </td> 
+                                <td> <p:outputLabel  value="X"  ></p:outputLabel> <p:inputNumber  decimalPlaces="0" size="3" binding="#{productoBean.txtUnidadXPaqueteNuevo}" placeholder="1"> </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }" decimalPlaces="2" size="6" binding="#{productoBean.txtCompraNuevo}" >
+                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCompraNuevo()}"
+                                                 update=":frmAgregarPaquetes:txtCompraRealNuevo, :frmAgregarPaquetes:txtVentaSugeridaNuevo"></p:ajax> 
+                                    </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }" decimalPlaces="2" size="2" binding="#{productoBean.txtDescuentoCompraNuevo}"  >
+                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCompraNuevo()}"
+                                                 update=":frmAgregarPaquetes:txtCompraRealNuevo, :frmAgregarPaquetes:txtVentaSugeridaNuevo"></p:ajax> 
+                                    </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber  id="txtCompraRealNuevo" decimalPlaces="2" size="6" binding="#{productoBean.txtCompraRealNuevo}" disabled="true" ></p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }" decimalPlaces="2" size="2" binding="#{productoBean.txtPorcentajeUtilidadNuevo}" >
+                                        <p:ajax  event="change" listener="#{productoBean.cambioTxtCompraNuevo()}"
+                                                 update=":frmAgregarPaquetes:txtCompraRealNuevo, :frmAgregarPaquetes:txtVentaSugeridaNuevo"></p:ajax> 
+                                    </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber id="txtVentaSugeridaNuevo" decimalPlaces="2" size="6" binding="#{productoBean.txtVentaSugeridaNuevo}" disabled="true" ></p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }" decimalPlaces="2" size="6" binding="#{productoBean.txtVentaRealNuevo}" >
+                                        <p:ajax  event="change" listener="#{productoBean.cambioComisionNuevo()}"
+                                                 update=":frmAgregarPaquetes:txtPrecioComisionNuevo"></p:ajax> 
+                                    </p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber onblur="{
+                                            onchange();
+                                            return false;
+                                        }" decimalPlaces="2" size="2" binding="#{productoBean.txtComisionNuevo}" >
+                                        <p:ajax  event="change" listener="#{productoBean.cambioComisionNuevo()}"
+                                                 update=":frmAgregarPaquetes:txtPrecioComisionNuevo"></p:ajax> 
+                                    </p:inputNumber>
+                                </td>
+                                <td> <p:inputNumber id="txtPrecioComisionNuevo" decimalPlaces="2" size="5" disabled="true" binding="#{productoBean.txtPrecioComisionNuevo}" ></p:inputNumber>
+                                </td> 
+                                <td> <p:inputNumber id="txtStockMinimoNuevo" decimalPlaces="0" size="2"  binding="#{productoBean.txtStockMinimoNuevo}" ></p:inputNumber>
+                                </td> 
+                            </tr>
+                        </table>
+
+                        <br></br>
+                        <p:commandButton id="btnGuardarPaquete" 
+                                         action="#{productoBean.agregarPaquetes()}" 
+                                         update="frmMostrarProductos:tablaProductos, frmAgregarPaquetes:messageAgregarPaquetes"
+                                         title="Guardar cambios" icon="ui-icon-guardar2">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar"
+                                         action="#{productoBean.cancelarAgregarPaquetes()}" 
+                                         update="frmMostrarProductos:tablaProductos, frmAgregarPaquetes:messageAgregarPaquetes">
+                        </p:commandButton>
+
                     </p:dialog>
                 </h:form>  
 
@@ -517,7 +653,7 @@
 
                 <h:form id="frmMostrarProductos">
                     <p:dataTable id="tablaProductos" var="pr" value="#{productoBean.listaProductos}" rows="3"
-                                 paginator="true" rowsPerPageTemplate="3,5,10,20,40,80,160,320"
+                                 paginator="true" rowsPerPageTemplate="5,10,20,40,80,160,320"
                                  emptyMessage="No hay Productos registrados hasta el momento."
                                  widgetVar="parametrosTabla" paginatorPosition="bottom"
                                  filteredValue="#{productoBean.filtroProductos}" style="width: 100%;"
@@ -581,19 +717,24 @@
                         <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockMinUni}" filterMatchMode="contains" headerText="Stock mínimo (U)">
                             <h:outputText value="#{pr.stockMinUni}"></h:outputText>
                         </p:column>
-                        <p:column headerText="Acciones" style="width: 200px;">
+                        <p:column headerText="Acciones" style="width: 260px;">
                             <p:commandButton title="Modificar registro" oncomplete="PF('dialogModificarProducto').show();"
                                              update=":frmModificarProducto" icon="ui-icon-modificar" >
                                 <f:setPropertyActionListener target="#{productoBean.producto}" value="#{pr}">
                                 </f:setPropertyActionListener>     
                             </p:commandButton>
-                            <p:commandButton  title="Eliminar registro" icon="ui-icon-delete2" 
+                            <p:commandButton  title="Eliminar Registro" icon="ui-icon-delete2" 
                                               oncomplete="PF('dialogEliminarProducto').show();" update=":frmEliminarProducto">  
                                 <f:setPropertyActionListener target="#{productoBean.producto}" value="#{pr}">
                                 </f:setPropertyActionListener> 
                             </p:commandButton> 
-                            <p:commandButton  title="Agregar más productos" icon="ui-icon-agregar" 
+                            <p:commandButton  title="Agregar más Productos" icon="ui-icon-agregar" 
                                               oncomplete="PF('dialogAgregarProducto').show();" update=":frmAgregarProducto">  
+                                <f:setPropertyActionListener target="#{productoBean.producto}" value="#{pr}">
+                                </f:setPropertyActionListener> 
+                            </p:commandButton> 
+                            <p:commandButton  title="Agregar más Paquetes" icon="ui-icon-carrito" 
+                                              action="#{productoBean.verificarAgregarPaquetes()}" update=":frmAgregarPaquetes, message">  
                                 <f:setPropertyActionListener target="#{productoBean.producto}" value="#{pr}">
                                 </f:setPropertyActionListener> 
                             </p:commandButton> 

@@ -277,6 +277,9 @@ otros estilos paginas
     background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/agregar.png") !important;
 }
 
+.ui-icon-carrito{
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/carrito.png") !important;
+}
 
 .tituloCambiarContrasena{
 
