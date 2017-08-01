@@ -2459,7 +2459,7 @@ public class ProductoBean implements Serializable {
     public void verificarAgregarPaquetes() {
 
         ProductoController ProductoController = new ProductoController();
-        int ret = ProductoController.listarProductosPorCodBarras(producto.getCodBarras());
+        int ret = ProductoController.filasProductosPorCodBarras(producto.getCodBarras());
 
         if (ret >= 4) {
             RequestContext context = RequestContext.getCurrentInstance();

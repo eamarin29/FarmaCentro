@@ -37,6 +37,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
 import Util.HibernateUtil;
+import org.primefaces.component.inputnumber.InputNumber;
 
 @ManagedBean
 @ViewScoped
@@ -80,6 +81,19 @@ public class FacturaBean implements Serializable {
     private String precioRealText;
     private String totalServicio;
 
+    private Producto pSeleccionado;
+    private List<Producto> listaProductosBuscar;
+
+    private InputNumber cantidad;
+    private List<Producto> listaProductosSecundario1;
+
+    private Producto productoSecundario1;
+    private int unidades_faltantes1;
+
+    private List<Producto> listaActualizarStock = new ArrayList();
+
+    ;
+
     public FacturaBean() {
     }
 
@@ -96,12 +110,66 @@ public class FacturaBean implements Serializable {
 
         this.codigoBarras = "";
 
+    }
 
+    public List<Producto> getListaActualizarStock() {
+        return listaActualizarStock;
+    }
 
+    public void setListaActualizarStock(List<Producto> listaActualizarStock) {
+        this.listaActualizarStock = listaActualizarStock;
+    }
+
+    public int getUnidades_faltantes1() {
+        return unidades_faltantes1;
+    }
+
+    public void setUnidades_faltantes1(int unidades_faltantes1) {
+        this.unidades_faltantes1 = unidades_faltantes1;
+    }
+
+    public Producto getProductoSecundario1() {
+        return productoSecundario1;
+    }
+
+    public void setProductoSecundario1(Producto productoSecundario1) {
+        this.productoSecundario1 = productoSecundario1;
+    }
+
+    public List<Producto> getListaProductosSecundario1() {
+        return listaProductosSecundario1;
+    }
+
+    public void setListaProductosSecundario1(List<Producto> listaProductosSecundario1) {
+        this.listaProductosSecundario1 = listaProductosSecundario1;
+    }
+
+    public InputNumber getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(InputNumber cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public List<Producto> getListaProductosBuscar() {
+        return listaProductosBuscar;
+    }
+
+    public void setListaProductosBuscar(List<Producto> listaProductosBuscar) {
+        this.listaProductosBuscar = listaProductosBuscar;
     }
 
     public String getTotalServicio() {
         return totalServicio;
+    }
+
+    public Producto getpSeleccionado() {
+        return pSeleccionado;
+    }
+
+    public void setpSeleccionado(Producto pSeleccionado) {
+        this.pSeleccionado = pSeleccionado;
     }
 
     public void setTotalServicio(String totalServicio) {
@@ -331,34 +399,181 @@ public class FacturaBean implements Serializable {
 
     }
 
-    public void pedirCantidadProductoSeleccionado(String codBarraProductoSeleccionado) {
+    public void mostrarDialogPedirCantidadProductoPorText() {
 
-        codBarrasProductoSeleccionado = codBarraProductoSeleccionado;
-        if (verificarDetalleFactura(codBarrasProductoSeleccionado) == true) {
-
-                try {
-                    //se puede agregar
-                    this.codBarrasProductoSeleccionado = codBarraProductoSeleccionado;
-                    ProductoController productoController = new ProductoController();
-                //    this.productoSeleccionado = productoController.obtenerProductoPorCodigoBarras(this.codBarrasProductoSeleccionado);
-                    if (productoSeleccionado == null) {
-
-                    } else {
-                        //compruebo de que el producto seleccionado tenga mas de 0 en el stock actula
-                        precioReal = productoSeleccionado.getPrecioVentaReal().toString();
-                        setCantidadProductoDigitado("1");
-                        RequestContext context = RequestContext.getCurrentInstance();
-                        context.execute("PF('dialogPedirCantidadProductos').show();");
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
-           
-
+        if (codigoBarras.equals("")) {
+            //esta vacio el text 
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El producto ya se encuentra en la factura, para agregar más producto editele su cantidad."));
+            ProductoController ProductoController = new ProductoController();
+
+            List<Producto> lista = null;
+
+            lista = ProductoController.listaDeProductosPorCodBarras(codigoBarras);
+
+            if (lista.size() > 0) {
+
+                listaProductosBuscar = lista;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('dialogMostrarTodosProdutos').show();");
+
+            } else {
+
+            }
         }
 
+    }
+
+    public void verificarExistenciaDetalle() {
+
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (verificarDetalleFactura(productoSeleccionado.getCodigo())) {
+            //hagale 
+            context.execute("PF('dialogMostrarTodosProdutos').show();");
+            context.execute("PF('dialogPedirCantidadProductoSeleccionado').show();");
+
+        } else {
+            context.execute("PF('dialogMostrarTodosProdutos').show();");
+            context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Este producto ya se encuentra en la factura."));
+
+        }
+
+    }
+
+    public void seleccionarCantidad() {
+
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (cantidad.getValue() == null) {
+            context.execute("PF('dialogMostrarTodosProdutos').show();");
+            context.execute("PF('dialogPedirCantidadProductoSeleccionado').show();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "La cantidad no puede ser vacía ó 0."));
+        } else {
+            if (cantidad.getValue().equals("0")) {
+                context.execute("PF('dialogMostrarTodosProdutos').show();");
+                context.execute("PF('dialogPedirCantidadProductoSeleccionado').show();");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "La cantidad no puede ser vacía ó 0."));
+            } else {
+                int cantidad_ingresada = Integer.parseInt(this.cantidad.getValue().toString());
+                int unidades_a_vender = cantidad_ingresada * this.productoSeleccionado.getUnidadXPaquete().intValue();
+                int cantidades_total_producto = 0;
+
+                for (int i = 0; i < listaProductosBuscar.size(); i++) {
+                    cantidades_total_producto += listaProductosBuscar.get(i).getStockActUni() * listaProductosBuscar.get(i).getUnidadXPaquete();
+                }
+
+                if (cantidad_ingresada > this.productoSeleccionado.getStockActUni()) {
+
+                    if (unidades_a_vender > cantidades_total_producto) {
+                        context.execute("PF('dialogMostrarTodosProdutos').show();");
+                        context.execute("PF('dialogPedirCantidadProductoSeleccionado').show();");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "No hay unidades suficientes para la cantidad requerida."));
+                    } else {
+
+                        if (cantidad_ingresada > productoSeleccionado.getStockActUni()) {
+                            int paquetes_que_faltan = cantidad_ingresada - productoSeleccionado.getStockActUni().intValue();
+                            if (paquetes_que_faltan > 0) {
+                                //faltan unidades
+
+                                this.unidades_faltantes1 = paquetes_que_faltan * this.productoSeleccionado.getUnidadXPaquete().intValue();
+                                listaProductosSecundario1 = listaProductosBuscar;
+                                listaProductosSecundario1.remove(productoSeleccionado);
+
+                                context.execute("PF('dialogMostrarTodosProdutos').show();");
+                                context.execute("PF('dialogPedirCantidadProductoSeleccionado').show();");
+                                context.execute("PF('dialogMostrarProductosSecundario1').show();");
+
+                            }
+                        }
+                    }
+
+                } else {
+                    //vende el producto normalmente
+                    double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                    this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+
+                    productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+
+                    this.listaActualizarStock.add(productoSeleccionado);
+
+                    context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                    context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+                }
+            }
+        }
+
+    }
+
+    public void seleccionarProductoSecundario1() {
+
+        ProductoController ProductoController = new ProductoController();
+        int unidades_producto_secundario_1 = this.productoSecundario1.getStockActUni().intValue() * productoSecundario1.getUnidadXPaquete().intValue();
+
+        if (unidades_producto_secundario_1 >= this.unidades_faltantes1) {
+            //con esta basta
+            double paquete_restante = (unidades_producto_secundario_1 - this.unidades_faltantes1) / this.productoSecundario1.getUnidadXPaquete().doubleValue();
+
+            String str = String.valueOf(paquete_restante);
+
+            int intNumber = Integer.parseInt(str.substring(0, str.indexOf('.')));
+            float decNumbert = Float.parseFloat(str.substring(str.indexOf('.')));
+
+//            System.out.println(intNumber); //paquetes restantes
+//            System.out.println(decNumbert); //*  productoSecundario1.getUnidadXPaquete().intValue() = unidades
+            productoSeleccionado.setStockActUni(0L);
+            this.listaActualizarStock.add(productoSeleccionado);
+
+            productoSecundario1.setStockActUni(Long.valueOf(intNumber));
+            this.listaActualizarStock.add(productoSecundario1);
+
+            //aumento unidades donde el producto sean unidades
+            Double unidades_aumentar = Double.parseDouble(String.valueOf(decNumbert)) * productoSecundario1.getUnidadXPaquete();
+            Producto p = new Producto();
+
+            p = ProductoController.actualizarProductosDondeSeaUnidades(productoSeleccionado.getCodBarras());
+
+            if (p != null) {
+                p.setStockActUni(p.getStockActUni() + unidades_aumentar.longValue());
+                this.listaActualizarStock.add(p);
+            } else {
+
+            }
+
+        } else {
+            //pedir el 2 producto
+
+
+        }
+
+    }
+
+    public void pedirCantidadProductoSeleccionado(String codBarraProductoSeleccionado) {
+
+//        codBarrasProductoSeleccionado = codBarraProductoSeleccionado;
+//        if (verificarDetalleFactura(codBarrasProductoSeleccionado) == true) {
+//
+//            try {
+//                //se puede agregar
+//                this.codBarrasProductoSeleccionado = codBarraProductoSeleccionado;
+//                ProductoController productoController = new ProductoController();
+//                //    this.productoSeleccionado = productoController.obtenerProductoPorCodigoBarras(this.codBarrasProductoSeleccionado);
+//                if (productoSeleccionado == null) {
+//
+//                } else {
+//                    //compruebo de que el producto seleccionado tenga mas de 0 en el stock actula
+//                    precioReal = productoSeleccionado.getPrecioVentaReal().toString();
+//                    setCantidadProductoDigitado("1");
+//                    RequestContext context = RequestContext.getCurrentInstance();
+//                    context.execute("PF('dialogPedirCantidadProductos').show();");
+//                }
+//            } catch (Exception ex) {
+//                Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//
+//        } else {
+//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El producto ya se encuentra en la factura, para agregar más producto editele su cantidad."));
+//        }
     }
 
     public void agregarDatosProductoAfactura() {
@@ -421,14 +636,13 @@ public class FacturaBean implements Serializable {
                             ProductoController contro = new ProductoController();
 
                             //obtener datos del producto seleccionado
-                          //  this.producto = contro.obtenerProductoPorCodigoBarras(this.codBarrasProductoSeleccionado);
-
+                            //  this.producto = contro.obtenerProductoPorCodigoBarras(this.codBarrasProductoSeleccionado);
                             //consulto si el stock actual es mayor a la cantidad ingresada
                             int cantidadProdutoDigitado = Integer.parseInt(this.cantidadProductoDigitado);
                             if (cantidadProdutoDigitado <= this.producto.getStockActUni().intValue()) {
                                 //se puede registrar
                                 double ventaTotalDetalle = Integer.parseInt(this.cantidadProductoDigitado) * Double.parseDouble(this.precioReal);
-                              //  this.listaDetalleFactura.add(new DetalleFactura(null, null, producto, null, new BigDecimal(this.cantidadProductoDigitado), new BigDecimal(ventaTotalDetalle), new BigDecimal(this.precioReal)));
+                                //  this.listaDetalleFactura.add(new DetalleFactura(null, null, producto, null, new BigDecimal(this.cantidadProductoDigitado), new BigDecimal(ventaTotalDetalle), new BigDecimal(this.precioReal)));
 
                                 this.tr.commit();
 
@@ -466,55 +680,6 @@ public class FacturaBean implements Serializable {
                     this.session.close();
                 }
             }
-        }
-
-    }
-
-    public void mostrarDialogPedirCantidadProductoPorText() {
-
-        this.cantidadProductoDigitadoxText = "1";
-
-        if (codigoBarras.equals("")) {
-            //esta vacio el text 
-        } else {
-
-            //consulto si esta repetido 
-            if (verificarDetalleFactura(codigoBarras) == true) {
-                try {
-                    //se puede agregar
-                    //consultelo
-                    ProductoController contro = new ProductoController();
-
-                    //obtener datos del cliente seleccionado
-                //    this.producto = contro.obtenerProductoPorCodigoBarras(codigoBarras);
-
-                    if (this.producto == null) {
-
-                    } else {
-
-                        if (this.producto.getCodBarras().equals("1")) {
-                            //abrimos el dialog de servicios
-
-                            RequestContext context = RequestContext.getCurrentInstance();
-                            context.execute("PF('dialogServicio').show();");
-
-                        } else {
-                            //abrimos el dialog normal
-                            this.precioRealText = this.producto.getPrecioVentaReal().toString();
-                            RequestContext context = RequestContext.getCurrentInstance();
-                            context.execute("PF('dialogPedirCantidadProductosxText').show();");
-                        }
-
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-            } else {
-                //no se puede agregar
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El producto ya se encuentra en la factura, para agregar más producto editele su cantidad."));
-            }
-
         }
 
     }
@@ -568,7 +733,7 @@ public class FacturaBean implements Serializable {
                             //se puede agregar
                             //obtener datos del producto seleccionado
                             double ventaTotalDetalle = Integer.parseInt(this.cantidadProductoDigitadoxText) * Double.parseDouble(this.precioRealText);
-                           // this.listaDetalleFactura.add(new DetalleFactura(null, producto, null, null, new BigDecimal(this.cantidadProductoDigitadoxText), new BigDecimal(ventaTotalDetalle), new BigDecimal(this.precioRealText)));
+                            // this.listaDetalleFactura.add(new DetalleFactura(null, producto, null, null, new BigDecimal(this.cantidadProductoDigitadoxText), new BigDecimal(ventaTotalDetalle), new BigDecimal(this.precioRealText)));
 
                             //cerramos el dialog
                             RequestContext context = RequestContext.getCurrentInstance();
@@ -608,17 +773,13 @@ public class FacturaBean implements Serializable {
         factura.setTotalVenta(new BigDecimal(totalPagarFactura));
     }
 
-    public boolean verificarDetalleFactura(String codBarras) {
-        //comprobar si en la lista de detalles existe ese mismo producto, si existe, sacar mensaje de alerta: 
-        //que diga ya existe el mismo producto en la factura, editele la cantidad
-
-        //verificar si en la lista existe el codigo de barras de el producto a agregar
-        //recorrer la lista
+    public boolean verificarDetalleFactura(BigDecimal codigo) {
+        //true = no existe el producto en el detalle
         int tamañoLista = listaDetalleFactura.size();
         int error = 0;
 
         for (int i = 0; i < tamañoLista; i++) {
-            if (listaDetalleFactura.get(i).getProducto().getCodBarras().equals(codBarras)) {
+            if (listaDetalleFactura.get(i).getProducto().getCodigo() == codigo) {
                 error++;
             }
         }
@@ -677,7 +838,7 @@ public class FacturaBean implements Serializable {
 
                     Producto productoModificarCant = new Producto();
                     ProductoController pDao = new ProductoController();
-                 //   productoModificarCant = pDao.obtenerProductoPorCodigoBarras(this.codBarrasProductoModificarCantidad);
+                    //   productoModificarCant = pDao.obtenerProductoPorCodigoBarras(this.codBarrasProductoModificarCantidad);
 
                     int CantidadAModificar = Integer.parseInt(this.CantidadProductoModificar);
                     if (CantidadAModificar <= productoModificarCant.getStockActUni().intValue()) {
@@ -689,9 +850,8 @@ public class FacturaBean implements Serializable {
                                 //eliminelo de la lista
                                 listaDetalleFactura.get(i).setCantidad(new BigDecimal(this.CantidadProductoModificar));
 
-                              //  double ventaTotalDetalle = Integer.parseInt(this.CantidadProductoModificar) * listaDetalleFactura.get(i).getPreci.doubleValue();
-                              //  listaDetalleFactura.get(i).setTotalDetalle(new BigDecimal(ventaTotalDetalle));
-
+                                //  double ventaTotalDetalle = Integer.parseInt(this.CantidadProductoModificar) * listaDetalleFactura.get(i).getPreci.doubleValue();
+                                //  listaDetalleFactura.get(i).setTotalDetalle(new BigDecimal(ventaTotalDetalle));
                                 RequestContext context = RequestContext.getCurrentInstance();
                                 context.execute("PF('dialogModificarCantidad').hide();");
                                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "La cantidad se ha modificado con éxito."));
@@ -856,7 +1016,7 @@ public class FacturaBean implements Serializable {
                             detalle.setProducto(listaDetalleFactura.get(i).getProducto());
                             detalle.setCantidad(listaDetalleFactura.get(i).getCantidad());
                             detalle.setTotalDetalle(listaDetalleFactura.get(i).getTotalDetalle());
-                          //  detalle.setPrecioRealUnidad(new BigDecimal(precioGananciaEmpresa));
+                            //  detalle.setPrecioRealUnidad(new BigDecimal(precioGananciaEmpresa));
 
                             Date date = new Date();
                             DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -876,13 +1036,13 @@ public class FacturaBean implements Serializable {
                             detalle.setProducto(listaDetalleFactura.get(i).getProducto());
                             detalle.setCantidad(listaDetalleFactura.get(i).getCantidad());
                             detalle.setTotalDetalle(listaDetalleFactura.get(i).getTotalDetalle());
-                          //  detalle.setPrecioRealUnidad(listaDetalleFactura.get(i).getPrecioRealUni);
+                            //  detalle.setPrecioRealUnidad(listaDetalleFactura.get(i).getPrecioRealUni);
 
                             facturaController.newDetalle(detalle);
 
                             //actualizar stock del producto
                             ProductoController productoController = new ProductoController();
-                       //     productoController.actualizarStockActual(listaDetalleFactura.get(i).getProducto().getCodBarras(), listaDetalleFactura.get(i).getCantidad().longValue());
+                            //     productoController.actualizarStockActual(listaDetalleFactura.get(i).getProducto().getCodBarras(), listaDetalleFactura.get(i).getCantidad().longValue());
                         }
 
                     }

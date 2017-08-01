@@ -5,10 +5,129 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-
     <body>
         <ui:composition template="./../../Plantilla/Plantilla.xhtml">
             <ui:define name="content">
+
+                <!-- DIALOGO MOSTRAR TODOS PRODUCTOS -->   
+                <h:form id="frmMostrarTodosProductos">
+                    <p:dialog id="dlgMostrarTodosProdutos" widgetVar="dialogMostrarTodosProdutos" resizable="false"
+                              showEffect="explode" hideEffect="explode" modal="true" header="Seleccionar un producto">
+                        <p:messages id="messageMostrarTodosProdutos"  showDetail="true" autoUpdate="true" closable="true"  />
+                        <p:dataTable id="tablaProductos" var="pr" value="#{facturaBean.listaProductosBuscar}" rows="4"
+                                     paginator="true" rowsPerPageTemplate="2,4" resizableColumns="false"
+                                     emptyMessage="No hay Productos registrados hasta el momento."
+                                     widgetVar="parametrosTabla" paginatorPosition="bottom"
+                                     filteredValue="#{productoBean.filtroProductos}" style="width: 100%;"
+                                     scrollable="true" scrollHeight="100%" >
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar en cualquier columna: " />
+                                    <p:spacer></p:spacer>
+                                    <p:inputText id="globalFilter" onkeyup="PF('parametrosTabla').filter()" style="width:150px" placeholder="Buscar..."/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column style="text-align: center;  width: 200px;"  filterBy="#{pr.codBarras}" filterMatchMode="exact" headerText="Código de Barras:">
+                                <h:outputText value="#{pr.codBarras}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 250px;" filterBy="#{pr.nombre}" filterMatchMode="contains"  headerText="Descripción del Producto:">
+                                <h:outputText value="#{pr.nombre}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockActUni}" filterMatchMode="contains" headerText="Stock actual (U)">
+                                <h:outputText value="#{pr.stockActUni}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 130px;" filterBy="#{pr.paquete}" filterMatchMode="contains"  headerText="Descripción Paquete">
+                                <h:outputText value="#{pr.paquete}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{pr.unidadXPaquete}" filterMatchMode="contains" headerText="Unidades x paquete">
+                                <h:outputText value="#{pr.unidadXPaquete}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{pr.precioVentaReal}" filterMatchMode="contains" headerText="Precio Venta Real">
+                                <h:outputText value="#{pr.precioVentaReal}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </h:outputText>    
+                            </p:column>
+                            <p:column headerText="Acciones" style="width: 260px;">
+                                <p:commandButton action="#{facturaBean.verificarExistenciaDetalle()}" 
+                                                 title="Seleccionar" icon="ui-icon-yes"
+                                                 update=":frmPedirCantidadProductoSeleccionado:dlgPedirCantidadProductoSeleccionado, :frmMostrarTodosProductos:dlgMostrarTodosProdutos, :frmMostrarTodosProductos:messageMostrarTodosProdutos" >
+                                    <f:setPropertyActionListener target="#{facturaBean.productoSeleccionado}" value="#{pr}">
+                                    </f:setPropertyActionListener> 
+                                </p:commandButton>
+
+                            </p:column> 
+                        </p:dataTable>  
+                    </p:dialog>  
+                </h:form>   
+
+                <!-- DIALOGO PEDIR CANTIDAD PRODUCTO SELECCIONADO -->   
+                <h:form id="frmPedirCantidadProductoSeleccionado">
+                    <p:dialog id="dlgPedirCantidadProductoSeleccionado" widgetVar="dialogPedirCantidadProductoSeleccionado" resizable="false"
+                              showEffect="explode" hideEffect="explode" modal="true" header="Cantidad">
+                        <p:messages id="messagePedirCantidadProductoSeleccionado"  showDetail="true" autoUpdate="true" closable="true"  />
+
+                        Cantidad: 
+                        <p:inputNumber decimalPlaces="0" binding="#{facturaBean.cantidad}" ></p:inputNumber>
+
+                        <p:commandButton title="Seleccionar" icon="ui-icon-yes" 
+                                         actionListener="#{facturaBean.seleccionarCantidad()}"
+                                         update=":frmMostrarTodosProductos:dlgMostrarTodosProdutos, :frmPedirCantidadProductoSeleccionado:dlgPedirCantidadProductoSeleccionado, :frmMostrarProductosSecundario1:dlgMostrarProductosSecundario1, :frmFactura:tablaProductosFactura, :frmFactura:panelGridTotalPagarFactura">    
+                        </p:commandButton> 
+
+                    </p:dialog>  
+                </h:form> 
+
+                <!-- DIALOGO MOSTRAR PRODUCTOS SECUNDARIOS -->   
+                <h:form id="frmMostrarProductosSecundario1">
+                    <p:dialog id="dlgMostrarProductosSecundario1" widgetVar="dialogMostrarProductosSecundario1" resizable="false"
+                              showEffect="explode" hideEffect="explode" modal="true" header="Seleccionar otro producto">
+                        <p:messages id="messageMostrarProductosSecundario1"  showDetail="true" autoUpdate="true" closable="true"  />
+
+                        <p:dataTable id="tablaProductos" var="pr" value="#{facturaBean.listaProductosSecundario1}" rows="4"
+                                     paginator="true" rowsPerPageTemplate="2,4" resizableColumns="false"
+                                     emptyMessage="No hay Productos registrados hasta el momento."
+                                     widgetVar="parametrosTabla" paginatorPosition="bottom"
+                                     filteredValue="#{productoBean.filtroProductos}" style="width: 100%;"
+                                     scrollable="true"  >
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar en cualquier columna: " />
+                                    <p:spacer></p:spacer>
+                                    <p:inputText id="globalFilter" onkeyup="PF('parametrosTabla').filter()" style="width:150px" placeholder="Buscar..."/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column style="text-align: center;  width: 200px;"  filterBy="#{pr.codBarras}" filterMatchMode="exact" headerText="Código de Barras:">
+                                <h:outputText value="#{pr.codBarras}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 250px;" filterBy="#{pr.nombre}" filterMatchMode="contains"  headerText="Descripción del Producto:">
+                                <h:outputText value="#{pr.nombre}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockActUni}" filterMatchMode="contains" headerText="Stock actual (U)">
+                                <h:outputText value="#{pr.stockActUni}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 130px;" filterBy="#{pr.paquete}" filterMatchMode="contains"  headerText="Descripción Paquete">
+                                <h:outputText value="#{pr.paquete}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{pr.unidadXPaquete}" filterMatchMode="contains" headerText="Unidades x paquete">
+                                <h:outputText value="#{pr.unidadXPaquete}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{pr.precioVentaReal}" filterMatchMode="contains" headerText="Precio Venta Real">
+                                <h:outputText value="#{pr.precioVentaReal}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </h:outputText>    
+                            </p:column>
+                            <p:column headerText="Acciones" style="width: 260px;">
+                                <p:commandButton title="Seleccionar" icon="ui-icon-yes" 
+                                                 action="#{facturaBean.seleccionarProductoSecundario1()}"
+                                                 update=":frmMostrarTodosProductos:dlgMostrarTodosProdutos, :frmPedirCantidadProductoSeleccionado:dlgPedirCantidadProductoSeleccionado, :frmMostrarProductosSecundario1:dlgMostrarProductosSecundario1">    
+                                    <f:setPropertyActionListener target="#{facturaBean.productoSecundario1}" value="#{pr}">
+                                    </f:setPropertyActionListener> 
+                                </p:commandButton>
+                            </p:column> 
+                        </p:dataTable>  
+                    </p:dialog>  
+                </h:form> 
+
 
                 <h:form id="frmFactura">  
                     <p:growl id="message" showDetail="true" />  
@@ -150,6 +269,7 @@
                         </p:commandButton>
                     </p:dialog>  
 
+
                     <!-- PANEL FACTURA -->
                     <p:panel header="Factura de venta" style="width: 1200px; margin: 0 auto; text-align: center; font-size: 20px;"> 
                         <!-- HEADER FACTURA-DATOS DEL CLIENTE -->
@@ -209,7 +329,7 @@
                                                      return false;
                                                  }" >
                                 <p:ajax  event="change" listener="#{facturaBean.mostrarDialogPedirCantidadProductoPorText()}"
-                                         update="txtPrecioVentaProductoSeleccionadoText, txtCantidadProductoVenderxText"></p:ajax>  
+                                         update=":frmMostrarTodosProductos:dlgMostrarTodosProdutos"></p:ajax>  
                             </p:inputText>
                             <p:commandButton title="Buscar producto" icon="buscar" oncomplete="PF('dialogBuscarProducto').show();"
                                              update="">  
@@ -230,7 +350,7 @@
                                 <h:outputText value="#{item.cantidad}"></h:outputText>
                             </p:column>
                             <p:column headerText="Precio Unidad">
-                                <h:outputText value="#{item.precioRealUnidad}">
+                                <h:outputText value="#{item.producto.precioVentaReal}">
                                     <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
                                 </h:outputText>
                             </p:column>

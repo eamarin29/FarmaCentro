@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ProductoController {
 
@@ -34,7 +35,7 @@ public class ProductoController {
         return lista;
     }
 
-    public int listarProductosPorCodBarras(String codBarras) {
+    public int filasProductosPorCodBarras(String codBarras) {
 
         int ret = 0;
 
@@ -47,17 +48,37 @@ public class ProductoController {
             consulta.setString(1, codBarras);
             ResultSet rs = consulta.executeQuery();
 
-            while (rs.next()) {  
+            while (rs.next()) {
                 ret++;
             }
-                conn.close();
-                rs.close();
+            conn.close();
+            rs.close();
 
         } catch (SQLException ex) {
             Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return ret;
+    }
+
+    public List<Producto> listaDeProductosPorCodBarras(String codBarras) {
+
+        List<Producto> lista = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Producto WHERE codBarras=:codBarras AND stockActUni>0";
+        Query q = session.createQuery(hql);
+        q.setParameter("codBarras", codBarras);
+
+        try {
+            lista = q.list();
+            t.commit();
+            session.close();
+        } catch (HibernateException e) {
+            t.rollback();
+        }
+        return lista;
+
     }
 
     public void newProducto(Producto producto) {
@@ -208,5 +229,31 @@ public class ProductoController {
         return p;
 
     }
+
+    public Producto actualizarProductosDondeSeaUnidades(String codBarras) {
+
+        Session session = null;
+        Producto ret = new Producto();
+        ret = null;
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String hql = "FROM Producto WHERE codBarras=:codBarras AND unidadXPaquete=1";
+            Query q = session.createQuery(hql);
+            q.setParameter("codBarras", codBarras);
+            session.getTransaction().commit();
+            ret = (Producto) q.uniqueResult();
+            return ret;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
+    }
+
 
 }
