@@ -8,14 +8,11 @@ import Controller.ClienteController;
 import Controller.ComisionController;
 import Controller.DetalleFacturaController;
 import Controller.FacturaController;
-import Controller.ParametrosController;
 import Controller.ProductoController;
-import Controller.VendedorController;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -32,8 +29,6 @@ import Model.Comision;
 import Model.DetalleFactura;
 import Model.Factura;
 import Model.Producto;
-import Model.Tipo;
-import Model.Usuario;
 import Model.Vendedor;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -87,10 +82,18 @@ public class FacturaBean implements Serializable {
     private List<Producto> listaProductosBuscar;
 
     private InputNumber cantidad;
+
     private List<Producto> listaProductosSecundario1;
+    private List<Producto> listaProductosSecundario2;
+    private List<Producto> listaProductosSecundario3;
 
     private Producto productoSecundario1;
+    private Producto productoSecundario2;
+    private Producto productoSecundario3;
+
     private int unidades_faltantes1;
+    private int unidades_faltantes2;
+    private int unidades_faltantes3;
 
     private List<Producto> listaActualizarStock = new ArrayList();
 
@@ -113,6 +116,54 @@ public class FacturaBean implements Serializable {
         this.codigoBarras = "";
 
         limpiarFactura();
+    }
+
+    public List<Producto> getListaProductosSecundario3() {
+        return listaProductosSecundario3;
+    }
+
+    public void setListaProductosSecundario3(List<Producto> listaProductosSecundario3) {
+        this.listaProductosSecundario3 = listaProductosSecundario3;
+    }
+
+    public Producto getProductoSecundario3() {
+        return productoSecundario3;
+    }
+
+    public void setProductoSecundario3(Producto productoSecundario3) {
+        this.productoSecundario3 = productoSecundario3;
+    }
+
+    public int getUnidades_faltantes3() {
+        return unidades_faltantes3;
+    }
+
+    public void setUnidades_faltantes3(int unidades_faltantes3) {
+        this.unidades_faltantes3 = unidades_faltantes3;
+    }
+
+    public List<Producto> getListaProductosSecundario2() {
+        return listaProductosSecundario2;
+    }
+
+    public void setListaProductosSecundario2(List<Producto> listaProductosSecundario2) {
+        this.listaProductosSecundario2 = listaProductosSecundario2;
+    }
+
+    public int getUnidades_faltantes2() {
+        return unidades_faltantes2;
+    }
+
+    public void setUnidades_faltantes2(int unidades_faltantes2) {
+        this.unidades_faltantes2 = unidades_faltantes2;
+    }
+
+    public Producto getProductoSecundario2() {
+        return productoSecundario2;
+    }
+
+    public void setProductoSecundario2(Producto productoSecundario2) {
+        this.productoSecundario2 = productoSecundario2;
     }
 
     public List<Producto> getListaActualizarStock() {
@@ -520,6 +571,8 @@ public class FacturaBean implements Serializable {
 
     public void seleccionarProductoSecundario1() {
 
+        RequestContext context = RequestContext.getCurrentInstance();
+
         ProductoController ProductoController = new ProductoController();
         int unidades_producto_secundario_1 = this.productoSecundario1.getStockActUni().intValue() * productoSecundario1.getUnidadXPaquete().intValue();
 
@@ -578,6 +631,188 @@ public class FacturaBean implements Serializable {
         } else {
             //pedir el 2 producto
 
+            if (this.listaProductosBuscar.size() >= 2) {
+                this.unidades_faltantes2 = this.unidades_faltantes1 - unidades_producto_secundario_1;
+                listaProductosSecundario2 = listaProductosBuscar;
+                listaProductosSecundario2.remove(productoSecundario1);
+                totalPagarFactura();
+                context.execute("PF('dialogMostrarTodosProdutos').show();");
+                context.execute("PF('dialogPedirCantidadProductoSeleccionado').show();");
+                context.execute("PF('dialogMostrarProductosSecundario1').show();");
+                context.execute("PF('dialogMostrarProductosSecundario2').show();");
+            }
+
+        }
+
+    }
+
+    public void seleccionarProductoSecundario2() {
+
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        ProductoController ProductoController = new ProductoController();
+        int unidades_producto_secundario_2 = this.productoSecundario2.getStockActUni().intValue() * productoSecundario2.getUnidadXPaquete().intValue();
+
+        if (unidades_producto_secundario_2 >= this.unidades_faltantes2) {
+
+            //con esta basta
+            double paquete_restante = (unidades_producto_secundario_2 - this.unidades_faltantes2) / this.productoSecundario2.getUnidadXPaquete().doubleValue();
+
+            String str = String.valueOf(paquete_restante);
+
+            int intNumber = Integer.parseInt(str.substring(0, str.indexOf('.')));
+            float decNumbert = Float.parseFloat(str.substring(str.indexOf('.')));
+
+            productoSeleccionado.setStockActUni(0L);
+            this.posListaActualizarStock++;
+            this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+            productoSecundario1.setStockActUni(0L);
+            this.posListaActualizarStock++;
+            this.listaActualizarStock.add(this.posListaActualizarStock, productoSecundario1);
+
+            productoSecundario2.setStockActUni(Long.valueOf(intNumber));
+            this.posListaActualizarStock++;
+            this.listaActualizarStock.add(this.posListaActualizarStock, productoSecundario2);
+
+            //aumento unidades donde el producto sean unidades
+            Double unidades_aumentar = Double.parseDouble(String.valueOf(decNumbert)) * productoSecundario2.getUnidadXPaquete();
+
+            Producto p = new Producto();
+
+            p = ProductoController.actualizarProductosDondeSeaUnidades(productoSeleccionado.getCodBarras());
+
+            if (p != null) {
+
+                if (productoSeleccionado.getCodigo().toString().equals(p.getCodigo().toString())) {
+                    p.setStockActUni(unidades_aumentar.longValue());
+                    this.posListaActualizarStock++;
+                    this.listaActualizarStock.add(this.posListaActualizarStock, p);
+                } else {
+
+                    if (p.getCodigo().toString().equals(productoSecundario1.getCodigo().toString())) {
+                        p.setStockActUni(unidades_aumentar.longValue());
+                        this.posListaActualizarStock++;
+                        this.listaActualizarStock.add(this.posListaActualizarStock, p);
+                    } else {
+
+                        if (p.getCodigo().toString().equals(productoSecundario1.getCodigo().toString())) {
+
+                        } else {
+                            p.setStockActUni(p.getStockActUni() + unidades_aumentar.longValue());
+                            this.posListaActualizarStock++;
+                            this.listaActualizarStock.add(this.posListaActualizarStock, p);
+                        }
+                    }
+                }
+            } else {
+            }
+
+            //vende el producto normalmente 
+            int cantidad_ingresada = Integer.parseInt(this.cantidad.getValue().toString());
+            double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+            this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+
+            totalPagarFactura();
+
+        } else {
+            //pido el ultimo producto
+
+            if (this.listaProductosBuscar.size() >= 1) {
+                this.unidades_faltantes3 = this.unidades_faltantes2 - unidades_producto_secundario_2;
+                listaProductosSecundario3 = listaProductosBuscar;
+                listaProductosSecundario2.remove(productoSecundario2);
+                totalPagarFactura();
+                context.execute("PF('dialogMostrarTodosProdutos').show();");
+                context.execute("PF('dialogPedirCantidadProductoSeleccionado').show();");
+                context.execute("PF('dialogMostrarProductosSecundario1').show();");
+                context.execute("PF('dialogMostrarProductosSecundario2').show();");
+                context.execute("PF('dialogMostrarProductosSecundario3').show();");
+            }
+
+        }
+
+    }
+
+    public void seleccionarProductoSecundario3() {
+
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        ProductoController ProductoController = new ProductoController();
+        int unidades_producto_secundario_3 = this.productoSecundario3.getStockActUni().intValue() * productoSecundario3.getUnidadXPaquete().intValue();
+
+        if (unidades_producto_secundario_3 >= this.unidades_faltantes3) {
+
+            double paquete_restante = (unidades_producto_secundario_3 - this.unidades_faltantes3) / this.productoSecundario3.getUnidadXPaquete().doubleValue();
+
+            String str = String.valueOf(paquete_restante);
+
+            int intNumber = Integer.parseInt(str.substring(0, str.indexOf('.')));
+            float decNumbert = Float.parseFloat(str.substring(str.indexOf('.')));
+
+            productoSeleccionado.setStockActUni(0L);
+            this.posListaActualizarStock++;
+            this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+            productoSecundario1.setStockActUni(0L);
+            this.posListaActualizarStock++;
+            this.listaActualizarStock.add(this.posListaActualizarStock, productoSecundario1);
+
+            productoSecundario2.setStockActUni(0L);
+            this.posListaActualizarStock++;
+            this.listaActualizarStock.add(this.posListaActualizarStock, productoSecundario2);
+
+            productoSecundario3.setStockActUni(Long.valueOf(intNumber));
+            this.posListaActualizarStock++;
+            this.listaActualizarStock.add(this.posListaActualizarStock, productoSecundario3);
+
+            //aumento unidades donde el producto sean unidades
+            Double unidades_aumentar = Double.parseDouble(String.valueOf(decNumbert)) * productoSecundario3.getUnidadXPaquete();
+
+            Producto p = new Producto();
+
+            p = ProductoController.actualizarProductosDondeSeaUnidades(productoSeleccionado.getCodBarras());
+
+            if (p != null) {
+
+                if (productoSeleccionado.getCodigo().toString().equals(p.getCodigo().toString())) {
+                    p.setStockActUni(unidades_aumentar.longValue());
+                    this.posListaActualizarStock++;
+                    this.listaActualizarStock.add(this.posListaActualizarStock, p);
+                } else {
+
+                    if (p.getCodigo().toString().equals(productoSecundario1.getCodigo().toString())) {
+                        p.setStockActUni(unidades_aumentar.longValue());
+                        this.posListaActualizarStock++;
+                        this.listaActualizarStock.add(this.posListaActualizarStock, p);
+                    } else {
+
+                        if (p.getCodigo().toString().equals(productoSecundario1.getCodigo().toString())) {
+
+                        } else {
+                            
+                            if (p.getCodigo().toString().equals(productoSecundario2.getCodigo().toString())) {
+                                
+                            }
+                            
+                            p.setStockActUni(p.getStockActUni() + unidades_aumentar.longValue());
+                            this.posListaActualizarStock++;
+                            this.listaActualizarStock.add(this.posListaActualizarStock, p);
+                        }
+                    }
+                }
+            } else {
+            }
+
+            //vende el producto normalmente 
+            int cantidad_ingresada = Integer.parseInt(this.cantidad.getValue().toString());
+            double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+            this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+
+            totalPagarFactura();
+
+        } else {
+            //paila       
         }
 
     }
@@ -749,13 +984,28 @@ public class FacturaBean implements Serializable {
 
     public void limpiarFactura() {
 
+        this.listaProductosSecundario1 = new ArrayList<>();
+        this.listaProductosSecundario2 = new ArrayList<>();
+        this.listaProductosSecundario3 = new ArrayList<>();
+
         listaDetalleFactura = new ArrayList<>();
+
         productoSecundario1 = new Producto();
+        productoSecundario2 = new Producto();
+        productoSecundario3 = new Producto();
+
         listaActualizarStock = new ArrayList<>();
+
         productoSeleccionado = new Producto();
+
         unidades_faltantes1 = 0;
+        unidades_faltantes2 = 0;
+        unidades_faltantes3 = 0;
+
         listaProductosBuscar = new ArrayList<>();
+
         totalPagarFactura();
+
         cliente = null;
         factura = new Factura();
         this.ultimaFactura = new Factura();
