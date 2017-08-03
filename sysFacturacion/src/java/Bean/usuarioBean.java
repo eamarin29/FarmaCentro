@@ -27,7 +27,7 @@ import org.primefaces.component.commandbutton.CommandButton;
 
 @ManagedBean
 @SessionScoped
-public class UsuarioBean implements Serializable {
+public class usuarioBean implements Serializable {
 
     private String username; //input usuario
     private String password; //input password
@@ -49,7 +49,7 @@ public class UsuarioBean implements Serializable {
         this.usuario = new Usuario();
     }
 
-    public UsuarioBean() {
+    public usuarioBean() {
     }
 
     public Usuario getUsuario() {
@@ -184,7 +184,7 @@ public class UsuarioBean implements Serializable {
                                     FacesContext contex = FacesContext.getCurrentInstance();
                                     contex.getExternalContext().redirect("/" + Statics.nombreApp + "/faces/Views/bienvenido.xhtml");
                                 } catch (IOException ex) {
-                                    Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+                                    Logger.getLogger(usuarioBean.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             } else {
                                 System.out.println("--Error");
@@ -226,7 +226,7 @@ public class UsuarioBean implements Serializable {
             FacesContext contex = FacesContext.getCurrentInstance();
             contex.getExternalContext().redirect("/" + Statics.nombreApp + "");
         } catch (IOException ex) {
-            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(usuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -288,7 +288,7 @@ public class UsuarioBean implements Serializable {
             FacesContext contex = FacesContext.getCurrentInstance();
             contex.getExternalContext().redirect("/" + Statics.nombreApp + "/cambio-email");
         } catch (IOException ex) {
-            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(usuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -310,7 +310,7 @@ public class UsuarioBean implements Serializable {
             FacesContext contex = FacesContext.getCurrentInstance();
             contex.getExternalContext().redirect("/" + Statics.nombreApp + "/faces/Views/solicitarRegistro.xhtml");
         } catch (IOException ex) {
-            Logger.getLogger(UsuarioBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(usuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

@@ -5,19 +5,19 @@ import ClasesAuxiliares.Validaciones;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import Controller.ClienteController;
+import Controller.ComisionController;
+import Controller.DetalleFacturaController;
 import Controller.FacturaController;
 import Controller.ParametrosController;
 import Controller.ProductoController;
+import Controller.VendedorController;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -28,11 +28,13 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import Model.Cliente;
+import Model.Comision;
 import Model.DetalleFactura;
 import Model.Factura;
 import Model.Producto;
+import Model.Tipo;
+import Model.Usuario;
 import Model.Vendedor;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
@@ -43,8 +45,8 @@ import org.primefaces.component.inputnumber.InputNumber;
 @ViewScoped
 public class FacturaBean implements Serializable {
 
-    @ManagedProperty("#{UsuarioBean}")
-    private UsuarioBean usuarioBean;
+    @ManagedProperty("#{usuarioBean}")
+    private usuarioBean usuarioBean;
 
     Session session = null;
     Transaction tr = null;
@@ -92,7 +94,7 @@ public class FacturaBean implements Serializable {
 
     private List<Producto> listaActualizarStock = new ArrayList();
 
-    ;
+    private int posListaActualizarStock = -1;
 
     public FacturaBean() {
     }
@@ -110,10 +112,19 @@ public class FacturaBean implements Serializable {
 
         this.codigoBarras = "";
 
+        limpiarFactura();
     }
 
     public List<Producto> getListaActualizarStock() {
         return listaActualizarStock;
+    }
+
+    public int getPosListaActualizarStock() {
+        return posListaActualizarStock;
+    }
+
+    public void setPosListaActualizarStock(int posListaActualizarStock) {
+        this.posListaActualizarStock = posListaActualizarStock;
     }
 
     public void setListaActualizarStock(List<Producto> listaActualizarStock) {
@@ -200,11 +211,11 @@ public class FacturaBean implements Serializable {
         this.productoSeleccionado = productoSeleccionado;
     }
 
-    public UsuarioBean getUsuarioBean() {
+    public usuarioBean getUsuarioBean() {
         return usuarioBean;
     }
 
-    public void setUsuarioBean(UsuarioBean usuarioBean) {
+    public void setUsuarioBean(usuarioBean usuarioBean) {
         this.usuarioBean = usuarioBean;
     }
 
@@ -476,29 +487,31 @@ public class FacturaBean implements Serializable {
                             if (paquetes_que_faltan > 0) {
                                 //faltan unidades
 
-                                this.unidades_faltantes1 = paquetes_que_faltan * this.productoSeleccionado.getUnidadXPaquete().intValue();
-                                listaProductosSecundario1 = listaProductosBuscar;
-                                listaProductosSecundario1.remove(productoSeleccionado);
-
-                                context.execute("PF('dialogMostrarTodosProdutos').show();");
-                                context.execute("PF('dialogPedirCantidadProductoSeleccionado').show();");
-                                context.execute("PF('dialogMostrarProductosSecundario1').show();");
-
+                                if (this.listaProductosBuscar.size() > 0) {
+                                    this.unidades_faltantes1 = paquetes_que_faltan * this.productoSeleccionado.getUnidadXPaquete().intValue();
+                                    listaProductosSecundario1 = listaProductosBuscar;
+                                    listaProductosSecundario1.remove(productoSeleccionado);
+                                    totalPagarFactura();
+                                    context.execute("PF('dialogMostrarTodosProdutos').show();");
+                                    context.execute("PF('dialogPedirCantidadProductoSeleccionado').show();");
+                                    context.execute("PF('dialogMostrarProductosSecundario1').show();");
+                                }
                             }
                         }
                     }
-
                 } else {
-                    //vende el producto normalmente
+                    //vende el producto normalmente 
                     double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
                     this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
 
                     productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
 
-                    this.listaActualizarStock.add(productoSeleccionado);
-
+                    this.posListaActualizarStock++;
+                    this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+                    totalPagarFactura();
                     context.execute("PF('dialogMostrarTodosProdutos').hide();");
                     context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
                 }
             }
         }
@@ -519,33 +532,246 @@ public class FacturaBean implements Serializable {
             int intNumber = Integer.parseInt(str.substring(0, str.indexOf('.')));
             float decNumbert = Float.parseFloat(str.substring(str.indexOf('.')));
 
-//            System.out.println(intNumber); //paquetes restantes
-//            System.out.println(decNumbert); //*  productoSecundario1.getUnidadXPaquete().intValue() = unidades
             productoSeleccionado.setStockActUni(0L);
-            this.listaActualizarStock.add(productoSeleccionado);
+            this.posListaActualizarStock++;
+            this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
 
             productoSecundario1.setStockActUni(Long.valueOf(intNumber));
-            this.listaActualizarStock.add(productoSecundario1);
+            this.posListaActualizarStock++;
+            this.listaActualizarStock.add(this.posListaActualizarStock, productoSecundario1);
 
             //aumento unidades donde el producto sean unidades
             Double unidades_aumentar = Double.parseDouble(String.valueOf(decNumbert)) * productoSecundario1.getUnidadXPaquete();
+
             Producto p = new Producto();
 
             p = ProductoController.actualizarProductosDondeSeaUnidades(productoSeleccionado.getCodBarras());
 
             if (p != null) {
-                p.setStockActUni(p.getStockActUni() + unidades_aumentar.longValue());
-                this.listaActualizarStock.add(p);
-            } else {
 
+                if (productoSeleccionado.getCodigo().toString().equals(p.getCodigo().toString())) {
+                    p.setStockActUni(unidades_aumentar.longValue());
+                    this.posListaActualizarStock++;
+                    this.listaActualizarStock.add(this.posListaActualizarStock, p);
+                } else {
+
+                    if (p.getCodigo().toString().equals(productoSecundario1.getCodigo().toString())) {
+
+                    } else {
+                        p.setStockActUni(p.getStockActUni() + unidades_aumentar.longValue());
+                        this.posListaActualizarStock++;
+                        this.listaActualizarStock.add(this.posListaActualizarStock, p);
+                    }
+
+                }
+
+            } else {
             }
+
+            //vende el producto normalmente 
+            int cantidad_ingresada = Integer.parseInt(this.cantidad.getValue().toString());
+            double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+            this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+
+            totalPagarFactura();
 
         } else {
             //pedir el 2 producto
 
-
         }
 
+    }
+
+    public boolean verificarDetalleFactura(BigDecimal codigo) {
+        //true = no existe el producto en el detalle
+        int tamañoLista = listaDetalleFactura.size();
+        int error = 0;
+        String codigo_llega = codigo.toString();
+
+        for (int i = 0; i < tamañoLista; i++) {
+            if (listaDetalleFactura.get(i).getProducto().getCodigo().toString().equals(codigo_llega)) {
+                error++;
+            }
+        }
+        if (error == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void totalPagarFactura() {
+
+        double totalPagarFactura = 0;
+
+        try {
+            for (DetalleFactura item : listaDetalleFactura) {
+                double totalVentaxDetalle = item.getTotalDetalle().intValue();
+                totalPagarFactura += totalVentaxDetalle;
+            }
+        } catch (Exception e) {
+            System.out.println("--Error metodo: totalPagarFactura:facturaBean: " + e.getMessage());
+        }
+        factura.setTotalVenta(new BigDecimal(totalPagarFactura));
+    }
+
+    public void registrarVentaFactura() {
+
+        FacturaController FacturaController = new FacturaController();
+
+        try {
+
+            Factura f = new Factura();
+            f = FacturaController.obtenerUltimoRegistro();
+
+            if (FacturaController.obtenerCuantosRegistrosHayEnFactura() == 0) {
+                this.numeroFactura = Long.parseLong("1");
+            } else {
+                Integer num = f.getCodfactura().intValue() + 1;
+                this.numeroFactura = Long.parseLong(num.toString());
+            }
+
+            if (cliente == null) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Debe de seleccionar un cliente."));
+            } else {
+
+                if (this.factura.getTotalVenta().intValue() > 0) {
+
+                    Date date = new Date();
+                    DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+                    String fechaA = hourdateFormat.format(date);
+
+                    Date fecha = null;
+
+                    try {
+                        fecha = hourdateFormat.parse(fechaA);
+
+                    } catch (Exception e) {
+
+                    }
+
+                    //guardo el objeto factura
+                    Factura facturaGuardar = new Factura();
+                    Integer numFact = Integer.parseInt(this.numeroFactura.toString());
+
+                    Vendedor vendedorGuardar = new Vendedor();
+                    vendedorGuardar.setCedula(this.usuarioBean.cedulaUsuarioLogueado);
+
+                    FacturaController facturaController = new FacturaController();
+                    try {
+
+                        facturaGuardar.setCodfactura(new BigDecimal(numFact));
+                        facturaGuardar.setCliente(this.cliente);
+                        facturaGuardar.setVendedor(vendedorGuardar);
+                        facturaGuardar.setTotalVenta(this.factura.getTotalVenta());
+                        facturaGuardar.setFechaRegistro(fecha);
+
+                        facturaController.newFactura(facturaGuardar);
+
+                    } catch (Exception e) {
+
+                    }
+
+                    DetalleFacturaController DetalleFacturaController = new DetalleFacturaController();
+
+                    //registro en la tabla detalle
+                    for (int i = 0; i < listaDetalleFactura.size(); i++) {
+                        DetalleFactura detalle = new DetalleFactura();
+
+                        //consulto ultimo registro detalle factura
+                        DetalleFactura detalle_ultimo = new DetalleFactura();
+                        detalle_ultimo = DetalleFacturaController.obtenerUltimoRegistroDetalle();
+
+                        BigDecimal nDetalle = null;
+
+                        if (DetalleFacturaController.obtenerCuantosRegistrosHayEnDetalle() == 0) {
+                            nDetalle = new BigDecimal(1);
+                        } else {
+                            Integer num = detalle_ultimo.getCoddetalle().intValue() + 1;
+                            nDetalle = new BigDecimal(num);
+                        }
+
+                        detalle.setCoddetalle(nDetalle);
+                        detalle.setFactura(facturaGuardar);
+                        detalle.setProducto(listaDetalleFactura.get(i).getProducto());
+                        detalle.setCantidad(listaDetalleFactura.get(i).getCantidad());
+                        detalle.setTotalDetalle(listaDetalleFactura.get(i).getTotalDetalle());
+
+                        facturaController.newDetalle(detalle);
+
+                        //comision
+                        Comision c = new Comision();
+                        Comision comisionGuardar = new Comision();
+                        ComisionController ComisionController = new ComisionController();
+                        int n_codigo = 0;
+
+                        c = ComisionController.obtenerUltimoRegistro();
+
+                        if (c == null) {
+                            n_codigo = 1;
+                        } else {
+                            n_codigo = c.getCodigo().intValue() + 1;
+                        }
+
+                        comisionGuardar.setCodigo(new BigDecimal(n_codigo));
+                        comisionGuardar.setSaldo(new BigDecimal(this.listaDetalleFactura.get(i).getProducto().getComision().doubleValue() * this.listaDetalleFactura.get(i).getCantidad().doubleValue()));
+                        comisionGuardar.setFecha(fecha);
+                        comisionGuardar.setVendedor(vendedorGuardar);
+
+                        ComisionController.newComision(comisionGuardar);
+
+                    }
+
+                    //venta registrada con exito
+                    //habilitar impresora
+                    this.habilitarImpresora = false;
+                    this.habilitarBtnRegistrar = true;
+
+                    //actualizamos los stoks
+                    for (int i = 0; i < this.listaActualizarStock.size(); i++) {
+                        ProductoController ProductoController = new ProductoController();
+                        ProductoController.updateProducto(this.listaActualizarStock.get(i));
+                    }
+
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "La venta se registró correctamente."));
+                    limpiarFactura();
+
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "No hay productos registrados."));
+                }
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void limpiarFactura() {
+
+        listaDetalleFactura = new ArrayList<>();
+        productoSecundario1 = new Producto();
+        listaActualizarStock = new ArrayList<>();
+        productoSeleccionado = new Producto();
+        unidades_faltantes1 = 0;
+        listaProductosBuscar = new ArrayList<>();
+        totalPagarFactura();
+        cliente = null;
+        factura = new Factura();
+        this.ultimaFactura = new Factura();
+        this.codigoCliente = "";
+        this.codigoBarras = "";
+        this.posListaActualizarStock = -1;
+        InputNumber n = new InputNumber();
+        n.setValue("0");
+        setCantidad(n);
+
+    }
+
+    public void reiniciarVenta() {
+        limpiarFactura();
+        this.habilitarImpresora = true;
+        this.habilitarBtnRegistrar = false;
     }
 
     public void pedirCantidadProductoSeleccionado(String codBarraProductoSeleccionado) {
@@ -758,38 +984,6 @@ public class FacturaBean implements Serializable {
 
     }
 
-    public void totalPagarFactura() {
-
-        double totalPagarFactura = 0;
-
-        try {
-            for (DetalleFactura item : listaDetalleFactura) {
-                double totalVentaxDetalle = item.getTotalDetalle().intValue();
-                totalPagarFactura += totalVentaxDetalle;
-            }
-        } catch (Exception e) {
-            System.out.println("--Error metodo: totalPagarFactura:facturaBean: " + e.getMessage());
-        }
-        factura.setTotalVenta(new BigDecimal(totalPagarFactura));
-    }
-
-    public boolean verificarDetalleFactura(BigDecimal codigo) {
-        //true = no existe el producto en el detalle
-        int tamañoLista = listaDetalleFactura.size();
-        int error = 0;
-
-        for (int i = 0; i < tamañoLista; i++) {
-            if (listaDetalleFactura.get(i).getProducto().getCodigo() == codigo) {
-                error++;
-            }
-        }
-        if (error == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public void eliminarDetalleFactura() {
 
         int tamañoLista = listaDetalleFactura.size();
@@ -907,205 +1101,6 @@ public class FacturaBean implements Serializable {
         }
     }
 
-    public void registrarVentaFactura() {
-
-        this.session = null;
-        this.tr = null;
-
-        this.session = HibernateUtil.getSessionFactory().openSession();
-        this.tr = this.session.beginTransaction();
-
-        try {
-
-            Factura f = new Factura();
-            f = obtenerUltimoRegistro(this.session);
-
-            if (obtenerCuantosRegistrosHayEnFactura(this.session) == 0) {
-                this.numeroFactura = Long.parseLong("1");
-            } else {
-                Integer num = f.getCodfactura().intValue() + 1;
-                this.numeroFactura = Long.parseLong(num.toString());
-            }
-
-            //numero de factura
-            System.out.println("--El codigo de la factura es: " + this.numeroFactura);
-
-            //selecciono el cliente
-            if (cliente == null) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Debe de seleccionar un cliente."));
-            } else {
-
-                //Cliente
-                System.out.println("--El codigo del cliente es: " + this.cliente.getCodcliente());
-
-                //codigo del vendedor
-                System.out.println("--El codigo del usuario logueado es: " + this.usuarioBean.cedulaUsuarioLogueado);
-
-                //selecciono total venta factura
-                if (this.factura.getTotalVenta().intValue() > 0) {
-
-                    //total factura
-                    System.out.println("--Total venta de la factura es: " + this.factura.getTotalVenta());
-
-                    //fecha actual
-                    System.out.println("--La fecha actual es: " + this.fechaActual);
-
-                    //guardo el objeto factura
-                    Factura facturaGuardar = new Factura();
-                    Integer numFact = Integer.parseInt(this.numeroFactura.toString());
-
-                    Vendedor vendedorGuardar = new Vendedor();
-                    vendedorGuardar.setCedula(this.usuarioBean.cedulaUsuarioLogueado);
-
-                    FacturaController facturaController = new FacturaController();
-                    try {
-
-                        Date date = new Date();
-                        DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
-                        String fechaA = hourdateFormat.format(date);
-
-                        Date fecha = null;
-
-                        try {
-                            fecha = hourdateFormat.parse(fechaA);
-
-                        } catch (Exception e) {
-
-                        }
-
-                        facturaGuardar.setCodfactura(new BigDecimal(numFact));
-                        facturaGuardar.setCliente(this.cliente);
-                        facturaGuardar.setVendedor(vendedorGuardar);
-                        facturaGuardar.setTotalVenta(this.factura.getTotalVenta());
-                        facturaGuardar.setFechaRegistro(fecha);
-
-                        facturaController.newFactura(facturaGuardar);
-
-                    } catch (Exception e) {
-
-                    }
-
-                    //registro en la tabla detalle
-                    for (int i = 0; i < listaDetalleFactura.size(); i++) {
-                        DetalleFactura detalle = new DetalleFactura();
-
-                        //consulto ultimo registro detalle factura
-                        DetalleFactura detalle_ultimo = new DetalleFactura();
-                        detalle_ultimo = obtenerUltimoRegistroDetalle(this.session);
-
-                        BigDecimal nDetalle = null;
-
-                        if (obtenerCuantosRegistrosHayEnDetalle(this.session) == 0) {
-                            nDetalle = new BigDecimal(1);
-                        } else {
-                            Integer num = detalle_ultimo.getCoddetalle().intValue() + 1;
-                            nDetalle = new BigDecimal(num);
-                        }
-
-                        if (listaDetalleFactura.get(i).getProducto().getCodBarras().equals("1")) {
-
-                            //calculamos el precio real del servico (ganacia de la empresa)
-                            ParametrosController parametrosController = new ParametrosController();
-                            double ventaTotalDetalle = listaDetalleFactura.get(i).getTotalDetalle().doubleValue();
-                            Double iva = Double.parseDouble(parametrosController.obtenerIVAmanoObra());
-                            Double precioGananciaEmpresa = ventaTotalDetalle - (ventaTotalDetalle * iva) / 100;
-
-                            detalle.setCoddetalle(nDetalle);
-                            detalle.setFactura(facturaGuardar);
-                            detalle.setProducto(listaDetalleFactura.get(i).getProducto());
-                            detalle.setCantidad(listaDetalleFactura.get(i).getCantidad());
-                            detalle.setTotalDetalle(listaDetalleFactura.get(i).getTotalDetalle());
-                            //  detalle.setPrecioRealUnidad(new BigDecimal(precioGananciaEmpresa));
-
-                            Date date = new Date();
-                            DateFormat hourdateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                            String fechaA = hourdateFormat.format(date);
-                            Date fecha = null;
-                            try {
-                                fecha = hourdateFormat.parse(fechaA);
-                            } catch (ParseException ex) {
-                                Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-
-                            facturaController.newDetalle(detalle);
-
-                        } else {
-                            detalle.setCoddetalle(nDetalle);
-                            detalle.setFactura(facturaGuardar);
-                            detalle.setProducto(listaDetalleFactura.get(i).getProducto());
-                            detalle.setCantidad(listaDetalleFactura.get(i).getCantidad());
-                            detalle.setTotalDetalle(listaDetalleFactura.get(i).getTotalDetalle());
-                            //  detalle.setPrecioRealUnidad(listaDetalleFactura.get(i).getPrecioRealUni);
-
-                            facturaController.newDetalle(detalle);
-
-                            //actualizar stock del producto
-                            ProductoController productoController = new ProductoController();
-                            //     productoController.actualizarStockActual(listaDetalleFactura.get(i).getProducto().getCodBarras(), listaDetalleFactura.get(i).getCantidad().longValue());
-                        }
-
-                    }
-
-                    //venta registrada con exito
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "La venta se registró correctamente."));
-                    //habilitar impresora
-                    this.habilitarImpresora = false;
-                    this.habilitarBtnRegistrar = true;
-                } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "No hay productos registrados."));
-                }
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    public void cancelarVenta() {
-        this.listaDetalleFactura = new ArrayList<>();
-        cliente = null;
-        factura = new Factura();
-        this.ultimaFactura = new Factura();
-        this.habilitarImpresora = true;
-        this.habilitarBtnRegistrar = false;
-    }
-
-    public Factura obtenerUltimoRegistro(Session session) throws Exception {
-
-        String hql = "FROM Factura ORDER BY codFactura DESC";
-        Query q = session.createQuery(hql).setMaxResults(1);
-        return (Factura) q.uniqueResult();
-    }
-
-    public DetalleFactura obtenerUltimoRegistroDetalle(Session session) throws Exception {
-
-        String hql = "FROM DetalleFactura ORDER BY coddetalle DESC";
-        Query q = session.createQuery(hql).setMaxResults(1);
-        return (DetalleFactura) q.uniqueResult();
-    }
-
-    public Long obtenerCuantosRegistrosHayEnFactura(Session session) {
-
-        String hql = "SELECT COUNT(*) FROM Factura";
-        Query q = session.createQuery(hql);
-        return (Long) q.uniqueResult();
-    }
-
-    public Long obtenerCuantosRegistrosHayEnServicios(Session session) {
-
-        String hql = "SELECT COUNT(*) FROM Servicios";
-        Query q = session.createQuery(hql);
-        return (Long) q.uniqueResult();
-    }
-
-    public Long obtenerCuantosRegistrosHayEnDetalle(Session session) {
-
-        String hql = "SELECT COUNT(*) FROM DetalleFactura";
-        Query q = session.createQuery(hql);
-        return (Long) q.uniqueResult();
-    }
-
     public void verReporte() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         //Metodo para invocar el reporte y enviarle los parametros
 
@@ -1123,7 +1118,7 @@ public class FacturaBean implements Serializable {
         rFactura.getReporteFactura(ruta, cc, cv, cf);
         FacesContext.getCurrentInstance().responseComplete();
 
-        cancelarVenta();
+        reiniciarVenta();
     }
 
 }

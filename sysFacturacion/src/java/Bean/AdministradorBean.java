@@ -26,7 +26,7 @@ import org.primefaces.context.RequestContext;
 public class AdministradorBean implements Serializable {
 
     @ManagedProperty("#{usuarioBean}")
-    private UsuarioBean usuarioBean;
+    private usuarioBean usuarioBean;
 
     private Usuario usuario;
     private Usuario usuarioViejo;
@@ -55,11 +55,11 @@ public class AdministradorBean implements Serializable {
         this.emailAntiguo = emailAntiguo;
     }
 
-    public UsuarioBean getUsuarioBean() {
+    public usuarioBean getUsuarioBean() {
         return usuarioBean;
     }
 
-    public void setUsuarioBean(UsuarioBean usuarioBean) {
+    public void setUsuarioBean(usuarioBean usuarioBean) {
         this.usuarioBean = usuarioBean;
     }
 

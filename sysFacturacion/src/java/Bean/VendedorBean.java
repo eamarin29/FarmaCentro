@@ -28,7 +28,7 @@ import Model.Cliente;
 public class VendedorBean implements Serializable {
 
     @ManagedProperty("#{usuarioBean}")
-    private UsuarioBean usuarioBean;
+    private usuarioBean usuarioBean;
     private Usuario usuarioViejo;
     private List<Vendedor> filtroVendedores;
 
@@ -67,11 +67,11 @@ public class VendedorBean implements Serializable {
         this.emailAntiguo = emailAntiguo;
     }
 
-    public UsuarioBean getUsuarioBean() {
+    public usuarioBean getUsuarioBean() {
         return usuarioBean;
     }
 
-    public void setUsuarioBean(UsuarioBean usuarioBean) {
+    public void setUsuarioBean(usuarioBean usuarioBean) {
         this.usuarioBean = usuarioBean;
     }
 

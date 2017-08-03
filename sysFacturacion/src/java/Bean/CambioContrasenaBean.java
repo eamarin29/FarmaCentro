@@ -28,7 +28,7 @@ import org.primefaces.component.commandbutton.CommandButton;
 public class CambioContrasenaBean implements Serializable {
 
     @ManagedProperty("#{usuarioBean}")
-    private UsuarioBean usuarioBean;
+    private usuarioBean usuarioBean;
 
     private String cedulaAcambiar;
     private String codRegistroAcambiar;
@@ -111,11 +111,11 @@ public class CambioContrasenaBean implements Serializable {
         this.contraseñaNuevaRepetir = contraseñaNuevaRepetir;
     }
 
-    public UsuarioBean getUsuarioBean() {
+    public usuarioBean getUsuarioBean() {
         return usuarioBean;
     }
 
-    public void setUsuarioBean(UsuarioBean usuarioBean) {
+    public void setUsuarioBean(usuarioBean usuarioBean) {
         this.usuarioBean = usuarioBean;
     }
 
