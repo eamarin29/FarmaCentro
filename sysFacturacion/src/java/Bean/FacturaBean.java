@@ -790,11 +790,11 @@ public class FacturaBean implements Serializable {
                         if (p.getCodigo().toString().equals(productoSecundario1.getCodigo().toString())) {
 
                         } else {
-                            
+
                             if (p.getCodigo().toString().equals(productoSecundario2.getCodigo().toString())) {
-                                
+
                             }
-                            
+
                             p.setStockActUni(p.getStockActUni() + unidades_aumentar.longValue());
                             this.posListaActualizarStock++;
                             this.listaActualizarStock.add(this.posListaActualizarStock, p);
@@ -970,7 +970,6 @@ public class FacturaBean implements Serializable {
                     }
 
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "La venta se registró correctamente."));
-                    limpiarFactura();
 
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "No hay productos registrados."));
@@ -1022,6 +1021,28 @@ public class FacturaBean implements Serializable {
         limpiarFactura();
         this.habilitarImpresora = true;
         this.habilitarBtnRegistrar = false;
+    }
+
+    public void verReporte() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+            //Metodo para invocar el reporte y enviarle los parametros
+            
+            String cc = this.cliente.getCodcliente();
+            String cv = this.usuarioBean.cedulaUsuarioLogueado;
+            int cf = (int) (long) this.numeroFactura;
+            
+            //Instancia hacia la clase ImpresionReportes
+            ImpresionReportes rFactura = new ImpresionReportes();
+            
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+            String ruta = servletContext.getRealPath("/Reportes/Factura/factura.jasper");
+            
+            rFactura.getReporteFactura(ruta, cc, cv, cf);
+            FacesContext.getCurrentInstance().responseComplete();
+
+            
+            reiniciarVenta();
+
     }
 
     public void pedirCantidadProductoSeleccionado(String codBarraProductoSeleccionado) {
@@ -1349,26 +1370,6 @@ public class FacturaBean implements Serializable {
         } finally {
             this.session.close();
         }
-    }
-
-    public void verReporte() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        //Metodo para invocar el reporte y enviarle los parametros
-
-        String cc = this.cliente.getCodcliente();
-        String cv = this.usuarioBean.cedulaUsuarioLogueado;
-        int cf = (int) (long) this.numeroFactura;
-
-        //Instancia hacia la clase ImpresionReportes        
-        ImpresionReportes rFactura = new ImpresionReportes();
-
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-        String ruta = servletContext.getRealPath("/Reportes/Factura/factura.jasper");
-
-        rFactura.getReporteFactura(ruta, cc, cv, cf);
-        FacesContext.getCurrentInstance().responseComplete();
-
-        reiniciarVenta();
     }
 
 }
