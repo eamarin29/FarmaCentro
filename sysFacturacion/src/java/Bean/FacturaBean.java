@@ -1,6 +1,10 @@
 package Bean;
 
 import ClasesAuxiliares.ImpresionReportes;
+import static ClasesAuxiliares.Statics.cadenaConexion;
+import static ClasesAuxiliares.Statics.driver_class;
+import static ClasesAuxiliares.Statics.passbd;
+import static ClasesAuxiliares.Statics.usbd;
 import ClasesAuxiliares.Validaciones;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,6 +38,17 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.primefaces.context.RequestContext;
 import Util.HibernateUtil;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.HashMap;
+import java.util.Map;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import org.primefaces.component.inputnumber.InputNumber;
 
 @ManagedBean
@@ -1024,24 +1039,44 @@ public class FacturaBean implements Serializable {
     }
 
     public void verReporte() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        try {
             //Metodo para invocar el reporte y enviarle los parametros
-            
+
             String cc = this.cliente.getCodcliente();
             String cv = this.usuarioBean.cedulaUsuarioLogueado;
             int cf = (int) (long) this.numeroFactura;
-            
+
             //Instancia hacia la clase ImpresionReportes
             ImpresionReportes rFactura = new ImpresionReportes();
-            
+
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
             String ruta = servletContext.getRealPath("/Reportes/Factura/factura.jasper");
-            
-            rFactura.getReporteFactura(ruta, cc, cv, cf);
-            FacesContext.getCurrentInstance().responseComplete();
 
-            
+            //vista previa de la factura
+//            rFactura.getReporteFactura(ruta, cc, cv, cf);
+//            FacesContext.getCurrentInstance().responseComplete();
+
+            //inicia metodo
+            Map parameter = new HashMap();
+            parameter.put("codCliente", cc);
+            parameter.put("codVendedor", cv);
+            parameter.put("codFactura", cf);
+
+            Connection conexion;
+            Class.forName(driver_class).newInstance();
+            conexion = DriverManager.getConnection(cadenaConexion, usbd, passbd);
+
+            JasperReport masterReport = (JasperReport) JRLoader.loadObjectFromFile(ruta);
+
+            JasperPrint jasperprint = JasperFillManager.fillReport(masterReport, parameter, conexion);
+            JasperPrintManager.printReport(jasperprint, false);
+
+            //finaliza metodo
             reiniciarVenta();
+        } catch (JRException ex) {
+            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
