@@ -75,20 +75,35 @@
                         <p:column headerText="Fecha de registro">
                             <h:outputText value="#{fa.fechaRegistro}"></h:outputText>
                         </p:column>
+                        <p:column headerText="Anulada">
+                            <h:outputText value="#{fa.anulada}"></h:outputText>
+                        </p:column>
                         <p:column headerText="Acciones">
-                            <p:commandButton style="margin-left: 15%;" title="Eliminar registro" icon="ui-icon-delete2" 
+                            <p:commandButton title="Eliminar registro" icon="ui-icon-delete2" 
                                              oncomplete="PF('dialogEliminarFactura').show();" update=":frmEliminarFactura">  
                                 <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
                                 </f:setPropertyActionListener> 
                             </p:commandButton> 
-                            <p:commandButton style="margin-left: 15%;" title="Imprimir factura" icon="imprimir" 
+                            <p:commandButton title="Imprimir factura" icon="imprimir" 
                                              oncomplete="PF('dialogImprimirFactura').show();" update=":frmImprimirFactura">  
                                 <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
                                 </f:setPropertyActionListener> 
                             </p:commandButton> 
+                            <p:commandButton action="#{facturasBean.anularFactura()}" title="Anular factura" icon="ui-icon-anular"
+                                             update="frmMostrarFacturas, frmEliminarFactura:message" >
+                                <p:confirm header="Confirmation" message="¿Está seguro que desea anular esta factura?" icon="ui-icon-alert" />
+                                <f:setPropertyActionListener target="#{facturasBean.anularFactura}" value="#{fa}">
+                                </f:setPropertyActionListener> 
+                            </p:commandButton> 
                         </p:column> 
                     </p:dataTable>    
-                </h:form> 
+                </h:form>
+                <h:form>  
+                    <p:confirmDialog id="dlgConfirmDialog" widgetVar="dialogConfirmarAnular" global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton style="float: right;" value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </h:form>  
             </ui:define>
         </ui:composition>
     </body>

@@ -281,6 +281,10 @@ otros estilos paginas
     background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/carrito.png") !important;
 }
 
+.ui-icon-anular{
+    background-image: url("#{facesContext.externalContext.request.contextPath}/resources/images/anular.ico") !important;
+}
+
 .tituloCambiarContrasena{
 
     text-align: center;

@@ -120,11 +120,9 @@ public class AdministradorBean implements Serializable {
     public void nuevoAdmin() {
 
         //verifico que no esten vacios ninguno de los campos
-        if (usuario.getCedula().equals("") || email.equals("") || contraseñaIngresada.equals("") || verificarContraseñaIngresada.equals("")) {
+        if (usuario.getCedula().equals("") || email.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
-        } else if (!contraseñaIngresada.equals(verificarContraseñaIngresada)) {  //verifico que las contraseñas sean iguales
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Las contraseñas no coinciden."));
-        } else {
+        }  else {
             try {
 
                 //verifico que no exista repetido 
@@ -148,12 +146,10 @@ public class AdministradorBean implements Serializable {
                             //el email es valido 
                             //verifico que la contraseña cumpla la longuitud de seguridad
 
-                            boolean contrasenaSegura = v.validarPassword(contraseñaIngresada);
-                            if (contrasenaSegura == true) {
                                 //cumple
 
                                 //encripto contraseña 
-                                String encriptSha512 = DigestUtils.sha512Hex(contraseñaIngresada);
+                                String encriptSha512 = DigestUtils.sha512Hex(Statics.nombreApp);
                                 usuario.setPassword(encriptSha512);
                                 usuario.setEmail(email);
                                 Tipo tipo = new Tipo();
@@ -177,7 +173,7 @@ public class AdministradorBean implements Serializable {
                                 String contenidoEmail
                                         = "<div style='background-color: yellowgreen; width: 100%; height: auto; float: left;'>  <div style='width: 98%; height: auto; background-color: white; float: left; margin: 1% auto; margin-left: 1%; text-align: center;' > \n"
                                         + " <h3 style='color: black;''>Activar su cuenta en Sistema de Facturación Web "+Statics.nombreApp+" </h3>\n"
-                                        + " <p style='color: black;''>Usted se ha registrado como Administrador del Sistema de Facturación Web "+Statics.nombreApp+". <br></br>Para activar su cuenta y poder iniciar sesión con las sus credenciales ingresadas en el proceso de registro <br> o por las credenciales que se le ha proporcionado, por favor haga click <a href=\"http://" + direccionIp + ":" + puerto + "/" + nombreApp + "/ActivacionCuenta?usuario=" + usuario.getCedula() + "&aleatorio=" + aleatorio + "\">Aqui</a> <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
+                                        + " <p style='color: black;''>Usted se ha registrado como Administrador del Sistema de Facturación Web "+Statics.nombreApp+". <br></br> Su nombre de Usuario es su número de cédula o su correo electrónico  <br></br> Y su contraseña por defecto es: "+Statics.nombreApp+". <br></br>Para activar su cuenta y poder iniciar sesión con las sus credenciales ingresadas en el proceso de registro <br> o por las credenciales que se le ha proporcionado, por favor haga click <a href=\"http://" + direccionIp + ":" + puerto + "/" + nombreApp + "/ActivacionCuenta?usuario=" + usuario.getCedula() + "&aleatorio=" + aleatorio + "\">Aqui</a> <br></br> <br></br> <br></br> Este mensaje es generado automáticamente por el sistema. Favor no Responder. <br></br>  Gracias por utilizar nuestros servicios! </p>   <br>   </div>    </div>";
 
                                 v.sendMailConfirmacion(usuario.getEmail(), contenidoEmail, tituloEmail);
 
@@ -189,11 +185,6 @@ public class AdministradorBean implements Serializable {
                                 email="";
                                 emailAntiguo="";
 
-                            } else {
-                                //no cumple
-                                String mensajeContraseñaInsegura = "La contraseña debe de contener al menos:\n1 letra mayuscula, 1 letra minuscula, 1 numero y su longuitud de mínimo 8 caracteres.";
-                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", mensajeContraseñaInsegura));
-                            }
 
                         } else {
                             //email no es valido

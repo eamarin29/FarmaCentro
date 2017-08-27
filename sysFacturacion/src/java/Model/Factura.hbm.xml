@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 26-jul-2017 17:58:11 by Hibernate Tools 4.3.1 -->
+<!-- Generated 24-ago-2017 11:56:38 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.Factura" table="FACTURA" schema="FACTURACION" optimistic-lock="version">
         <id name="codfactura" type="big_decimal">
@@ -20,6 +20,15 @@
         <property name="fechaRegistro" type="date">
             <column name="FECHA_REGISTRO" length="7" />
         </property>
+        <property name="anulada" type="java.lang.Character">
+            <column name="ANULADA" length="1" />
+        </property>
+        <set name="comisions" table="COMISION" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="FACTURA" precision="30" scale="0" />
+            </key>
+            <one-to-many class="Model.Comision" />
+        </set>
         <set name="detalleFacturas" table="DETALLE_FACTURA" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="CODFACTURA" precision="30" scale="0" />

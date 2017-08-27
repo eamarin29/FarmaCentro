@@ -41,9 +41,9 @@
                                     <p:outputLabel>Empleado: </p:outputLabel> 
                                 </td>
                                 <td>
-                                    <p:selectOneMenu id="empleado" value="#{reporteBean.empleado}" style="width:300px">
+                                    <p:selectOneMenu id="empleado" value="#{reporteBean.vendedor}" style="width:300px">
                                         <f:selectItem itemLabel="Selecciones un empleado"   />
-                                        <f:selectItems value="#{reporteBean.empleados}" />
+                                        <f:selectItems value="#{reporteBean.vendedores}" />
                                     </p:selectOneMenu>
                                 </td>
                             </tr>
@@ -64,7 +64,7 @@
                             </td>
                             <td>
                                 <p:selectOneMenu id="reporte" value="#{reporteBean.reporte}" style="width:300px">
-                                    <f:selectItem itemLabel="Selecciones un reporte"   />
+                                    <f:selectItem itemLabel="--- Seleccionar ---"   />
                                     <f:selectItems value="#{reporteBean.reportes}" />
                                 </p:selectOneMenu>
                             </td>

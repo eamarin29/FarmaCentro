@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 26-jul-2017 17:58:11 by Hibernate Tools 4.3.1 -->
+<!-- Generated 24-ago-2017 11:56:38 by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="Model.Comision" table="COMISION" schema="FACTURACION" optimistic-lock="version">
         <id name="codigo" type="big_decimal">
@@ -10,6 +10,9 @@
         </id>
         <many-to-one name="vendedor" class="Model.Vendedor" fetch="select">
             <column name="VENDEDOR" length="200" />
+        </many-to-one>
+        <many-to-one name="factura" class="Model.Factura" fetch="select">
+            <column name="FACTURA" precision="30" scale="0" />
         </many-to-one>
         <property name="saldo" type="big_decimal">
             <column name="SALDO" precision="10" />

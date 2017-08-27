@@ -1,5 +1,5 @@
 package Model;
-// Generated 26-jul-2017 17:58:10 by Hibernate Tools 4.3.1
+// Generated 24-ago-2017 11:56:35 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -13,6 +13,7 @@ public class Comision  implements java.io.Serializable {
 
      private BigDecimal codigo;
      private Vendedor vendedor;
+     private Factura factura;
      private BigDecimal saldo;
      private Date fecha;
 
@@ -23,9 +24,10 @@ public class Comision  implements java.io.Serializable {
     public Comision(BigDecimal codigo) {
         this.codigo = codigo;
     }
-    public Comision(BigDecimal codigo, Vendedor vendedor, BigDecimal saldo, Date fecha) {
+    public Comision(BigDecimal codigo, Vendedor vendedor, Factura factura, BigDecimal saldo, Date fecha) {
        this.codigo = codigo;
        this.vendedor = vendedor;
+       this.factura = factura;
        this.saldo = saldo;
        this.fecha = fecha;
     }
@@ -43,6 +45,13 @@ public class Comision  implements java.io.Serializable {
     
     public void setVendedor(Vendedor vendedor) {
         this.vendedor = vendedor;
+    }
+    public Factura getFactura() {
+        return this.factura;
+    }
+    
+    public void setFactura(Factura factura) {
+        this.factura = factura;
     }
     public BigDecimal getSaldo() {
         return this.saldo;

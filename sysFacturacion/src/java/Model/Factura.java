@@ -1,5 +1,5 @@
 package Model;
-// Generated 26-jul-2017 17:58:10 by Hibernate Tools 4.3.1
+// Generated 24-ago-2017 11:56:35 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -18,6 +18,8 @@ public class Factura  implements java.io.Serializable {
      private Cliente cliente;
      private BigDecimal totalVenta;
      private Date fechaRegistro;
+     private Character anulada;
+     private Set<Comision> comisions = new HashSet<Comision>(0);
      private Set<DetalleFactura> detalleFacturas = new HashSet<DetalleFactura>(0);
 
     public Factura() {
@@ -27,12 +29,14 @@ public class Factura  implements java.io.Serializable {
     public Factura(BigDecimal codfactura) {
         this.codfactura = codfactura;
     }
-    public Factura(BigDecimal codfactura, Vendedor vendedor, Cliente cliente, BigDecimal totalVenta, Date fechaRegistro, Set<DetalleFactura> detalleFacturas) {
+    public Factura(BigDecimal codfactura, Vendedor vendedor, Cliente cliente, BigDecimal totalVenta, Date fechaRegistro, Character anulada, Set<Comision> comisions, Set<DetalleFactura> detalleFacturas) {
        this.codfactura = codfactura;
        this.vendedor = vendedor;
        this.cliente = cliente;
        this.totalVenta = totalVenta;
        this.fechaRegistro = fechaRegistro;
+       this.anulada = anulada;
+       this.comisions = comisions;
        this.detalleFacturas = detalleFacturas;
     }
    
@@ -70,6 +74,20 @@ public class Factura  implements java.io.Serializable {
     
     public void setFechaRegistro(Date fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+    public Character getAnulada() {
+        return this.anulada;
+    }
+    
+    public void setAnulada(Character anulada) {
+        this.anulada = anulada;
+    }
+    public Set<Comision> getComisions() {
+        return this.comisions;
+    }
+    
+    public void setComisions(Set<Comision> comisions) {
+        this.comisions = comisions;
     }
     public Set<DetalleFactura> getDetalleFacturas() {
         return this.detalleFacturas;

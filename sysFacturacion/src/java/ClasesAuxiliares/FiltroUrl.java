@@ -57,7 +57,7 @@ public class FiltroUrl implements PhaseListener {
         } else if (tipo != null) {
             int numTipo = (int) tipo;
             if (numTipo == 2) {
-                if (currenPagina.equals("/Views/Cliente/Cliente.xhtml") || currenPagina.equals("/Views/Producto/Producto.xhtml") || currenPagina.equals("/Views/Vendedor/Vendedor.xhtml") || currenPagina.equals("/Views/Administrador/Administrador.xhtml") || currenPagina.equals("/Views/Facturas/Facturas.xhtml") || currenPagina.equals("/Views/Parametros/Parametros.xhtml")) {
+                if (currenPagina.equals("/Views/Cliente/Cliente.xhtml") || currenPagina.equals("/Views/Producto/Producto.xhtml") || currenPagina.equals("/Views/Vendedor/Vendedor.xhtml") || currenPagina.equals("/Views/Administrador/Administrador.xhtml") || currenPagina.equals("/Views/Parametros/Parametros.xhtml")) {
                     try {
                         //acceso denegado
                         FacesContext contex = FacesContext.getCurrentInstance();

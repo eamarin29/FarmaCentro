@@ -1,6 +1,7 @@
 package Controller;
 
 import ClasesAuxiliares.Conexion;
+import Model.DetalleFactura;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,6 +11,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import Util.HibernateUtil;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -66,7 +68,7 @@ public class ProductoController {
         List<Producto> lista = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = session.beginTransaction();
-        String hql = "FROM Producto WHERE codBarras=:codBarras AND stockActUni>0";
+        String hql = "FROM Producto WHERE codBarras=:codBarras";
         Query q = session.createQuery(hql);
         q.setParameter("codBarras", codBarras);
 
@@ -145,7 +147,7 @@ public class ProductoController {
     }
 
     public boolean obtenerProductoPorCodigoBarras(String codBarras) {
-
+        //true si existe
         boolean ret = false;
 
         try {
@@ -211,6 +213,25 @@ public class ProductoController {
         return p;
     }
 
+    public Producto obtenerUltimoRegistroComun() throws Exception {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        Producto p = new Producto();
+        p = null;
+
+        try {
+            String hql = "FROM Producto WHERE codComun IS NOT NULL ORDER BY codComun DESC ";
+            Query q = session.createQuery(hql).setMaxResults(1);
+            p = (Producto) q.uniqueResult();
+            t.commit();
+            session.close();
+        } catch (HibernateException e) {
+            t.rollback();
+        }
+        return p;
+    }
+
     public Long obtenerCuantosRegistrosHayEnProducto() {
 
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -219,6 +240,25 @@ public class ProductoController {
 
         try {
             String hql = "SELECT COUNT(*) FROM Producto";
+            Query q = session.createQuery(hql);
+            p = (Long) q.uniqueResult();
+            t.commit();
+            session.close();
+        } catch (HibernateException e) {
+            t.rollback();
+        }
+        return p;
+
+    }
+
+    public Long obtenerCuantosRegistrosHayEnProductoComun() {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        Long p = 0L;
+
+        try {
+            String hql = "SELECT COUNT(DISTINCT codComun) FROM Producto WHERE codComun IS NOT NULL";
             Query q = session.createQuery(hql);
             p = (Long) q.uniqueResult();
             t.commit();
@@ -255,5 +295,46 @@ public class ProductoController {
         return ret;
     }
 
+    public Producto obtenerProductoPorCodigo(BigDecimal codProducto) {
+
+        Producto ret = new Producto();
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Producto WHERE codigo=:codProducto";
+        Query q = session.createQuery(hql);
+        q.setParameter("codProducto", codProducto);
+        t.commit();
+
+        try {
+            ret = (Producto) q.uniqueResult();
+            session.close();
+            return ret;
+
+        } catch (HibernateException e) {
+            t.rollback();
+        }
+        return ret;
+
+    }
+
+    public List<Producto> listaDeProductosPorCodComun(BigDecimal codComun) {
+
+        List<Producto> lista = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Producto WHERE codComun=:codComun";
+        Query q = session.createQuery(hql);
+        q.setParameter("codComun", codComun);
+
+        try {
+            lista = q.list();
+            t.commit();
+            session.close();
+        } catch (HibernateException e) {
+            t.rollback();
+        }
+        return lista;
+
+    }
 
 }

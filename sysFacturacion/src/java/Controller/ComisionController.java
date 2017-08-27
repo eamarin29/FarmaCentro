@@ -1,10 +1,19 @@
 package Controller;
 
+import ClasesAuxiliares.Conexion;
 import Model.Cliente;
 import Model.Comision;
 import Model.Factura;
+import Model.Vendedor;
 import Util.HibernateUtil;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -133,4 +142,51 @@ public class ComisionController {
 
     }
 
+    public Comision consultarComisionXfacturaAndVendedor(BigDecimal codFactura, String codVendedor) {
+
+        Comision ret = new Comision();
+
+        try {
+
+            Conexion c = new Conexion();
+            Connection conn = c.Conectar();
+
+            //consultar si cedula existe
+            PreparedStatement consulta = conn.prepareStatement("SELECT * FROM COMISION WHERE VENDEDOR=? AND FACTURA=?");
+            consulta.setString(1, codVendedor);
+            consulta.setBigDecimal(2, codFactura);
+            ResultSet rs = consulta.executeQuery();
+
+            Vendedor v = new Vendedor();
+            v = null;
+            VendedorController VendedorController = new VendedorController();
+
+            Factura f = new Factura();
+            f = null;
+            FacturaController FacturaController = new FacturaController();
+            
+            if (rs.next()) {
+
+                v = VendedorController.consultarVendedorPorCedula(rs.getString("VENDEDOR"));
+                f = FacturaController.consultarFacturaPorCodigo(rs.getBigDecimal("FACTURA"));
+
+                ret.setCodigo(rs.getBigDecimal("CODIGO"));
+                ret.setVendedor(v);
+                ret.setSaldo(rs.getBigDecimal("SALDO"));
+                ret.setFecha(rs.getDate("fecha"));
+                ret.setFactura(f);
+                
+                conn.close();
+                rs.close();
+            } else {
+                ret = null;
+                conn.close();
+                rs.close();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
 }

@@ -1,5 +1,5 @@
 package Model;
-// Generated 26-jul-2017 17:58:10 by Hibernate Tools 4.3.1
+// Generated 24-ago-2017 11:56:35 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
@@ -27,6 +27,8 @@ public class Producto  implements java.io.Serializable {
      private BigDecimal ventaSugerida;
      private BigDecimal porcentajeComision;
      private Long unidadXPaquete;
+     private BigDecimal codComun;
+     private Integer orden;
      private Set<DetalleFactura> detalleFacturas = new HashSet<DetalleFactura>(0);
 
     public Producto() {
@@ -36,7 +38,7 @@ public class Producto  implements java.io.Serializable {
     public Producto(BigDecimal codigo) {
         this.codigo = codigo;
     }
-    public Producto(BigDecimal codigo, String codBarras, String nombre, String paquete, BigDecimal precioCompra, BigDecimal porcentajeDescuento, BigDecimal precioCompraReal, BigDecimal porcentajeUtilidad, BigDecimal precioVentaReal, Long stockMinUni, Long stockActUni, BigDecimal comision, BigDecimal ventaSugerida, BigDecimal porcentajeComision, Long unidadXPaquete, Set<DetalleFactura> detalleFacturas) {
+    public Producto(BigDecimal codigo, String codBarras, String nombre, String paquete, BigDecimal precioCompra, BigDecimal porcentajeDescuento, BigDecimal precioCompraReal, BigDecimal porcentajeUtilidad, BigDecimal precioVentaReal, Long stockMinUni, Long stockActUni, BigDecimal comision, BigDecimal ventaSugerida, BigDecimal porcentajeComision, Long unidadXPaquete, BigDecimal codComun, Integer orden, Set<DetalleFactura> detalleFacturas) {
        this.codigo = codigo;
        this.codBarras = codBarras;
        this.nombre = nombre;
@@ -52,6 +54,8 @@ public class Producto  implements java.io.Serializable {
        this.ventaSugerida = ventaSugerida;
        this.porcentajeComision = porcentajeComision;
        this.unidadXPaquete = unidadXPaquete;
+       this.codComun = codComun;
+       this.orden = orden;
        this.detalleFacturas = detalleFacturas;
     }
    
@@ -159,6 +163,20 @@ public class Producto  implements java.io.Serializable {
     
     public void setUnidadXPaquete(Long unidadXPaquete) {
         this.unidadXPaquete = unidadXPaquete;
+    }
+    public BigDecimal getCodComun() {
+        return this.codComun;
+    }
+    
+    public void setCodComun(BigDecimal codComun) {
+        this.codComun = codComun;
+    }
+    public Integer getOrden() {
+        return this.orden;
+    }
+    
+    public void setOrden(Integer orden) {
+        this.orden = orden;
     }
     public Set<DetalleFactura> getDetalleFacturas() {
         return this.detalleFacturas;

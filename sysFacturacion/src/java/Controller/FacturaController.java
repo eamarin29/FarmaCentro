@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import Util.HibernateUtil;
+import java.math.BigDecimal;
 
 public class FacturaController {
 
@@ -17,6 +18,25 @@ public class FacturaController {
             session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(factura);
+            session.getTransaction().commit();
+        } catch (HibernateException e) {
+            System.out.println(e.getMessage());
+            session.getTransaction().rollback();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public void updateFactura(Factura factura) {
+
+        Session session = null;
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.update(factura);
             session.getTransaction().commit();
         } catch (HibernateException e) {
             System.out.println(e.getMessage());
@@ -139,6 +159,31 @@ public class FacturaController {
         }
         return ret;
 
+    }
+
+    public Factura consultarFacturaPorCodigo(BigDecimal codfactura) {
+
+        Session session = null;
+        Factura ret = new Factura();
+        ret = null;
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            String hql = "FROM Factura WHERE codfactura=:codfactura";
+            Query q = session.createQuery(hql);
+            q.setParameter("codfactura", codfactura);
+            session.getTransaction().commit();
+            ret = (Factura) q.uniqueResult();
+            return ret;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return ret;
     }
 
 }
