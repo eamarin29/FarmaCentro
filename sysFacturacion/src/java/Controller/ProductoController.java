@@ -337,4 +337,68 @@ public class ProductoController {
 
     }
 
+    public boolean obtenerProductoPorCodigoBarrasAndCodigoComun(String codBarras, BigDecimal codComun) {
+        //false, modificó el cod de barras
+        boolean ret = false;
+
+        try {
+
+            Conexion c = new Conexion();
+            Connection conn = c.Conectar();
+
+            //consultar si cedula existe 
+            PreparedStatement consulta = conn.prepareStatement("SELECT * FROM PRODUCTO WHERE COD_BARRAS=? AND COD_COMUN=?");
+            consulta.setString(1, codBarras);
+            consulta.setBigDecimal(2, codComun);
+
+            ResultSet rs = consulta.executeQuery();
+
+            if (rs.next()) {
+                ret = true;
+                conn.close();
+                rs.close();
+            } else {
+                ret = false;
+                conn.close();
+                rs.close();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
+        public boolean obtenerProductoPorCodigoBarrasAndCodComunExiste(String codBarras, BigDecimal codComun) {
+        //true, existe, no lo puede agregar
+        boolean ret = false;
+
+        try {
+
+            Conexion c = new Conexion();
+            Connection conn = c.Conectar();
+
+            //consultar si cedula existe
+            PreparedStatement consulta = conn.prepareStatement("SELECT * FROM PRODUCTO WHERE COD_BARRAS=? AND COD_COMUN!=?");
+            consulta.setString(1, codBarras);
+            consulta.setBigDecimal(2, codComun);
+
+            ResultSet rs = consulta.executeQuery();
+
+            if (rs.next()) {
+                ret = true;
+                conn.close();
+                rs.close();
+            } else {
+                ret = false;
+                conn.close();
+                rs.close();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+    
 }

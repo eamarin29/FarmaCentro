@@ -403,12 +403,10 @@
                                 </td> 
                                 <td> <p:inputNumber  id="txtStockMinimoModificar1" decimalPlaces="0" size="2"  binding="#{productoBean.txtStockMinimoModificar1}" ></p:inputNumber>
                                 </td> 
-
                             </tr>
 
                             <tr>
                                 <td>
-
                                 </td> 
                                 <td> <p:inputText id="txtCodigoBarrasModificar2" binding="#{productoBean.txtCodigoBarrasModificar2}" disabled="true" size="9" >
                                     </p:inputText>
@@ -470,10 +468,8 @@
                                 <td> <p:inputNumber id="txtStockMinimoModificar2" decimalPlaces="0" size="2"  binding="#{productoBean.txtStockMinimoModificar2}" disabled="true" ></p:inputNumber>
                                 </td> 
                             </tr>
-
                             <tr>
-                                <td>
-                                    
+                                <td>     
                                 </td> 
                                 <td> <p:inputText id="txtCodigoBarrasModificar3" binding="#{productoBean.txtCodigoBarrasModificar3}" disabled="true"  size="9"   >
                                     </p:inputText>
@@ -535,16 +531,28 @@
                                 <td> <p:inputNumber id="txtStockMinimoModificar3" decimalPlaces="0" size="2"  binding="#{productoBean.txtStockMinimoModificar3}" disabled="true" ></p:inputNumber>
                                 </td> 
                             </tr>
+                            <tr>
+                                <td>
 
+                                </td>
+                                <td>
+                                    ¿Conservar Stock Actuales?
+                                </td>
+                                <td>
+                                    <p:selectBooleanCheckbox id="checkConservarStock" style="background-color: white;" value="#{productoBean.checkConservarStock}">
+                                        <p:ajax update="" listener="#{productoBean.selectCheckConservarStock()}" />
+                                    </p:selectBooleanCheckbox>
+                                </td>
+                            </tr>
                         </table>
                         <br></br>
                         <p:commandButton id="btnGuardarPoductoModificado" 
                                          actionListener="#{productoBean.modificarProductos()}"
-                                         update=":frmMostrarProductos, :frmModificarProducto, message"
+                                         update="frmMostrarProductos:tablaProductos, :frmMostrarProductos, :frmModificarProducto, message"
                                          title="Guardar cambios" icon="ui-icon-guardar2">
                         </p:commandButton>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" actionListener="#{productoBean.cancelarModificar()}"
-                                         update=":frmMostrarProductos, :frmModificarProducto"
+                                         update="frmMostrarProductos:tablaProductos, :frmMostrarProductos, :frmModificarProducto"
                                          >
                         </p:commandButton>
                     </p:dialog>
