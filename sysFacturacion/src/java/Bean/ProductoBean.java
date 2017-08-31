@@ -123,6 +123,7 @@ public class ProductoBean implements Serializable {
     List<Producto> listaProductosModificarCodComun;
 
     private boolean checkConservarStock;
+    private boolean checkActualizarLinea;
 
     //-------------
     private InputNumber txtAdicionarProductos;
@@ -149,6 +150,15 @@ public class ProductoBean implements Serializable {
         productoViejo = null;
         this.listaProductosModificarCodComun = null;
 
+    }
+
+    public boolean isCheckActualizarLinea() {
+        setCheckActualizarLinea(false);
+        return checkActualizarLinea;
+    }
+
+    public void setCheckActualizarLinea(boolean checkActualizarLinea) {
+        this.checkActualizarLinea = checkActualizarLinea;
     }
 
     public boolean isCheckConservarStock() {
@@ -3547,8 +3557,8 @@ public class ProductoBean implements Serializable {
                                     } else {
                                         try {
 
-                                           //modificó?
-                                             boolean modifico1 = ProductoController.obtenerProductoPorCodigoBarrasAndCodigoComun(txtCodigoBarrasModificar1.getValue().toString(), this.listaProductosModificarCodComun.get(0).getCodComun());
+                                            //modificó?
+                                            boolean modifico1 = ProductoController.obtenerProductoPorCodigoBarrasAndCodigoComun(txtCodigoBarrasModificar1.getValue().toString(), this.listaProductosModificarCodComun.get(0).getCodComun());
                                             boolean modifico2 = ProductoController.obtenerProductoPorCodigoBarrasAndCodigoComun(txtCodigoBarrasModificar2.getValue().toString(), this.listaProductosModificarCodComun.get(0).getCodComun());
                                             boolean modifico3 = ProductoController.obtenerProductoPorCodigoBarrasAndCodigoComun(txtCodigoBarrasModificar3.getValue().toString(), this.listaProductosModificarCodComun.get(0).getCodComun());
 
@@ -3947,7 +3957,211 @@ public class ProductoBean implements Serializable {
 
     }
 
-    public void selectCheckConservarStock() {
+    public void cancelarAdicionarProductosStock() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogAgregarProducto').hide();");
+        producto = new Producto();
+
+    }
+
+    public void adicionarProductosStock() {
+
+        if (txtAdicionarProductos.getValue() == null) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('dialogAgregarProducto').show();");
+            context.execute("PF('parametrosTabla').filter();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El valor no puede quedar vacío."));
+        } else {
+            if (txtAdicionarProductos.getValue().toString().equals("0")) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('dialogAgregarProducto').show();");
+                context.execute("PF('parametrosTabla').filter();");
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El valor no puede ser 0."));
+            } else {
+                //agrega
+
+                if (checkActualizarLinea == false) {
+                    if (producto.getStockActUni() != null) {
+                        int adicionar = Integer.parseInt(txtAdicionarProductos.getValue().toString());
+                        producto.setStockActUni(producto.getStockActUni() + adicionar);
+                        ProductoController ProductoController = new ProductoController();
+                        ProductoController.updateProducto(producto);
+
+                        RequestContext context = RequestContext.getCurrentInstance();
+                        context.execute("PF('dialogAgregarProducto').hide();");
+                        context.execute("PF('parametrosTabla').filter();");
+                        txtAdicionarProductos.setValue("");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "Se actualizó el stock correctamente."));
+                        producto = new Producto();
+                    } else {
+                        Long adicionar = Long.valueOf(txtAdicionarProductos.getValue().toString());
+                        producto.setStockActUni(adicionar);
+                        ProductoController ProductoController = new ProductoController();
+                        ProductoController.updateProducto(producto);
+
+                        RequestContext context = RequestContext.getCurrentInstance();
+                        context.execute("PF('dialogAgregarProducto').hide();");
+                        context.execute("PF('parametrosTabla').filter();");
+                        txtAdicionarProductos.setValue("");
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "Se actualizó el stock correctamente."));
+                        producto = new Producto();
+                    }
+                } else {
+
+                    //actualizo las lineas
+//                    ProductoController ProductoController = new ProductoController();
+//                    List<Producto> listaProductoLineas = null;
+//                    listaProductoLineas = ProductoController.listaDeProductosPorCodComun(producto.getCodComun());
+//
+//                    switch (listaProductoLineas.size()) {
+//                        case 1:
+//
+//                            producto.setStockActUni(Long.valueOf(txtAdicionarProductos.getValue().toString()));
+//                            ProductoController.updateProducto(producto);
+//
+//                            break;
+//                        case 2:
+//
+//                            if (listaProductoLineas.get(0).getOrden() == 3) {
+//
+//                                //pos0 = orden 3
+//                                //pos1 = orden 2
+//                                Producto p = new Producto();
+//                                p.setStockActUni(producto.getStockActUni() * listaProductoLineas.get(1).getStockActUni());
+//                                producto.setStockActUni(Long.valueOf(txtAdicionarProductos.getValue().toString()));
+//                                ProductoController.updateProducto(producto);
+//                                ProductoController.updateProducto(p);
+//
+//                            } else {
+//                                //pos0 = orden 2
+//                                //pos1 = orden 3
+//                                                                Producto p = new Producto();
+//                                p.setStockActUni(producto.getStockActUni() * listaProductoLineas.get(1).getStockActUni());
+//                                producto.setStockActUni(Long.valueOf(txtAdicionarProductos.getValue().toString()));
+//                                ProductoController.updateProducto(producto);
+//                                ProductoController.updateProducto(p);
+//                            }
+//
+//                            break;
+//                        case 3:
+//
+//                            if (listaProductoLineas.get(0).getOrden() == 3) {
+//
+//                                if (listaProductoLineas.get(1).getOrden() == 2) {
+//
+//                                } else {
+//                                    //la pos 0 es la orden 2
+//
+//                                }
+//
+//                            } else if (listaProductoLineas.get(1).getOrden() == 3) {
+//
+//                                if (listaProductoLineas.get(0).getOrden() == 2) {
+//
+//                                } else {
+//                                    //la pos 2 es la orden 2
+//
+//                                }
+//
+//                            } else if (listaProductoLineas.get(2).getOrden() == 3) {
+//
+//                                if (listaProductoLineas.get(1).getOrden() == 2) {
+//
+//                                } else {
+//                                    //el de la posicion 0 es el orden 2
+//
+//                                }
+//
+//                            }
+//
+//                            break;
+//                        default:
+//                            break;
+//                    }
+                }
+
+            }
+        }
+
+    }
+
+    public void eliminarProducto() {
+
+        ProductoController ProductoController = new ProductoController();
+        Producto p = new Producto();
+        
+        p = ProductoController.verificarProductoEnFactura(producto.getCodigo());
+        if (p == null) {
+            //se elimina
+            List<Producto> listaProductoCodComun = null;
+            listaProductoCodComun = ProductoController.listaDeProductosPorCodComun(producto.getCodComun());
+            switch (listaProductoCodComun.size()) {
+                case 3:
+                    switch (producto.getOrden()) {
+                        case 3:
+                            for (int i = 0; i < listaProductoCodComun.size(); i++) {
+                                if (listaProductoCodComun.get(i).getOrden() == 2) {
+                                    listaProductoCodComun.get(i).setOrden(3);
+                                } else if (listaProductoCodComun.get(i).getOrden() == 1) {
+                                    listaProductoCodComun.get(i).setOrden(2);
+                                }
+                            }
+                            for (int i = 0; i < listaProductoCodComun.size(); i++) {
+                                ProductoController.updateProducto(listaProductoCodComun.get(i));
+                            }
+                            break;
+                        case 2:
+                            if (listaProductoCodComun.get(0).getOrden() == 1) {
+                                listaProductoCodComun.get(0).setOrden(2);
+                                ProductoController.updateProducto(listaProductoCodComun.get(0));
+                            } else if (listaProductoCodComun.get(1).getOrden() == 1) {
+                                listaProductoCodComun.get(1).setOrden(2);
+                                ProductoController.updateProducto(listaProductoCodComun.get(1));
+                            } else {
+                                //en la pos2 = orden 1
+                                listaProductoCodComun.get(2).setOrden(2);
+                                ProductoController.updateProducto(listaProductoCodComun.get(0));
+                            }
+
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 2:
+                    if (producto.getOrden() == 3) {
+                        for (int i = 0; i < listaProductoCodComun.size(); i++) {
+                            if (listaProductoCodComun.get(i).getOrden() == 2) {
+                                listaProductoCodComun.get(i).setOrden(3);
+                            } else if (listaProductoCodComun.get(i).getOrden() == 1) {
+                                listaProductoCodComun.get(i).setOrden(2);
+                            }
+                        }
+                        for (int i = 0; i < listaProductoCodComun.size(); i++) {
+                            ProductoController.updateProducto(listaProductoCodComun.get(i));
+                        }
+
+                    }
+                    break;
+                default:
+                    break;
+            }
+            
+            ProductoController.deleteProducto(producto);
+             RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('dialogEliminarProducto').hide();");
+            context.execute("PF('parametrosTabla').filter();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "El Producto se eliminó correctamente."));
+            producto = new Producto();
+            
+        } else {
+            //no se elimina
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('dialogEliminarProducto').hide();");
+            context.execute("PF('parametrosTabla').filter();");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El Producto no puede eliminarse, puede que este asociado a una factura."));
+            producto = new Producto();
+        }
 
     }
 
@@ -4059,79 +4273,6 @@ public class ProductoBean implements Serializable {
 
         selectCheck1();
         selectCheck2();
-    }
-
-    public void eliminarProducto() {
-
-        ProductoController pDao = new ProductoController();
-        int eliminarProducto = pDao.deleteProducto(producto);
-        if (eliminarProducto == 0) {
-            //se elimina
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("PF('dialogEliminarProducto').hide();");
-            context.execute("PF('parametrosTabla').filter();");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operacion Exitosa:", "El Producto se ha eliminado correctamente."));
-            producto = new Producto();
-        } else {
-            //no se elimina
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("PF('dialogEliminarProducto').hide();");
-            context.execute("PF('parametrosTabla').filter();");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El Producto no puede eliminarse, puede que este asociado a una factura."));
-            producto = new Producto();
-        }
-    }
-
-    public void adicionarProductosStock() {
-
-        if (txtAdicionarProductos.getValue() == null) {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("PF('dialogAgregarProducto').show();");
-            context.execute("PF('parametrosTabla').filter();");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El valor no puede quedar vacío."));
-        } else {
-            if (txtAdicionarProductos.getValue().toString().equals("0")) {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("PF('dialogAgregarProducto').show();");
-                context.execute("PF('parametrosTabla').filter();");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El valor no puede ser 0."));
-            } else {
-                //agrega
-
-                if (producto.getStockActUni() != null) {
-                    int adicionar = Integer.parseInt(txtAdicionarProductos.getValue().toString());
-                    producto.setStockActUni(producto.getStockActUni() + adicionar);
-                    ProductoController ProductoController = new ProductoController();
-                    ProductoController.updateProducto(producto);
-
-                    RequestContext context = RequestContext.getCurrentInstance();
-                    context.execute("PF('dialogAgregarProducto').hide();");
-                    context.execute("PF('parametrosTabla').filter();");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "Se actualizó el stock correctamente."));
-                    producto = new Producto();
-                } else {
-                    Long adicionar = Long.valueOf(txtAdicionarProductos.getValue().toString());
-                    producto.setStockActUni(adicionar);
-                    ProductoController ProductoController = new ProductoController();
-                    ProductoController.updateProducto(producto);
-
-                    RequestContext context = RequestContext.getCurrentInstance();
-                    context.execute("PF('dialogAgregarProducto').hide();");
-                    context.execute("PF('parametrosTabla').filter();");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "Se actualizó el stock correctamente."));
-                    producto = new Producto();
-                }
-
-            }
-        }
-
-    }
-
-    public void cancelarAdicionarProductosStock() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dialogAgregarProducto').hide();");
-        producto = new Producto();
-
     }
 
     public void verificarAgregarPaquetes() {

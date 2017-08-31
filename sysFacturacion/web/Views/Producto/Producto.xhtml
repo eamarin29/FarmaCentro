@@ -12,6 +12,15 @@
 
                 <p:growl id="message" showDetail="true" />
 
+                <!-- BOTON NUEVO PRODUCTO -->
+                <h:form>
+                    <p:commandButton value="Nuevo Producto" actionListener="#{productoBean.prepararNuevoProdcuto()}" 
+                                     oncomplete="PF('dialogNuevoProducto').show();"
+                                     update=":frmNuevoProducto">
+                    </p:commandButton> 
+                </h:form>  
+
+                <!-- AGREGAR NUEVO PRODUCTO -->
                 <h:form id="frmNuevoProducto">
                     <p:growl id="messageNuevoProducto" showDetail="true" />
                     <p:dialog id="dgNuevoProducto" widgetVar="dialogNuevoProducto" resizable="false"
@@ -285,6 +294,7 @@
                     </p:dialog>
                 </h:form>
 
+                <!-- MODIFICAR PRODUCTO -->
                 <h:form id="frmModificarProducto">
 
                     <p:dialog id="dgModificarProducto" widgetVar="dialogModificarProducto" resizable="false" showEffect="explode"
@@ -540,7 +550,6 @@
                                 </td>
                                 <td>
                                     <p:selectBooleanCheckbox id="checkConservarStock" style="background-color: white;" value="#{productoBean.checkConservarStock}">
-                                        <p:ajax update="" listener="#{productoBean.selectCheckConservarStock()}" />
                                     </p:selectBooleanCheckbox>
                                 </td>
                             </tr>
@@ -557,6 +566,32 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>      
+
+                <!-- AGREGAR AL STOCK -->
+                <h:form id="frmAgregarProducto">
+                    <p:growl id="message" showDetail="true" />
+                    <p:dialog id="dgAgregarProducto" widgetVar="dialogAgregarProducto" resizable="false" showEffect="explode"
+                              hideEffect="explode" modal="true" header="Agregar producto">
+                        <p:messages id="messageAgregarProductos"  showDetail="true" autoUpdate="true" closable="true"  /> 
+                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
+                            <p:outputLabel value="Adicionar al Stock actual (U)"></p:outputLabel>
+
+                            <p:inputNumber id="txtAdicionarProductos" binding="#{productoBean.txtAdicionarProductos}" decimalPlaces="0" style="width: 100%;" >
+                                <f:convertNumber type="number" pattern="#0" />
+                            </p:inputNumber>
+                        </p:panelGrid>
+                        <br></br>
+                        <p:commandButton id="btnGuardarPoductoModificado" 
+                                         action="#{productoBean.adicionarProductosStock()}" 
+                                         update="frmMostrarProductos:tablaProductos, frmAgregarProducto:messageAgregarProductos, frmAgregarProducto:txtAdicionarProductos, frmAgregarProducto"
+                                         title="Guardar cambios" icon="ui-icon-guardar2">
+                        </p:commandButton>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar"
+                                         action="#{productoBean.cancelarAdicionarProductosStock()}" 
+                                         update="frmMostrarProductos:tablaProductos, frmAgregarProducto:messageAgregarProductos, frmAgregarProducto:txtAdicionarProductos, frmAgregarProducto">
+                        </p:commandButton>
+                    </p:dialog>
+                </h:form>  
 
                 <h:form id="frmEliminarProducto">
                     <p:growl id="message" showDetail="true" />
@@ -575,40 +610,6 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>
-
-                <h:form>
-                    <p:commandButton value="Nuevo Producto" actionListener="#{productoBean.prepararNuevoProdcuto()}" 
-                                     oncomplete="PF('dialogNuevoProducto').show();"
-                                     update=":frmNuevoProducto">
-                    </p:commandButton> 
-                </h:form>  
-
-                <h:form id="frmAgregarProducto">
-                    <p:growl id="message" showDetail="true" />
-                    <p:dialog id="dgAgregarProducto" widgetVar="dialogAgregarProducto" resizable="false" showEffect="explode"
-                              hideEffect="explode" modal="true" header="Agregar producto">
-
-                        <p:messages id="messageAgregarProductos"  showDetail="true" autoUpdate="true" closable="true"  /> 
-                        <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
-
-                            <p:outputLabel value="Adicionar al Stock actual (U)"></p:outputLabel>
-                            <p:inputNumber binding="#{productoBean.txtAdicionarProductos}" decimalPlaces="0" style="width: 100%;" >
-                                <f:convertNumber type="number" pattern="#0" />
-                            </p:inputNumber>
-
-                        </p:panelGrid>
-                        <br></br>
-                        <p:commandButton id="btnGuardarPoductoModificado" 
-                                         action="#{productoBean.adicionarProductosStock()}" 
-                                         update="frmMostrarProductos:tablaProductos, frmAgregarProducto:messageAgregarProductos, frmAgregarProducto"
-                                         title="Guardar cambios" icon="ui-icon-guardar2">
-                        </p:commandButton>
-                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar"
-                                         action="#{productoBean.cancelarAdicionarProductosStock()}" 
-                                         update="frmMostrarProductos:tablaProductos, frmAgregarProducto:messageAgregarProductos, frmAgregarProducto">
-                        </p:commandButton>
-                    </p:dialog>
-                </h:form>  
 
                 <h:form id="frmAgregarPaquetes">
                     <p:dialog id="dgAgregarPaquetes" widgetVar="dialogAgregarPaquetes" resizable="false" showEffect="explode"
@@ -834,7 +835,6 @@
                         </p:column>
                     </p:dataTable>    
                 </h:form> 
-
             </ui:define>
         </ui:composition>
     </body>

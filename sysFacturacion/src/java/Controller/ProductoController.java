@@ -369,7 +369,7 @@ public class ProductoController {
         return ret;
     }
 
-        public boolean obtenerProductoPorCodigoBarrasAndCodComunExiste(String codBarras, BigDecimal codComun) {
+    public boolean obtenerProductoPorCodigoBarrasAndCodComunExiste(String codBarras, BigDecimal codComun) {
         //true, existe, no lo puede agregar
         boolean ret = false;
 
@@ -400,5 +400,38 @@ public class ProductoController {
         }
         return ret;
     }
-    
+
+    public Producto verificarProductoEnFactura(BigDecimal codProducto) {
+
+        Producto ret = new Producto();
+        ret = null;
+
+        try {
+
+            Conexion c = new Conexion();
+            Connection conn = c.Conectar();
+
+            //consultar si cedula existe
+            PreparedStatement consulta = conn.prepareStatement("SELECT * FROM DETALLE_FACTURA WHERE CODPRODUCTO=?");
+            consulta.setBigDecimal(1, codProducto);
+
+            ResultSet rs = consulta.executeQuery();
+
+            if (rs.next()) {
+                Producto p1 = new Producto();
+                p1.setCodigo(new BigDecimal(3333));
+                ret = p1;
+                conn.close();
+                rs.close();
+            } else {
+                ret = null;
+                conn.close();
+                rs.close();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
 }
