@@ -79,11 +79,11 @@
                             <h:outputText value="#{fa.anulada}"></h:outputText>
                         </p:column>
                         <p:column headerText="Acciones">
-                            <p:commandButton title="Eliminar registro" icon="ui-icon-delete2" 
+                           <!-- <p:commandButton title="Eliminar registro" icon="ui-icon-delete2" 
                                              oncomplete="PF('dialogEliminarFactura').show();" update=":frmEliminarFactura">  
                                 <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
                                 </f:setPropertyActionListener> 
-                            </p:commandButton> 
+                            </p:commandButton> -->
                             <p:commandButton title="Imprimir factura" icon="imprimir" 
                                              oncomplete="PF('dialogImprimirFactura').show();" update=":frmImprimirFactura">  
                                 <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
