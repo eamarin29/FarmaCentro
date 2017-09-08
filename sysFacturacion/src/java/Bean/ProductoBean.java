@@ -2078,12 +2078,9 @@ public class ProductoBean implements Serializable {
                 txtUnidadXPaqueteModificar1.setDisabled(false);
                 txtCompraModificar1.setDisabled(false);
                 txtDescuentoCompraModificar1.setDisabled(false);
-                txtCompraRealModificar1.setDisabled(false);
                 txtPorcentajeUtilidadModificar1.setDisabled(false);
-                txtVentaSugeridaModificar1.setDisabled(false);
                 txtVentaRealModificar1.setDisabled(false);
                 txtComisionModificar1.setDisabled(false);
-                txtPrecioComisionModificar1.setDisabled(false);
                 txtStockMinimoModificar1.setDisabled(false);
 
                 context.execute("PF('dialogModificarProducto').show();");
@@ -2161,12 +2158,9 @@ public class ProductoBean implements Serializable {
                 txtUnidadXPaqueteModificar1.setDisabled(false);
                 txtCompraModificar1.setDisabled(false);
                 txtDescuentoCompraModificar1.setDisabled(false);
-                txtCompraRealModificar1.setDisabled(false);
                 txtPorcentajeUtilidadModificar1.setDisabled(false);
-                txtVentaSugeridaModificar1.setDisabled(false);
                 txtVentaRealModificar1.setDisabled(false);
                 txtComisionModificar1.setDisabled(false);
-                txtPrecioComisionModificar1.setDisabled(false);
                 txtStockMinimoModificar1.setDisabled(false);
 
                 txtCodigoBarrasModificar2.setDisabled(false);
@@ -2443,12 +2437,9 @@ public class ProductoBean implements Serializable {
                 txtUnidadXPaqueteModificar1.setDisabled(false);
                 txtCompraModificar1.setDisabled(false);
                 txtDescuentoCompraModificar1.setDisabled(false);
-                txtCompraRealModificar1.setDisabled(false);
                 txtPorcentajeUtilidadModificar1.setDisabled(false);
-                txtVentaSugeridaModificar1.setDisabled(false);
                 txtVentaRealModificar1.setDisabled(false);
                 txtComisionModificar1.setDisabled(false);
-                txtPrecioComisionModificar1.setDisabled(false);
                 txtStockMinimoModificar1.setDisabled(false);
 
                 txtCodigoBarrasModificar2.setDisabled(false);

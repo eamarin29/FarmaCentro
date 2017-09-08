@@ -7,7 +7,7 @@ public class Statics {
     public static String passCorreoApp = "123456789000";
     
     //Conexion a la app
-    public static String direccionIp = "server-pc";
+    public static String direccionIp = "eduar-pc";
     public static String puerto = "8084";
     public static String nombreApp = "FarmaCentro";
     

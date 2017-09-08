@@ -434,4 +434,25 @@ public class ProductoController {
         }
         return ret;
     }
+
+    public List<Producto> listaDeProductosPorCodComunOrderByOrden(BigDecimal codComun) {
+
+        List<Producto> lista = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction t = session.beginTransaction();
+        String hql = "FROM Producto WHERE codComun=:codComun ORDER BY orden DESC";
+        Query q = session.createQuery(hql);
+        q.setParameter("codComun", codComun);
+
+        try {
+            lista = q.list();
+            t.commit();
+            session.close();
+        } catch (HibernateException e) {
+            t.rollback();
+        }
+        return lista;
+
+    }
+
 }
