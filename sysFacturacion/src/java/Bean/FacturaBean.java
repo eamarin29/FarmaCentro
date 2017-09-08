@@ -610,7 +610,7 @@ public class FacturaBean implements Serializable {
                                 totalPagarFactura();
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
-                                
+
                                 this.cantidad.setValue("0");
 
                             } else if (productoSeleccionado.getOrden() == 2) {
@@ -662,7 +662,7 @@ public class FacturaBean implements Serializable {
                                 totalPagarFactura();
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
-                                
+
                                 this.cantidad.setValue("0");
 
                             } else {
@@ -714,15 +714,295 @@ public class FacturaBean implements Serializable {
                                 totalPagarFactura();
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
-                                
+
                                 this.cantidad.setValue("0");
 
                             }
 
                         } else if (listaProductosCodComunSecundaria.size() == 2) {
 
-                        } else {
+                            if (productoSeleccionado.getOrden() == 3) {
 
+                                //tres lineas
+                                //cajas o sobres
+                                int unidades_vendidas = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+
+                                //sobres o unidades
+                                Producto p2 = new Producto();
+                                for (int i = 0; i < listaProductosCodComunSecundaria.size(); i++) {
+                                    if (listaProductosCodComunSecundaria.get(i).getOrden() == 2) {
+                                        p2 = listaProductosCodComunSecundaria.get(i);
+                                    }
+                                }
+                                BigDecimal sob_uni_quedan = new BigDecimal(unidades_vendidas / p2.getUnidadXPaquete());
+                                p2.setStockActUni(p2.getStockActUni() - sob_uni_quedan.longValue());
+
+                                //actualizo objetos
+                                if (this.listaActualizarStock.contains(productoSeleccionado)) {
+                                } else {
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+                                }
+                                if (this.listaActualizarStock.contains(p2)) {
+                                } else {
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p2);
+                                }
+
+                                double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                totalPagarFactura();
+                                context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                this.cantidad.setValue("0");
+
+                            } else if (productoSeleccionado.getOrden() == 2) {
+                                //dos lineas
+
+                                //unidades o sobre
+                                int unidades_vendidas = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+
+                                //sobres o cajas
+                                Producto p2 = new Producto();
+                                for (int i = 0; i < listaProductosCodComunSecundaria.size(); i++) {
+                                    if (listaProductosCodComunSecundaria.get(i).getOrden() == 3) {
+                                        p2 = listaProductosCodComunSecundaria.get(i);
+                                    }
+                                }
+                                BigDecimal sob_caj_quedan = new BigDecimal(productoSeleccionado.getStockActUni() / p2.getUnidadXPaquete().intValue());
+                                p2.setStockActUni(sob_caj_quedan.longValue());
+
+                                //actualizo objetos
+                                if (this.listaActualizarStock.contains(productoSeleccionado)) {
+                                } else {
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+                                }
+                                if (this.listaActualizarStock.contains(p2)) {
+                                } else {
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p2);
+                                }
+
+                                double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                totalPagarFactura();
+                                context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                this.cantidad.setValue("0");
+
+                            }
+
+                        } else if (listaProductosCodComunSecundaria.size() == 1) {
+
+                        } else {
+                            //-----
+                            if (listaProductosCodComun.size() == 3) {
+
+                                if (productoSeleccionado.getOrden() == 3) {
+
+                                    //las tres lineas
+                                    //caja
+                                    int unidades_vendidad = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                    productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+                                    long unidades_que_quedan = listaProductosCodComun.get(2).getStockActUni().intValue() - unidades_vendidad;
+
+                                    //sobres
+                                    Producto p1 = new Producto();
+                                    p1 = listaProductosCodComun.get(1);
+                                    BigDecimal sobres_que_quedan = new BigDecimal(unidades_que_quedan / p1.getUnidadXPaquete());
+                                    p1.setStockActUni(sobres_que_quedan.longValue());
+
+                                    //unidades
+                                    Producto p2 = new Producto();
+                                    p2 = listaProductosCodComun.get(2);
+                                    p2.setStockActUni(unidades_que_quedan);
+
+                                    //actualizo objetos
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p1);
+
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p2);
+
+                                    double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                    this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                    totalPagarFactura();
+                                    context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                    context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                    this.cantidad.setValue("0");
+
+                                } else if (productoSeleccionado.getOrden() == 2) {
+
+                                    //sobres
+                                    int unidades_vendidad = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                    productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+                                    long unidades_que_quedan = listaProductosCodComun.get(2).getStockActUni().intValue() - unidades_vendidad;
+
+                                    //cajas
+                                    Producto p1 = new Producto();
+                                    p1 = listaProductosCodComun.get(0);
+                                    BigDecimal cajas_que_quedan = new BigDecimal(unidades_que_quedan / p1.getUnidadXPaquete());
+                                    p1.setStockActUni(cajas_que_quedan.longValue());
+
+                                    //unidades
+                                    Producto p2 = new Producto();
+                                    p2 = listaProductosCodComun.get(2);
+                                    p2.setStockActUni(unidades_que_quedan);
+
+                                    //actualizo objetos
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p1);
+
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p2);
+
+                                    double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                    this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                    totalPagarFactura();
+                                    context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                    context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                    this.cantidad.setValue("0");
+
+                                } else {
+
+                                    //las tres lineas
+                                    //unidades
+                                    int unidades_vendidad = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                    productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+                                    long unidades_que_quedan = listaProductosCodComun.get(2).getStockActUni().intValue() - unidades_vendidad;
+
+                                    //sobres
+                                    Producto p1 = new Producto();
+                                    p1 = listaProductosCodComun.get(1);
+                                    BigDecimal sobres_que_quedan = new BigDecimal(unidades_que_quedan / p1.getUnidadXPaquete());
+                                    p1.setStockActUni(sobres_que_quedan.longValue());
+
+                                    //cajas
+                                    Producto p2 = new Producto();
+                                    p2 = listaProductosCodComun.get(0);
+                                    BigDecimal cajas_que_quedan = new BigDecimal(unidades_que_quedan / p2.getUnidadXPaquete());
+                                    p2.setStockActUni(cajas_que_quedan.longValue());
+
+                                    //actualizo objetos
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p1);
+
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p2);
+
+                                    double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                    this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                    totalPagarFactura();
+                                    context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                    context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                    this.cantidad.setValue("0");
+                                }
+
+                            } else if (listaProductosCodComun.size() == 2) {
+
+                                if (productoSeleccionado.getOrden() == 3) {
+
+                                    //dos lineas
+                                    //cajas o sobres
+                                    int unidades_vendidas = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                    productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+
+                                    //sobres o unidades
+                                    Producto p2 = new Producto();
+                                    for (int i = 0; i < listaProductosCodComun.size(); i++) {
+                                        if (listaProductosCodComun.get(i).getOrden() == 2) {
+                                            p2 = listaProductosCodComun.get(i);
+                                        }
+                                    }
+                                    BigDecimal sob_uni_quedan = new BigDecimal(unidades_vendidas / p2.getUnidadXPaquete());
+                                    p2.setStockActUni(p2.getStockActUni() - sob_uni_quedan.longValue());
+
+                                    //actualizo objetos
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p2);
+
+                                    double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                    this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                    totalPagarFactura();
+                                    context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                    context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                    this.cantidad.setValue("0");
+
+                                } else if (productoSeleccionado.getOrden() == 2) {
+                                    //dos lineas
+
+                                    //unidades o sobre
+                                    int unidades_vendidas = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                    productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+
+                                    //sobres o cajas
+                                    Producto p2 = new Producto();
+                                    for (int i = 0; i < listaProductosCodComun.size(); i++) {
+                                        if (listaProductosCodComun.get(i).getOrden() == 3) {
+                                            p2 = listaProductosCodComun.get(i);
+                                        }
+                                    }
+                                    long uni_quedan = (productoSeleccionado.getStockActUni() * productoSeleccionado.getUnidadXPaquete());
+                                    BigDecimal sob_caj_quedan = new BigDecimal(uni_quedan / p2.getUnidadXPaquete().intValue());
+                                    p2.setStockActUni(sob_caj_quedan.longValue());
+
+                                    //actualizo objetos
+                                    //actualizo objetos
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+                                    this.posListaActualizarStock++;
+                                    this.listaActualizarStock.add(this.posListaActualizarStock, p2);
+
+                                    double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                    this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                    totalPagarFactura();
+                                    context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                    context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                    this.cantidad.setValue("0");
+
+                                }
+
+                            } else {
+                                //Va ingresar un producto con una linea
+
+                                int unidades_vendidas = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+
+                                //actualizo objetos
+                                this.posListaActualizarStock++;
+                                this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+                                double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                totalPagarFactura();
+                                context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                this.cantidad.setValue("0");
+                            }
                         }
 
                     } else { //NO hay productos en la factura
@@ -843,16 +1123,98 @@ public class FacturaBean implements Serializable {
 
                         } else if (listaProductosCodComun.size() == 2) {
 
-                        } else {
+                            if (productoSeleccionado.getOrden() == 3) {
 
+                                //dos lineas
+                                //cajas o sobres
+                                int unidades_vendidas = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+
+                                //sobres o unidades
+                                Producto p2 = new Producto();
+                                for (int i = 0; i < listaProductosCodComun.size(); i++) {
+                                    if (listaProductosCodComun.get(i).getOrden() == 2) {
+                                        p2 = listaProductosCodComun.get(i);
+                                    }
+                                }
+                                BigDecimal sob_uni_quedan = new BigDecimal(unidades_vendidas / p2.getUnidadXPaquete());
+                                p2.setStockActUni(p2.getStockActUni() - sob_uni_quedan.longValue());
+
+                                //actualizo objetos
+                                this.posListaActualizarStock++;
+                                this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+                                this.posListaActualizarStock++;
+                                this.listaActualizarStock.add(this.posListaActualizarStock, p2);
+
+                                double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                totalPagarFactura();
+                                context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                this.cantidad.setValue("0");
+
+                            } else if (productoSeleccionado.getOrden() == 2) {
+                                //dos lineas
+
+                                //unidades o sobre
+                                int unidades_vendidas = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                                productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+
+                                //sobres o cajas
+                                Producto p2 = new Producto();
+                                for (int i = 0; i < listaProductosCodComun.size(); i++) {
+                                    if (listaProductosCodComun.get(i).getOrden() == 3) {
+                                        p2 = listaProductosCodComun.get(i);
+                                    }
+                                }
+                                long uni_quedan = (productoSeleccionado.getStockActUni() * productoSeleccionado.getUnidadXPaquete());
+                                BigDecimal sob_caj_quedan = new BigDecimal(uni_quedan / p2.getUnidadXPaquete().intValue());
+                                p2.setStockActUni(sob_caj_quedan.longValue());
+
+                                //actualizo objetos
+                                //actualizo objetos
+                                this.posListaActualizarStock++;
+                                this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+                                this.posListaActualizarStock++;
+                                this.listaActualizarStock.add(this.posListaActualizarStock, p2);
+
+                                double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                                this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                                totalPagarFactura();
+                                context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                                context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                                this.cantidad.setValue("0");
+
+                            }
+
+                        } else {
+                            //solo es de una linea
+
+                            //dos lineas
+                            //unidades, sobre o caja
+                            int unidades_vendidas = cantidad_ingresada * productoSeleccionado.getUnidadXPaquete().intValue();
+                            productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
+
+                            //actualizo objetos
+                            this.posListaActualizarStock++;
+                            this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
+
+                            double ventaTotalDetalle = cantidad_ingresada * productoSeleccionado.getPrecioVentaReal().doubleValue();
+                            this.listaDetalleFactura.add(new DetalleFactura(null, null, productoSeleccionado, new BigDecimal(cantidad_ingresada), new BigDecimal(ventaTotalDetalle)));
+                            totalPagarFactura();
+                            context.execute("PF('dialogMostrarTodosProdutos').hide();");
+                            context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
+
+                            this.cantidad.setValue("0");
                         }
                     }
-
                 }
-
             }
         }
-
     }
 
     public boolean verificarDetalleFactura(BigDecimal codigo) {
@@ -939,6 +1301,7 @@ public class FacturaBean implements Serializable {
                         facturaGuardar.setVendedor(vendedorGuardar);
                         facturaGuardar.setTotalVenta(this.factura.getTotalVenta());
                         facturaGuardar.setFechaRegistro(fecha);
+                        facturaGuardar.setAnulada('N');
 
                         facturaController.newFactura(facturaGuardar);
 
@@ -1022,23 +1385,9 @@ public class FacturaBean implements Serializable {
 
     public void limpiarFactura() {
 
-        this.listaProductosSecundario1 = new ArrayList<>();
-        this.listaProductosSecundario2 = new ArrayList<>();
-        this.listaProductosSecundario3 = new ArrayList<>();
-
         listaDetalleFactura = new ArrayList<>();
 
-        productoSecundario1 = new Producto();
-        productoSecundario2 = new Producto();
-        productoSecundario3 = new Producto();
-
-        listaActualizarStock = new ArrayList<>();
-
-        productoSeleccionado = new Producto();
-
-        unidades_faltantes1 = 0;
-        unidades_faltantes2 = 0;
-        unidades_faltantes3 = 0;
+        this.listaActualizarStock = new ArrayList<>();
 
         listaProductosBuscar = new ArrayList<>();
 
@@ -1060,6 +1409,19 @@ public class FacturaBean implements Serializable {
         limpiarFactura();
         this.habilitarImpresora = true;
         this.habilitarBtnRegistrar = false;
+        this.productoSeleccionado = new Producto();
+
+        this.listaDetalleFactura = new ArrayList<>();
+        cliente = null;
+        factura = new Factura();
+        ultimaFactura = new Factura();
+
+        this.cantidadProductoDigitado = "1";
+        this.cantidadProductoDigitadoxText = "1";
+        this.CantidadProductoModificar = "1";
+
+        this.codigoBarras = "";
+
     }
 
     public void verReporte() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
