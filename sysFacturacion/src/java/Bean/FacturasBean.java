@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import Model.Factura;
 import Model.Producto;
+import Model.Usuario;
 import java.math.BigDecimal;
 import org.primefaces.context.RequestContext;
 
@@ -30,6 +31,8 @@ public class FacturasBean implements Serializable {
 
     private Factura anularFactura;
 
+    private List<Usuario> filtroFacturas;
+
     public FacturasBean() {
     }
 
@@ -37,6 +40,14 @@ public class FacturasBean implements Serializable {
     public void Init() {
         factura = new Factura();
         anularFactura = new Factura();
+    }
+
+    public List<Usuario> getFiltroFacturas() {
+        return filtroFacturas;
+    }
+
+    public void setFiltroFacturas(List<Usuario> filtroFacturas) {
+        this.filtroFacturas = filtroFacturas;
     }
 
     public List<Factura> getListaFactura() {

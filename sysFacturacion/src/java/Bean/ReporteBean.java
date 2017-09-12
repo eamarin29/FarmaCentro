@@ -35,6 +35,9 @@ public class ReporteBean implements Serializable {
     private String vendedor;
     private Map<String, String> vendedores;
 
+    private Date fechaInicial_3;
+    private Date fechaFinal_3;
+
     public ReporteBean() {
     }
 
@@ -49,6 +52,22 @@ public class ReporteBean implements Serializable {
             reportes.put(listaReportes.get(i).getDescripcion(), String.valueOf(listaReportes.get(i).getCodigo()));
         }
 
+    }
+
+    public Date getFechaInicial_3() {
+        return fechaInicial_3;
+    }
+
+    public void setFechaInicial_3(Date fechaInicial_3) {
+        this.fechaInicial_3 = fechaInicial_3;
+    }
+
+    public Date getFechaFinal_3() {
+        return fechaFinal_3;
+    }
+
+    public void setFechaFinal_3(Date fechaFinal_3) {
+        this.fechaFinal_3 = fechaFinal_3;
     }
 
     public String getVendedor() {
@@ -116,6 +135,12 @@ public class ReporteBean implements Serializable {
 
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("PF('dialogReporte1').show();");
+            } else if (this.reporte.equals("2")) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('dialogReporte2').show();");
+            } else if (this.reporte.equals("3")) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('dialogReporte3').show();");
             }
         }
     }
@@ -146,4 +171,51 @@ public class ReporteBean implements Serializable {
         }
 
     }
+
+    public void imprimirReporte2() {
+
+        try {
+
+            //inicia metodo de visualizacion de la factura
+            ImpresionReportes rFactura = new ImpresionReportes();
+
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+            String ruta = servletContext.getRealPath("/Reportes/2/Inventario.jasper");
+
+            rFactura.getReporte2(ruta);
+            FacesContext.getCurrentInstance().responseComplete();
+
+            //finaliza metodo de la visualizacion de la factura
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void imprimirReporte3() {
+
+        try {
+
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            String fecha_ini = formateador.format(this.fechaInicial_3);
+            String fecha_fin = formateador.format(this.fechaFinal_3);
+
+            //inicia metodo de visualizacion de la factura
+            ImpresionReportes rFactura = new ImpresionReportes();
+
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+            String ruta = servletContext.getRealPath("/Reportes/CierreCaja/CierreCaja.jasper");
+
+            rFactura.getReporte3(ruta, this.fechaFinal_3, this.fechaInicial_3);
+            FacesContext.getCurrentInstance().responseComplete();
+
+            //finaliza metodo de la visualizacion de la factura
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
 }

@@ -5,6 +5,7 @@ import static ClasesAuxiliares.Statics.*;
 import ClasesAuxiliares.Validaciones;
 import Controller.AdministradorController;
 import Controller.UsuarioController;
+import Model.Producto;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -39,12 +40,22 @@ public class AdministradorBean implements Serializable {
 
     private String emailAntiguo;
 
+    private List<Usuario> filtroAdmins;
+    
     public AdministradorBean() {
     }
 
     @PostConstruct
     public void Init() {
         usuario = new Usuario();
+    }
+
+    public List<Usuario> getFiltroAdmins() {
+        return filtroAdmins;
+    }
+
+    public void setFiltroAdmins(List<Usuario> filtroAdmins) {
+        this.filtroAdmins = filtroAdmins;
     }
 
     public String getEmailAntiguo() {

@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <body>
         <ui:composition template="./../../Plantilla/Plantilla.xhtml">
             <ui:define name="content">
@@ -76,7 +77,84 @@
 
                     </p:dialog>  
                 </h:form> 
-                
+
+                <!-- DIALOGO CONSULTAR PRODUCTOS -->   
+                <h:form id="frmConsultarProductos">
+                    <p:dialog id="dlgConsultarProductos" widgetVar="dialogConsultarProductos" resizable="false"
+                              showEffect="explode" hideEffect="explode" modal="true" header="Consultar Productos">
+                        <p:messages id="messageConsultarProductos"  showDetail="true" autoUpdate="true" closable="true"/>
+
+                        <p:dataTable id="tablaProductosConsultar" var="prC" value="#{productoBean.listaProductosConsultar}" rows="4"
+                                     paginator="true" rowsPerPageTemplate="4,6,10,20"
+                                     emptyMessage="No hay Productos registrados hasta el momento."
+                                     widgetVar="parametrosTablaConsultar" paginatorPosition="bottom"
+                                     filteredValue="#{productoBean.filtroProductosConsultar}" 
+                                     scrollable="true"
+                                     scrollWidth="97%" style="width: 1270px; height: 400px;"
+                                     scrollHeight="97%" >
+
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar en cualquier columna: " />
+                                    <p:spacer></p:spacer>
+                                    <p:inputText id="globalFilter" onkeyup="PF('parametrosTablaConsultar').filter()" style="width:150px" placeholder="Buscar..."/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column style="text-align: center;  width: 200px;"  filterBy="#{prC.codBarras}" filterMatchMode="exact" headerText="Código de Barras:">
+                                <h:outputText value="#{prC.codBarras}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 300px;" filterBy="#{prC.nombre}" filterMatchMode="contains"  headerText="Descripción del Producto:">
+                                <h:outputText value="#{prC.nombre}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.stockActUni}" filterMatchMode="contains" headerText="Stock actual">
+                                <h:outputText value="#{Cpr.stockActUni}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 130px;" filterBy="#{prC.paquete}" filterMatchMode="contains"  headerText="Descripción Paquete">
+                                <h:outputText value="#{prC.paquete}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.unidadXPaquete}" filterMatchMode="contains" headerText="Unidades X Paquete">
+                                <h:outputText value="#{prC.unidadXPaquete}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.precioCompra}" filterMatchMode="contains" headerText="Precio Compra">
+                                <h:outputText value="#{prC.precioCompra}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </h:outputText>    
+                            </p:column>
+                            <p:column style="text-align: center; width: 130px;" filterBy="#{prC.porcentajeDescuento}" filterMatchMode="contains"  headerText="%Descuento Compra">
+                                <h:outputText value="#{prC.porcentajeDescuento}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 150px;" filterBy="#{prC.precioCompraReal}" filterMatchMode="contains" headerText="Precio Compra Real">
+                                <h:outputText value="#{prC.precioCompraReal}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </h:outputText>    
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.porcentajeUtilidad}" filterMatchMode="contains"  headerText="% de Utilidad">
+                                <h:outputText value="#{prC.porcentajeUtilidad}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.ventaSugerida}" filterMatchMode="contains" headerText="Precio Venta Sugerido">
+                                <h:outputText value="#{prC.ventaSugerida}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </h:outputText>    
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.precioVentaReal}" filterMatchMode="contains" headerText="Precio Venta Real">
+                                <h:outputText value="#{prC.precioVentaReal}">
+                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
+                                </h:outputText>    
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.comision}" filterMatchMode="contains" headerText="$ de Comisión">
+                                <h:outputText value="#{prC.comision}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 130px;" filterBy="#{prC.porcentajeComision}" filterMatchMode="contains"  headerText="% de Comisión">
+                                <h:outputText value="#{prC.porcentajeComision}"></h:outputText>
+                            </p:column>
+                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.stockMinUni}" filterMatchMode="contains" headerText="Stock mínimo">
+                                <h:outputText value="#{prC.stockMinUni}"></h:outputText>
+                            </p:column>
+                        </p:dataTable>  
+                    </p:dialog>  
+
+                </h:form> 
+
                 <h:form id="frmFactura">  
                     <p:growl id="message" showDetail="true" />  
                     <!--DIALOGO PARA BUSCAR EL CLIENTE  -->
@@ -277,11 +355,11 @@
                                                      return false;
                                                  }" >
                                 <p:ajax  event="change" listener="#{facturaBean.mostrarDialogPedirCantidadProductoPorText()}"
-                                         update=":frmMostrarTodosProductos:dlgMostrarTodosProdutos"></p:ajax>  
+                                         update=":frmMostrarTodosProductos:dlgMostrarTodosProdutos, frmMostrarTodosProductos:tablaProductos"></p:ajax>  
                             </p:inputText>
-                          <!--  <p:commandButton title="Buscar producto" icon="buscar" oncomplete="PF('dialogBuscarProducto').show();"
+                            <p:commandButton title="Buscar producto" icon="buscar" oncomplete="PF('dialogConsultarProductos').show();"
                                              update="">  
-                            </p:commandButton>  -->
+                            </p:commandButton> 
                         </h:panelGrid>
                         <p:separator/>
                         <!-- DETALLE DE FACTURA -->
@@ -311,19 +389,19 @@
                                 </h:outputText>
                             </p:column>
                             <p:column headerText="Acciones" style="font-size: 16px; width: 200px;">
-                             <!--   <p:commandButton title="Modificar registro" oncomplete="PF('dialogModificarCantidad').show();"
-                                                 update=":frmFactura:dlgModificarCantidad" icon="ui-icon-modificar" > 
-                                    <f:setPropertyActionListener target="#{facturaBean.codBarrasProductoModificarCantidad}"
-                                                                 value="#{item.producto.codBarras}">
-                                    </f:setPropertyActionListener> 
-                                </p:commandButton>
-                                <p:commandButton title="Eliminar detalle" icon="ui-icon-delete2" 
-                                                 oncomplete="PF('dialogEliminarDetalle').show();"
-                                                 update=":frmFactura:dlgEliminarDetalle">  
-                                    <f:setPropertyActionListener target="#{facturaBean.codBarrasProductoEliminarDetalle}"
-                                                                 value="#{item.producto.codBarras}">
-                                    </f:setPropertyActionListener> 
-                                </p:commandButton>  -->
+                                <!--   <p:commandButton title="Modificar registro" oncomplete="PF('dialogModificarCantidad').show();"
+                                                    update=":frmFactura:dlgModificarCantidad" icon="ui-icon-modificar" > 
+                                       <f:setPropertyActionListener target="#{facturaBean.codBarrasProductoModificarCantidad}"
+                                                                    value="#{item.producto.codBarras}">
+                                       </f:setPropertyActionListener> 
+                                   </p:commandButton>
+                                   <p:commandButton title="Eliminar detalle" icon="ui-icon-delete2" 
+                                                    oncomplete="PF('dialogEliminarDetalle').show();"
+                                                    update=":frmFactura:dlgEliminarDetalle">  
+                                       <f:setPropertyActionListener target="#{facturaBean.codBarrasProductoEliminarDetalle}"
+                                                                    value="#{item.producto.codBarras}">
+                                       </f:setPropertyActionListener> 
+                                   </p:commandButton>  -->
                             </p:column>
                         </p:dataTable>
                         <br></br>
@@ -344,19 +422,18 @@
                         <h:commandLink style="margin-left: 50px;" action="#{facturaBean.verReporte()}" target="_blank" disabled="#{facturaBean.habilitarImpresora}">
                             <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
                         </h:commandLink>
-                        <p:commandButton style="margin-left: 50px;" actionListener="#{facturaBean.reiniciarVenta()}" value="Cancelar"
-                                         update=":frmFactura, :frmFactura:txtBuscarProductoXcodigoBarras, :frmFactura:txtBuscarCliente, frmPedirCantidadProductoSeleccionado">
-                        </p:commandButton>
+                        <h:commandLink style="margin-left: 50px;" action="#{facturaBean.reiniciarVenta()}" target="_blank" value="Nueva Venta">
+                        </h:commandLink>
                     </p:panel> 
                 </h:form>  
-                 
+
                 <h:form>  
                     <p:confirmDialog id="dlgConfirmDialog" widgetVar="dialogConfirmarVenta" global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                         <p:commandButton style="float: right;" value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                     </p:confirmDialog>
                 </h:form>  
-                 
+
             </ui:define>
         </ui:composition>
     </body>

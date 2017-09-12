@@ -10,9 +10,8 @@
         <ui:composition template="./../../Plantilla/Plantilla.xhtml">
             <ui:define name="content">   
                 <h3 class="titulo_gestion"> Gestión de Facturas</h3> 
-                <!--
-                DIALOGO ELIMINAR FACTURA
-                -->     
+
+                <!-- DIALOGO ELIMINAR FACTURA -->     
                 <h:form id="frmEliminarFactura">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgEliminarFactura" widgetVar="dialogEliminarFactura" resizable="false" showEffect="explode"
@@ -31,9 +30,8 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>     
-                <!--
-              DIALOGO IMPRIMIR FACTURA
-                -->     
+
+                <!-- DIALOGO IMPRIMIR FACTURA -->     
                 <h:form id="frmImprimirFactura">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgImprimirFactura" widgetVar="dialogImprimirFactura" resizable="false" showEffect="explode"
@@ -50,40 +48,45 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>  
+
                 <br></br>
-                <!--
-                TABLA MOSTRAR TODAS LAS FACTUAS
-                --> 
+
+                <!-- TABLA MOSTRAR TODAS LAS FACTUAS --> 
                 <h:form id="frmMostrarFacturas">
-                    <p:dataTable id="tablaFacturas" paginator="true" paginatorPosition="top" var="fa" 
-                                 value="#{facturasBean.listaFactura}"
-                                 emptyMessage="No hay facturas registrados hasta el momento.">
-                        <p:column  headerText="Número de factura">
+                    <p:dataTable id="tablaFacturas" var="fa" value="#{facturasBean.listaFactura}" rows="4"
+                                 paginator="true" rowsPerPageTemplate="2,4,10,20,40,80,160,320"
+                                 emptyMessage="No hay facturas registrados hasta el momento."
+                                 widgetVar="parametrosTabla" paginatorPosition="bottom"
+                                 filteredValue="#{facturasBean.filtroFacturas}" style="width: 100%;"
+                                 scrollable="true" scrollWidth="99.9%">
+                        <f:facet name="header">
+                            <p:outputPanel>
+                                <h:outputText value="Buscar en cualquier columna: " />
+                                <p:spacer></p:spacer>
+                                <p:inputText id="globalFilter" onkeyup="PF('parametrosTabla').filter()" style="width:150px" placeholder="Buscar..."/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{fa.codfactura}" filterMatchMode="contains" headerText="Número de factura">
                             <h:outputText value="#{fa.codfactura}"></h:outputText>
                         </p:column>
-                        <p:column headerText="Cédula cliente">
+                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{fa.cliente.codcliente}" filterMatchMode="contains" headerText="Cédula cliente">
                             <h:outputText value="#{fa.cliente.codcliente}"></h:outputText>
                         </p:column>
-                        <p:column headerText="Cédula vendedor">
+                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{fa.vendedor.cedula}" filterMatchMode="contains" headerText="Cédula vendedor">
                             <h:outputText value="#{fa.vendedor.cedula}"></h:outputText>
                         </p:column>
-                        <p:column headerText="Total factura">
+                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{fa.totalVenta}" filterMatchMode="contains" headerText="Total factura">
                             <h:outputText value="#{fa.totalVenta}">
                                 <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
                             </h:outputText>
                         </p:column>
-                        <p:column headerText="Fecha de registro">
+                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{fa.fechaRegistro}" filterMatchMode="contains" headerText="Fecha de registro">
                             <h:outputText value="#{fa.fechaRegistro}"></h:outputText>
                         </p:column>
-                        <p:column headerText="Anulada">
+                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{fa.anulada}" filterMatchMode="contains" headerText="Anulada">
                             <h:outputText value="#{fa.anulada}"></h:outputText>
                         </p:column>
-                        <p:column headerText="Acciones">
-                           <!-- <p:commandButton title="Eliminar registro" icon="ui-icon-delete2" 
-                                             oncomplete="PF('dialogEliminarFactura').show();" update=":frmEliminarFactura">  
-                                <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
-                                </f:setPropertyActionListener> 
-                            </p:commandButton> -->
+                        <p:column  style="text-align: center;  width: 300px;"  headerText="Acciones">
                             <p:commandButton title="Imprimir factura" icon="imprimir" 
                                              oncomplete="PF('dialogImprimirFactura').show();" update=":frmImprimirFactura">  
                                 <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
@@ -98,12 +101,14 @@
                         </p:column> 
                     </p:dataTable>    
                 </h:form>
+
                 <h:form>  
                     <p:confirmDialog id="dlgConfirmDialog" widgetVar="dialogConfirmarAnular" global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                         <p:commandButton style="float: right;" value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                     </p:confirmDialog>
                 </h:form>  
+
             </ui:define>
         </ui:composition>
     </body>

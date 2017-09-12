@@ -57,6 +57,57 @@
 
                     </p:dialog>
 
+                    <!--DIALOGO REPORTE 2  -->
+                    <p:dialog id="dlgReporte2" widgetVar="dialogReporte2" modal="true" resizable="false" 
+                              showEffect="explode" hideEffect="explode" header="Imprimir Reporte de Inventario" >
+
+                        <p:messages id="messageReporte2"  showDetail="true" autoUpdate="true" closable="true"  />
+
+                        ¿Está seguro que quiere imprimir el reporte de Inventario?
+
+                        <br></br> 
+                        <br></br> 
+                        <h:commandLink action="#{reporteBean.imprimirReporte2()}" target="_blank" >
+                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                        </h:commandLink>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte2').hide();">    
+                        </p:commandButton> 
+
+                    </p:dialog>
+
+                     <!--DIALOGO REPORTE 3  -->
+                    <p:dialog id="dlgReporte3" widgetVar="dialogReporte3" modal="true" resizable="false" 
+                              showEffect="explode" hideEffect="explode" header="Parámetros" >
+
+                        <p:messages id="messageReporte3"  showDetail="true" autoUpdate="true" closable="true"  />
+                        <table>
+                            <tr>
+                                <td>
+                                    <p:outputLabel>Fecha inicial: </p:outputLabel> 
+                                </td>
+                                <td>
+                                    <p:calendar id="fechainicial_3" value="#{reporteBean.fechaInicial_3}" showOn="button" />
+                                </td>
+                            </tr>
+                            <br></br>
+                            <tr>
+                                <td>
+                                    <p:outputLabel>Fecha final: </p:outputLabel> 
+                                </td>
+                                <td>
+                                    <p:calendar id="fechafinal_3" value="#{reporteBean.fechaFinal_3}" showOn="button"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <br></br> 
+                        <h:commandLink action="#{reporteBean.imprimirReporte3()}" target="_blank" >
+                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                        </h:commandLink>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte3').hide();">    
+                        </p:commandButton> 
+
+                    </p:dialog>
+
                     <table>
                         <tr>
                             <td>
@@ -76,6 +127,7 @@
                                                  update=":frmReportes :frmReportes:message :frmReportes:dlgReporte1"
                                                  actionListener="#{reporteBean.aceptarReporte()}">    
                                 </p:commandButton> 
+
                             </td>
                         </tr>
                     </table>

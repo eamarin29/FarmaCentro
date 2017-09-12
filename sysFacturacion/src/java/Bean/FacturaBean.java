@@ -497,6 +497,10 @@ public class FacturaBean implements Serializable {
                 }
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("PF('dialogMostrarTodosProdutos').show();");
+                context.update("frmMostrarTodosProductos:dlgMostrarTodosProdutos");
+                context.update("frmMostrarTodosProductos:tablaProductos");
+                
+                
             } else {
 
             }
@@ -1245,7 +1249,6 @@ public class FacturaBean implements Serializable {
                 totalPagarFactura += totalVentaxDetalle;
             }
         } catch (Exception e) {
-            System.out.println("--Error metodo: totalPagarFactura:facturaBean: " + e.getMessage());
         }
         factura.setTotalVenta(new BigDecimal(totalPagarFactura));
     }
@@ -1790,6 +1793,14 @@ public class FacturaBean implements Serializable {
         } finally {
             this.session.close();
         }
+    }
+
+    public void cancelarTablaConsultarProductos() {
+        
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogConsultarProductos').hide();");
+        context.execute("PF('parametrosTablaConsultar').filter();");
+
     }
 
 }

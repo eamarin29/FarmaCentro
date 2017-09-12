@@ -125,6 +125,9 @@ public class ProductoBean implements Serializable {
     private boolean checkConservarStock;
     private boolean checkActualizarLinea;
 
+    private List<Producto> listaProductosConsultar;
+    private List<Producto> filtroProductosConsultar;
+
     //-------------
     private InputNumber txtAdicionarProductos;
 
@@ -150,6 +153,25 @@ public class ProductoBean implements Serializable {
         productoViejo = null;
         this.listaProductosModificarCodComun = null;
 
+    }
+
+    public List<Producto> getListaProductosConsultar() {
+        ProductoController pDao = new ProductoController();
+        listaProductosConsultar = pDao.listarProductos();
+        return listaProductosConsultar;
+
+    }
+
+    public void setListaProductosConsultar(List<Producto> listaProductosConsultar) {
+        this.listaProductosConsultar = listaProductosConsultar;
+    }
+
+    public List<Producto> getFiltroProductosConsultar() {
+        return filtroProductosConsultar;
+    }
+
+    public void setFiltroProductosConsultar(List<Producto> filtroProductosConsultar) {
+        this.filtroProductosConsultar = filtroProductosConsultar;
     }
 
     public boolean isCheckActualizarLinea() {
@@ -998,16 +1020,16 @@ public class ProductoBean implements Serializable {
         this.producto = producto;
     }
 
-    public void prepararNuevoProdcuto() {
-        producto = new Producto();
-    }
-
     public List<Producto> getFiltroProductos() {
         return filtroProductos;
     }
 
     public void setFiltroProductos(List<Producto> filtroProductos) {
         this.filtroProductos = filtroProductos;
+    }
+
+    public void prepararNuevoProducto() {
+        producto = new Producto();
     }
 
     public void nuevoProducto() {
@@ -4489,144 +4511,6 @@ public class ProductoBean implements Serializable {
 
         selectCheck1();
         selectCheck2();
-    }
-
-    public void verificarAgregarPaquetes() {
-
-        ProductoController ProductoController = new ProductoController();
-        int ret = ProductoController.filasProductosPorCodBarras(producto.getCodBarras());
-
-        if (ret >= 4) {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("PF('parametrosTabla').filter();");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Este producto ya tiene demasiados paquetes."));
-            producto = new Producto();
-        } else {
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("PF('dialogAgregarPaquetes').show();");
-            context.execute("PF('parametrosTabla').filter();");
-        }
-
-    }
-
-    public void agregarPaquetes() {
-
-        RequestContext context = RequestContext.getCurrentInstance();
-
-        if (txtStockMinimoNuevo.getValue() == null || txtCantidadPaqueteNuevo.getValue() == null || txtDescripcionPaqueteNuevo.getValue().toString().equals("") || txtUnidadXPaqueteNuevo.getValue() == null || txtCompraNuevo.getValue() == null || txtDescuentoCompraNuevo.getValue() == null || txtPorcentajeUtilidadNuevo.getValue() == null || txtComisionNuevo.getValue() == null || txtVentaRealNuevo.getValue() == null) {
-            context.execute("PF('dialogAgregarPaquetes').show();");
-            context.execute("PF('parametrosTabla').filter();");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos con * no pueden ser 0."));
-        } else {
-            if (txtStockMinimoNuevo.getValue().equals("0") || txtCantidadPaqueteNuevo.getValue().equals("0") || txtUnidadXPaqueteNuevo.getValue().equals("0") || txtCompraNuevo.getValue().equals("0") || txtPorcentajeUtilidadNuevo.getValue().equals("0") || txtVentaRealNuevo.getValue().equals("0")) {
-                context.execute("PF('dialogAgregarPaquetes').show();");
-                context.execute("PF('parametrosTabla').filter();");
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El precio de venta real no puede ser menor al precio de venta sugerido"));
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos con * no pueden ser 0."));
-            } else {
-                double precio_sugerido = Double.parseDouble(txtVentaSugeridaNuevo.getValue().toString());
-                double precio_venta_real = Double.parseDouble(txtVentaRealNuevo.getValue().toString());
-
-                if (precio_venta_real < precio_sugerido) {
-                    context.execute("PF('dialogAgregarPaquetes').show();");
-                    context.execute("PF('parametrosTabla').filter();");
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "El precio de venta real no puede ser menor al precio de venta sugerido"));
-                } else {
-                    try {
-                        Long cod_producto = 0L;
-                        Producto p = new Producto();
-                        ProductoController ProductoController = new ProductoController();
-
-                        p = ProductoController.obtenerUltimoRegistro();
-                        if (ProductoController.obtenerCuantosRegistrosHayEnProducto() == 0) {
-                            cod_producto = Long.parseLong("1");
-                        } else {
-                            Integer num = p.getCodigo().intValue() + 1;
-                            cod_producto = Long.parseLong(num.toString());
-                        }
-
-                        BigDecimal cod = new BigDecimal(cod_producto);
-                        producto.setCodigo(cod);
-
-                        Long stock_actual = Long.valueOf(Integer.parseInt(txtCantidadPaqueteNuevo.getValue().toString()));
-                        producto.setStockActUni(stock_actual);
-
-                        producto.setPaquete(txtDescripcionPaqueteNuevo.getValue().toString().toUpperCase());
-
-                        producto.setUnidadXPaquete(Long.parseLong(txtUnidadXPaqueteNuevo.getValue().toString()));
-
-                        BigDecimal precio_compra = new BigDecimal(txtCompraNuevo.getValue().toString());
-                        producto.setPrecioCompra(precio_compra);
-
-                        BigDecimal prcentaje_descuento = new BigDecimal(txtDescuentoCompraNuevo.getValue().toString());
-                        producto.setPorcentajeDescuento(prcentaje_descuento);
-
-                        BigDecimal precio_compra_real = new BigDecimal(txtCompraRealNuevo.getValue().toString());
-                        producto.setPrecioCompraReal(precio_compra_real);
-
-                        BigDecimal porcentaje_utilidad = new BigDecimal(txtPorcentajeUtilidadNuevo.getValue().toString());
-                        producto.setPorcentajeUtilidad(porcentaje_utilidad);
-
-                        BigDecimal venta_sugerida = new BigDecimal(precio_sugerido);
-                        producto.setVentaSugerida(venta_sugerida);
-
-                        BigDecimal venta_real = new BigDecimal(precio_venta_real);
-                        producto.setPrecioVentaReal(venta_real);
-
-                        Long stock_minimo = Long.valueOf(Integer.parseInt(txtStockMinimoNuevo.getValue().toString()));
-                        producto.setStockMinUni(stock_minimo);
-
-                        BigDecimal comision = new BigDecimal(txtPrecioComisionNuevo.getValue().toString());
-                        producto.setComision(comision);
-
-                        BigDecimal porcentaje_comision = new BigDecimal(txtComisionNuevo.getValue().toString());
-                        producto.setPorcentajeComision(porcentaje_comision);
-
-                        ProductoController.newProducto(producto);
-
-                        limpiarNuevoPaquete();
-
-                        context.execute("PF('dialogAgregarPaquetes').hide();");
-                        context.execute("PF('parametrosTabla').filter();");
-
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "El producto fue agregado exitosamente."));
-                    } catch (Exception ex) {
-                        Logger.getLogger(ProductoBean.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            }
-        }
-
-    }
-
-    public void cancelarAgregarPaquetes() {
-
-        limpiarNuevoPaquete();
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('dialogAgregarPaquetes').hide();");
-        context.execute("PF('parametrosTabla').filter();");
-
-    }
-
-    public void limpiarNuevoPaquete() {
-
-        producto = new Producto();
-        productoViejo = null;
-
-        txtCantidadPaqueteNuevo.setValue(null);
-        txtDescripcionPaqueteNuevo.setValue(null);
-        txtUnidadXPaqueteNuevo.setValue(null);
-        txtCompraNuevo.setValue(null);
-        txtDescuentoCompraNuevo.setValue(null);
-        txtCompraRealNuevo.setValue(null);
-        txtPorcentajeUtilidadNuevo.setValue(null);
-        txtVentaSugeridaNuevo.setValue(null);
-        txtVentaRealNuevo.setValue(null);
-        txtComisionNuevo.setValue(null);
-        txtPrecioComisionNuevo.setValue(null);
-        txtStockMinimoNuevo.setValue(null);
-
     }
 
 }
