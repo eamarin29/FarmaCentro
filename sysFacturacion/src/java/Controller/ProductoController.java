@@ -455,4 +455,37 @@ public class ProductoController {
 
     }
 
+    public Producto verificarProductosVencidos() {
+
+        Producto ret = new Producto();
+        ret = null;
+
+        try {
+
+            Conexion c = new Conexion();
+            Connection conn = c.Conectar();
+
+            //consultar si cedula existe
+            PreparedStatement consulta = conn.prepareStatement("SELECT * FROM PRODUCTO WHERE TRUNC (FECHA_VENCIMIENTO) <= TO_DATE (SYSDATE, 'dd/MM/yy')");
+
+            ResultSet rs = consulta.executeQuery();
+
+            if (rs.next()) {
+                Producto p1 = new Producto();
+                p1.setCodigo(new BigDecimal(3333));
+                ret = p1;
+                conn.close();
+                rs.close();
+            } else {
+                ret = null;
+                conn.close();
+                rs.close();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProductoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ret;
+    }
+
 }

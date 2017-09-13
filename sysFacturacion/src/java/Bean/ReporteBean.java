@@ -141,6 +141,9 @@ public class ReporteBean implements Serializable {
             } else if (this.reporte.equals("3")) {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("PF('dialogReporte3').show();");
+            } else if (this.reporte.equals("4")) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('dialogReporte4').show();");
             }
         }
     }
@@ -209,6 +212,27 @@ public class ReporteBean implements Serializable {
             String ruta = servletContext.getRealPath("/Reportes/CierreCaja/CierreCaja.jasper");
 
             rFactura.getReporte3(ruta, this.fechaFinal_3, this.fechaInicial_3);
+            FacesContext.getCurrentInstance().responseComplete();
+
+            //finaliza metodo de la visualizacion de la factura
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void imprimirReporte4() {
+
+        try {
+
+            //inicia metodo de visualizacion de la factura
+            ImpresionReportes rFactura = new ImpresionReportes();
+
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+            String ruta = servletContext.getRealPath("/Reportes/ProductosVencidos/ProductosVencidos.jasper");
+
+            rFactura.getReporte4(ruta);
             FacesContext.getCurrentInstance().responseComplete();
 
             //finaliza metodo de la visualizacion de la factura

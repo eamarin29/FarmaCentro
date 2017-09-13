@@ -75,7 +75,7 @@
 
                     </p:dialog>
 
-                     <!--DIALOGO REPORTE 3  -->
+                    <!--DIALOGO REPORTE 3  -->
                     <p:dialog id="dlgReporte3" widgetVar="dialogReporte3" modal="true" resizable="false" 
                               showEffect="explode" hideEffect="explode" header="Parámetros" >
 
@@ -104,6 +104,24 @@
                             <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
                         </h:commandLink>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte3').hide();">    
+                        </p:commandButton> 
+
+                    </p:dialog>
+
+                    <!--DIALOGO REPORTE 4  -->
+                    <p:dialog id="dlgReporte4" widgetVar="dialogReporte4" modal="true" resizable="false" 
+                              showEffect="explode" hideEffect="explode" header="Imprimir Reporte de Productos vencidos" >
+
+                        <p:messages id="messageReporte4"  showDetail="true" autoUpdate="true" closable="true"  />
+
+                        ¿Está seguro que quiere imprimir el reporte de Productos vencidos?
+
+                        <br></br> 
+                        <br></br> 
+                        <h:commandLink action="#{reporteBean.imprimirReporte4()}" target="_blank" >
+                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                        </h:commandLink>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte4').hide();">    
                         </p:commandButton> 
 
                     </p:dialog>

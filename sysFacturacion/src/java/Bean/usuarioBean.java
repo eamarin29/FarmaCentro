@@ -5,8 +5,10 @@ import static ClasesAuxiliares.Statics.direccionIp;
 import static ClasesAuxiliares.Statics.nombreApp;
 import static ClasesAuxiliares.Statics.puerto;
 import ClasesAuxiliares.Validaciones;
+import Controller.ProductoController;
 import Controller.UsuarioController;
 import Controller.VendedorController;
+import Model.Producto;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -93,6 +95,17 @@ public class usuarioBean implements Serializable {
 
             }
         }
+        
+        //Mensaje de productos vencidos
+        ProductoController ProductoController = new ProductoController();
+        Producto pVencido = new Producto();
+        pVencido = ProductoController.verificarProductosVencidos();
+        
+        if(pVencido == null){
+        }else{
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Existen productos vencidos en el inventario. Consultar reporte"));
+        }
+        
         return btnLogin;
     }
 
