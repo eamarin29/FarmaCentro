@@ -1,8 +1,9 @@
 package Model;
-// Generated 24-ago-2017 11:56:35 by Hibernate Tools 4.3.1
+// Generated 12-sep-2017 18:01:40 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ public class Producto  implements java.io.Serializable {
      private Long unidadXPaquete;
      private BigDecimal codComun;
      private Integer orden;
+     private Date fechaVencimiento;
      private Set<DetalleFactura> detalleFacturas = new HashSet<DetalleFactura>(0);
 
     public Producto() {
@@ -38,7 +40,7 @@ public class Producto  implements java.io.Serializable {
     public Producto(BigDecimal codigo) {
         this.codigo = codigo;
     }
-    public Producto(BigDecimal codigo, String codBarras, String nombre, String paquete, BigDecimal precioCompra, BigDecimal porcentajeDescuento, BigDecimal precioCompraReal, BigDecimal porcentajeUtilidad, BigDecimal precioVentaReal, Long stockMinUni, Long stockActUni, BigDecimal comision, BigDecimal ventaSugerida, BigDecimal porcentajeComision, Long unidadXPaquete, BigDecimal codComun, Integer orden, Set<DetalleFactura> detalleFacturas) {
+    public Producto(BigDecimal codigo, String codBarras, String nombre, String paquete, BigDecimal precioCompra, BigDecimal porcentajeDescuento, BigDecimal precioCompraReal, BigDecimal porcentajeUtilidad, BigDecimal precioVentaReal, Long stockMinUni, Long stockActUni, BigDecimal comision, BigDecimal ventaSugerida, BigDecimal porcentajeComision, Long unidadXPaquete, BigDecimal codComun, Integer orden, Date fechaVencimiento, Set<DetalleFactura> detalleFacturas) {
        this.codigo = codigo;
        this.codBarras = codBarras;
        this.nombre = nombre;
@@ -56,6 +58,7 @@ public class Producto  implements java.io.Serializable {
        this.unidadXPaquete = unidadXPaquete;
        this.codComun = codComun;
        this.orden = orden;
+       this.fechaVencimiento = fechaVencimiento;
        this.detalleFacturas = detalleFacturas;
     }
    
@@ -177,6 +180,13 @@ public class Producto  implements java.io.Serializable {
     
     public void setOrden(Integer orden) {
         this.orden = orden;
+    }
+    public Date getFechaVencimiento() {
+        return this.fechaVencimiento;
+    }
+    
+    public void setFechaVencimiento(Date fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
     }
     public Set<DetalleFactura> getDetalleFacturas() {
         return this.detalleFacturas;

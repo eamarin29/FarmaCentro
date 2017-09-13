@@ -12,7 +12,9 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import Model.Producto;
 import java.math.BigDecimal;
+import java.util.Date;
 import org.primefaces.component.inputnumber.InputNumber;
+import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.context.RequestContext;
 
@@ -36,6 +38,8 @@ public class ProductoBean implements Serializable {
     private InputNumber txtPrecioComision;
     private InputNumber txtStockMinimo;
     private InputText txtCodigoBarras;
+    private Date fechaVencimiento;
+    private Calendar fechaVencimientoInput;
 
     private InputNumber txtCantidadPaquete1;
     private InputText txtDescripcionPaquete1;
@@ -50,6 +54,8 @@ public class ProductoBean implements Serializable {
     private InputNumber txtPrecioComision1;
     private InputNumber txtStockMinimo1;
     private InputText txtCodigoBarras1;
+    private Date fechaVencimiento1;
+    private Calendar fechaVencimientoInput1;
 
     private InputNumber txtCantidadPaquete2;
     private InputText txtDescripcionPaquete2;
@@ -64,6 +70,8 @@ public class ProductoBean implements Serializable {
     private InputNumber txtPrecioComision2;
     private InputNumber txtStockMinimo2;
     private InputText txtCodigoBarras2;
+    private Date fechaVencimiento2;
+    private Calendar fechaVencimientoInput2;
 
     private Producto productoViejo;
     private List<Producto> listaProductos;
@@ -113,6 +121,15 @@ public class ProductoBean implements Serializable {
     private InputNumber txtStockMinimoModificar3;
     private InputText txtCodigoBarrasModificar3;
 
+    private Date fechaVencimientoModificar1;
+    private Calendar fechaVencimientoInputModificar1;
+
+    private Date fechaVencimientoModificar2;
+    private Calendar fechaVencimientoInputModificar2;
+
+    private Date fechaVencimientoModificar3;
+    private Calendar fechaVencimientoInputModificar3;
+
     private boolean checkModificar1;
     private boolean checkModificar2;
 
@@ -153,6 +170,102 @@ public class ProductoBean implements Serializable {
         productoViejo = null;
         this.listaProductosModificarCodComun = null;
 
+    }
+
+    public Date getFechaVencimientoModificar1() {
+        return fechaVencimientoModificar1;
+    }
+
+    public void setFechaVencimientoModificar1(Date fechaVencimientoModificar1) {
+        this.fechaVencimientoModificar1 = fechaVencimientoModificar1;
+    }
+
+    public Calendar getFechaVencimientoInputModificar1() {
+        return fechaVencimientoInputModificar1;
+    }
+
+    public void setFechaVencimientoInputModificar1(Calendar fechaVencimientoInputModificar1) {
+        this.fechaVencimientoInputModificar1 = fechaVencimientoInputModificar1;
+    }
+
+    public Date getFechaVencimientoModificar2() {
+        return fechaVencimientoModificar2;
+    }
+
+    public void setFechaVencimientoModificar2(Date fechaVencimientoModificar2) {
+        this.fechaVencimientoModificar2 = fechaVencimientoModificar2;
+    }
+
+    public Calendar getFechaVencimientoInputModificar2() {
+        return fechaVencimientoInputModificar2;
+    }
+
+    public void setFechaVencimientoInputModificar2(Calendar fechaVencimientoInputModificar2) {
+        this.fechaVencimientoInputModificar2 = fechaVencimientoInputModificar2;
+    }
+
+    public Date getFechaVencimientoModificar3() {
+        return fechaVencimientoModificar3;
+    }
+
+    public void setFechaVencimientoModificar3(Date fechaVencimientoModificar3) {
+        this.fechaVencimientoModificar3 = fechaVencimientoModificar3;
+    }
+
+    public Calendar getFechaVencimientoInputModificar3() {
+        return fechaVencimientoInputModificar3;
+    }
+
+    public void setFechaVencimientoInputModificar3(Calendar fechaVencimientoInputModificar3) {
+        this.fechaVencimientoInputModificar3 = fechaVencimientoInputModificar3;
+    }
+
+    public Calendar getFechaVencimientoInput() {
+        return fechaVencimientoInput;
+    }
+
+    public void setFechaVencimientoInput(Calendar fechaVencimientoInput) {
+        this.fechaVencimientoInput = fechaVencimientoInput;
+    }
+
+    public Calendar getFechaVencimientoInput1() {
+        return fechaVencimientoInput1;
+    }
+
+    public void setFechaVencimientoInput1(Calendar fechaVencimientoInput1) {
+        this.fechaVencimientoInput1 = fechaVencimientoInput1;
+    }
+
+    public Calendar getFechaVencimientoInput2() {
+        return fechaVencimientoInput2;
+    }
+
+    public void setFechaVencimientoInput2(Calendar fechaVencimientoInput2) {
+        this.fechaVencimientoInput2 = fechaVencimientoInput2;
+    }
+
+    public Date getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(Date fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    public Date getFechaVencimiento1() {
+        return fechaVencimiento1;
+    }
+
+    public void setFechaVencimiento1(Date fechaVencimiento1) {
+        this.fechaVencimiento1 = fechaVencimiento1;
+    }
+
+    public Date getFechaVencimiento2() {
+        return fechaVencimiento2;
+    }
+
+    public void setFechaVencimiento2(Date fechaVencimiento2) {
+        this.fechaVencimiento2 = fechaVencimiento2;
     }
 
     public List<Producto> getListaProductosConsultar() {
@@ -1035,10 +1148,9 @@ public class ProductoBean implements Serializable {
     public void nuevoProducto() {
 
         BigDecimal codComun = null;
-
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (producto.getNombre() == null || txtCodigoBarras.getValue() == null || txtCantidadPaquete.getValue() == null || txtDescripcionPaquete.getValue() == null || txtUnidadXPaquete.getValue() == null || txtCompra.getValue() == null || txtDescuentoCompra.getValue() == null || txtCompraReal.getValue() == null || txtPorcentajeUtilidad.getValue() == null || txtVentaSugerida.getValue() == null || txtVentaReal.getValue() == null || txtComision.getValue() == null || txtPrecioComision.getValue() == null || txtStockMinimo.getValue() == null) {
+        if (producto.getNombre() == null || txtCodigoBarras.getValue() == null || txtCantidadPaquete.getValue() == null || txtDescripcionPaquete.getValue() == null || txtUnidadXPaquete.getValue() == null || txtCompra.getValue() == null || txtDescuentoCompra.getValue() == null || txtCompraReal.getValue() == null || txtPorcentajeUtilidad.getValue() == null || txtVentaSugerida.getValue() == null || txtVentaReal.getValue() == null || txtComision.getValue() == null || txtPrecioComision.getValue() == null || txtStockMinimo.getValue() == null || fechaVencimientoInput.getValue() == null) {
 
             context.execute("PF('dialogNuevoProducto').show();");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
@@ -1046,7 +1158,7 @@ public class ProductoBean implements Serializable {
 
         } else {
 
-            if (producto.getNombre().equals("") || txtCodigoBarras.getValue().toString().equals("") || txtCantidadPaquete.getValue().equals("0") || txtDescripcionPaquete.getValue().toString().equals("") || txtUnidadXPaquete.getValue().equals("0") || txtCompra.getValue().equals("0") || txtPorcentajeUtilidad.getValue().equals("0") || txtVentaReal.getValue().equals("0") || txtStockMinimo.getValue().equals("0")) {
+            if (producto.getNombre().equals("") || txtCodigoBarras.getValue().toString().equals("") || txtCantidadPaquete.getValue().equals("0") || txtDescripcionPaquete.getValue().toString().equals("") || txtUnidadXPaquete.getValue().equals("0") || txtCompra.getValue().equals("0") || txtPorcentajeUtilidad.getValue().equals("0") || txtVentaReal.getValue().equals("0") || txtStockMinimo.getValue().equals("0") || fechaVencimientoInput.getValue().toString().equals("")) {
 
                 context.execute("PF('dialogNuevoProducto').show();");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
@@ -1144,6 +1256,8 @@ public class ProductoBean implements Serializable {
                                 BigDecimal porcentaje_comision = new BigDecimal(txtComision.getValue().toString());
                                 producto.setPorcentajeComision(porcentaje_comision);
 
+                                producto.setFechaVencimiento(fechaVencimiento);
+
                                 ProductoController.newProducto(producto);
 
                                 cancelarRegistroProducto();
@@ -1162,7 +1276,7 @@ public class ProductoBean implements Serializable {
                     }
                     //agrego primera fila + check 1    
                 } else if (check1 == true && check2 == false) {
-                    if (producto.getNombre() == null || txtCodigoBarras.getValue() == null || txtCantidadPaquete.getValue() == null || txtDescripcionPaquete.getValue() == null || txtUnidadXPaquete.getValue() == null || txtCompra.getValue() == null || txtDescuentoCompra.getValue() == null || txtCompraReal.getValue() == null || txtPorcentajeUtilidad.getValue() == null || txtVentaSugerida.getValue() == null || txtVentaReal.getValue() == null || txtComision.getValue() == null || txtPrecioComision.getValue() == null || txtStockMinimo.getValue() == null || txtCodigoBarras1.getValue() == null || txtCantidadPaquete1.getValue() == null || txtDescripcionPaquete1.getValue() == null || txtUnidadXPaquete1.getValue() == null || txtCompra1.getValue() == null || txtDescuentoCompra1.getValue() == null || txtCompraReal1.getValue() == null || txtPorcentajeUtilidad1.getValue() == null || txtVentaSugerida1.getValue() == null || txtVentaReal1.getValue() == null || txtComision1.getValue() == null || txtPrecioComision1.getValue() == null || txtStockMinimo1.getValue() == null) {
+                    if (producto.getNombre() == null || txtCodigoBarras.getValue() == null || txtCantidadPaquete.getValue() == null || txtDescripcionPaquete.getValue() == null || txtUnidadXPaquete.getValue() == null || txtCompra.getValue() == null || txtDescuentoCompra.getValue() == null || txtCompraReal.getValue() == null || txtPorcentajeUtilidad.getValue() == null || txtVentaSugerida.getValue() == null || txtVentaReal.getValue() == null || txtComision.getValue() == null || txtPrecioComision.getValue() == null || txtStockMinimo.getValue() == null || fechaVencimientoInput.getValue() == null || txtCodigoBarras1.getValue() == null || txtCantidadPaquete1.getValue() == null || txtDescripcionPaquete1.getValue() == null || txtUnidadXPaquete1.getValue() == null || txtCompra1.getValue() == null || txtDescuentoCompra1.getValue() == null || txtCompraReal1.getValue() == null || txtPorcentajeUtilidad1.getValue() == null || txtVentaSugerida1.getValue() == null || txtVentaReal1.getValue() == null || txtComision1.getValue() == null || txtPrecioComision1.getValue() == null || txtStockMinimo1.getValue() == null || fechaVencimientoInput1.getValue() == null) {
 
                         context.execute("PF('dialogNuevoProducto').show();");
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 1 son obligatorios."));
@@ -1170,7 +1284,7 @@ public class ProductoBean implements Serializable {
 
                     } else {
 
-                        if (producto.getNombre().equals("") || txtCodigoBarras.getValue().toString().equals("") || txtCantidadPaquete.getValue().equals("0") || txtDescripcionPaquete.getValue().toString().equals("") || txtUnidadXPaquete.getValue().equals("0") || txtCompra.getValue().equals("0") || txtPorcentajeUtilidad.getValue().equals("0") || txtVentaReal.getValue().equals("0") || txtStockMinimo.getValue().equals("0") || txtCodigoBarras1.getValue().toString().equals("") || txtCantidadPaquete1.getValue().equals("0") || txtDescripcionPaquete1.getValue().toString().equals("") || txtUnidadXPaquete1.getValue().equals("0") || txtCompra1.getValue().equals("0") || txtPorcentajeUtilidad1.getValue().equals("0") || txtVentaReal1.getValue().equals("0") || txtStockMinimo1.getValue().equals("0")) {
+                        if (producto.getNombre().equals("") || txtCodigoBarras.getValue().toString().equals("") || txtCantidadPaquete.getValue().equals("0") || txtDescripcionPaquete.getValue().toString().equals("") || txtUnidadXPaquete.getValue().equals("0") || txtCompra.getValue().equals("0") || txtPorcentajeUtilidad.getValue().equals("0") || txtVentaReal.getValue().equals("0") || txtStockMinimo.getValue().equals("0") || fechaVencimientoInput.getValue().toString().equals("") || txtCodigoBarras1.getValue().toString().equals("") || txtCantidadPaquete1.getValue().equals("0") || txtDescripcionPaquete1.getValue().toString().equals("") || txtUnidadXPaquete1.getValue().equals("0") || txtCompra1.getValue().equals("0") || txtPorcentajeUtilidad1.getValue().equals("0") || txtVentaReal1.getValue().equals("0") || txtStockMinimo1.getValue().equals("0") || fechaVencimientoInput1.getValue().toString().equals("")) {
 
                             context.execute("PF('dialogNuevoProducto').show();");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 1 son obligatorios."));
@@ -1274,6 +1388,8 @@ public class ProductoBean implements Serializable {
                                             BigDecimal porcentaje_comision = new BigDecimal(txtComision.getValue().toString());
                                             producto.setPorcentajeComision(porcentaje_comision);
 
+                                            producto.setFechaVencimiento(fechaVencimiento);
+
                                             ProductoController.newProducto(producto);
 
                                             //agrego check1
@@ -1329,6 +1445,8 @@ public class ProductoBean implements Serializable {
                                                 BigDecimal porcentaje_comision1 = new BigDecimal(txtComision1.getValue().toString());
                                                 p1.setPorcentajeComision(porcentaje_comision1);
 
+                                                p1.setFechaVencimiento(fechaVencimiento1);
+
                                                 ProductoController.newProducto(p1);
 
                                                 cancelarRegistroProducto();
@@ -1351,13 +1469,13 @@ public class ProductoBean implements Serializable {
                         }
                     }
                 } else if (check1 == true && check2 == true) {
-                    if (producto.getNombre() == null || txtCodigoBarras.getValue() == null || txtCantidadPaquete.getValue() == null || txtDescripcionPaquete.getValue() == null || txtUnidadXPaquete.getValue() == null || txtCompra.getValue() == null || txtDescuentoCompra.getValue() == null || txtCompraReal.getValue() == null || txtPorcentajeUtilidad.getValue() == null || txtVentaSugerida.getValue() == null || txtVentaReal.getValue() == null || txtComision.getValue() == null || txtPrecioComision.getValue() == null || txtStockMinimo.getValue() == null || txtCodigoBarras1.getValue() == null || txtCantidadPaquete1.getValue() == null || txtDescripcionPaquete1.getValue() == null || txtUnidadXPaquete1.getValue() == null || txtCompra1.getValue() == null || txtDescuentoCompra1.getValue() == null || txtCompraReal1.getValue() == null || txtPorcentajeUtilidad1.getValue() == null || txtVentaSugerida1.getValue() == null || txtVentaReal1.getValue() == null || txtComision1.getValue() == null || txtPrecioComision1.getValue() == null || txtStockMinimo1.getValue() == null || txtCodigoBarras2.getValue() == null || txtCantidadPaquete2.getValue() == null || txtDescripcionPaquete2.getValue() == null || txtUnidadXPaquete2.getValue() == null || txtCompra2.getValue() == null || txtDescuentoCompra2.getValue() == null || txtCompraReal2.getValue() == null || txtPorcentajeUtilidad2.getValue() == null || txtVentaSugerida2.getValue() == null || txtVentaReal2.getValue() == null || txtComision2.getValue() == null || txtPrecioComision2.getValue() == null || txtStockMinimo2.getValue() == null) {
+                    if (producto.getNombre() == null || txtCodigoBarras.getValue() == null || txtCantidadPaquete.getValue() == null || txtDescripcionPaquete.getValue() == null || txtUnidadXPaquete.getValue() == null || txtCompra.getValue() == null || txtDescuentoCompra.getValue() == null || txtCompraReal.getValue() == null || txtPorcentajeUtilidad.getValue() == null || txtVentaSugerida.getValue() == null || txtVentaReal.getValue() == null || txtComision.getValue() == null || txtPrecioComision.getValue() == null || txtStockMinimo.getValue() == null || fechaVencimientoInput.getValue() == null || txtCodigoBarras1.getValue() == null || txtCantidadPaquete1.getValue() == null || txtDescripcionPaquete1.getValue() == null || txtUnidadXPaquete1.getValue() == null || txtCompra1.getValue() == null || txtDescuentoCompra1.getValue() == null || txtCompraReal1.getValue() == null || txtPorcentajeUtilidad1.getValue() == null || txtVentaSugerida1.getValue() == null || txtVentaReal1.getValue() == null || txtComision1.getValue() == null || txtPrecioComision1.getValue() == null || txtStockMinimo1.getValue() == null || fechaVencimientoInput1.getValue() == null || txtCodigoBarras2.getValue() == null || txtCantidadPaquete2.getValue() == null || txtDescripcionPaquete2.getValue() == null || txtUnidadXPaquete2.getValue() == null || txtCompra2.getValue() == null || txtDescuentoCompra2.getValue() == null || txtCompraReal2.getValue() == null || txtPorcentajeUtilidad2.getValue() == null || txtVentaSugerida2.getValue() == null || txtVentaReal2.getValue() == null || txtComision2.getValue() == null || txtPrecioComision2.getValue() == null || txtStockMinimo2.getValue() == null || fechaVencimientoInput2.getValue() == null) {
                         context.execute("PF('dialogNuevoProducto').show();");
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 1 y 2 son obligatorios."));
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
                     } else {
 
-                        if (producto.getNombre().equals("") || txtCodigoBarras.getValue().toString().equals("") || txtCantidadPaquete.getValue().equals("0") || txtDescripcionPaquete.getValue().toString().equals("") || txtUnidadXPaquete.getValue().equals("0") || txtCompra.getValue().equals("0") || txtPorcentajeUtilidad.getValue().equals("0") || txtVentaReal.getValue().equals("0") || txtStockMinimo.getValue().equals("0") || txtCodigoBarras1.getValue().toString().equals("") || txtCantidadPaquete1.getValue().equals("0") || txtDescripcionPaquete1.getValue().toString().equals("") || txtUnidadXPaquete1.getValue().equals("0") || txtCompra1.getValue().equals("0") || txtPorcentajeUtilidad1.getValue().equals("0") || txtVentaReal1.getValue().equals("0") || txtStockMinimo1.getValue().equals("0") || txtCodigoBarras2.getValue().toString().equals("") || txtCantidadPaquete2.getValue().equals("0") || txtDescripcionPaquete2.getValue().toString().equals("") || txtUnidadXPaquete2.getValue().equals("0") || txtCompra2.getValue().equals("0") || txtPorcentajeUtilidad2.getValue().equals("0") || txtVentaReal2.getValue().equals("0") || txtStockMinimo2.getValue().equals("0")) {
+                        if (producto.getNombre().equals("") || txtCodigoBarras.getValue().toString().equals("") || txtCantidadPaquete.getValue().equals("0") || txtDescripcionPaquete.getValue().toString().equals("") || txtUnidadXPaquete.getValue().equals("0") || txtCompra.getValue().equals("0") || txtPorcentajeUtilidad.getValue().equals("0") || txtVentaReal.getValue().equals("0") || txtStockMinimo.getValue().equals("0") || fechaVencimientoInput.getValue().toString().equals("") || txtCodigoBarras1.getValue().toString().equals("") || txtCantidadPaquete1.getValue().equals("0") || txtDescripcionPaquete1.getValue().toString().equals("") || txtUnidadXPaquete1.getValue().equals("0") || txtCompra1.getValue().equals("0") || txtPorcentajeUtilidad1.getValue().equals("0") || txtVentaReal1.getValue().equals("0") || txtStockMinimo1.getValue().equals("0") || fechaVencimientoInput1.getValue().toString().equals("") || txtCodigoBarras2.getValue().toString().equals("") || txtCantidadPaquete2.getValue().equals("0") || txtDescripcionPaquete2.getValue().toString().equals("") || txtUnidadXPaquete2.getValue().equals("0") || txtCompra2.getValue().equals("0") || txtPorcentajeUtilidad2.getValue().equals("0") || txtVentaReal2.getValue().equals("0") || txtStockMinimo2.getValue().equals("0") || fechaVencimientoInput2.getValue().toString().equals("")) {
                             context.execute("PF('dialogNuevoProducto').show();");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 1 y 2 son obligatorios."));
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
@@ -1468,6 +1586,8 @@ public class ProductoBean implements Serializable {
                                                 BigDecimal porcentaje_comision = new BigDecimal(txtComision.getValue().toString());
                                                 producto.setPorcentajeComision(porcentaje_comision);
 
+                                                producto.setFechaVencimiento(fechaVencimiento);
+
                                                 ProductoController.newProducto(producto);
 
                                                 //agrego check1
@@ -1530,6 +1650,8 @@ public class ProductoBean implements Serializable {
                                                     BigDecimal porcentaje_comision1 = new BigDecimal(txtComision1.getValue().toString());
                                                     p1.setPorcentajeComision(porcentaje_comision1);
 
+                                                    p1.setFechaVencimiento(fechaVencimiento1);
+
                                                     ProductoController.newProducto(p1);
 
                                                     //agrego check2
@@ -1584,6 +1706,8 @@ public class ProductoBean implements Serializable {
                                                     BigDecimal porcentaje_comision2 = new BigDecimal(txtComision2.getValue().toString());
                                                     p2.setPorcentajeComision(porcentaje_comision2);
 
+                                                    p2.setFechaVencimiento(fechaVencimiento2);
+
                                                     ProductoController.newProducto(p2);
 
                                                     cancelarRegistroProducto();
@@ -1626,6 +1750,7 @@ public class ProductoBean implements Serializable {
             txtComision1.setDisabled(false);
             txtVentaReal1.setDisabled(false);
             txtStockMinimo1.setDisabled(false);
+            fechaVencimientoInput1.setDisabled(false);
 
         } else {
 
@@ -1641,6 +1766,8 @@ public class ProductoBean implements Serializable {
                 txtComision1.setDisabled(false);
                 txtVentaReal1.setDisabled(false);
                 txtStockMinimo1.setDisabled(false);
+                fechaVencimientoInput1.setDisabled(false);
+
             } else {
                 txtCodigoBarras1.setValue(null);
                 txtCantidadPaquete1.setValue(null);
@@ -1655,6 +1782,7 @@ public class ProductoBean implements Serializable {
                 txtComision1.setValue(null);
                 txtPrecioComision1.setValue(null);
                 txtStockMinimo1.setValue(null);
+                fechaVencimientoInput1.setValue(null);
 
                 txtCodigoBarras1.setDisabled(true);
                 txtCantidadPaquete1.setDisabled(true);
@@ -1666,6 +1794,7 @@ public class ProductoBean implements Serializable {
                 txtComision1.setDisabled(true);
                 txtVentaReal1.setDisabled(true);
                 txtStockMinimo1.setDisabled(true);
+                fechaVencimientoInput1.setDisabled(true);
             }
 
         }
@@ -1687,6 +1816,7 @@ public class ProductoBean implements Serializable {
                 txtComision2.setDisabled(true);
                 txtVentaReal2.setDisabled(true);
                 txtStockMinimo2.setDisabled(true);
+                fechaVencimientoInput2.setDisabled(true);
 
             } else {
                 txtCodigoBarras2.setDisabled(false);
@@ -1699,6 +1829,7 @@ public class ProductoBean implements Serializable {
                 txtComision2.setDisabled(false);
                 txtVentaReal2.setDisabled(false);
                 txtStockMinimo2.setDisabled(false);
+                fechaVencimientoInput2.setDisabled(false);
             }
 
         } else {
@@ -1712,6 +1843,7 @@ public class ProductoBean implements Serializable {
             txtComision2.setDisabled(true);
             txtVentaReal2.setDisabled(true);
             txtStockMinimo2.setDisabled(true);
+            fechaVencimientoInput2.setDisabled(true);
         }
 
     }
@@ -2093,6 +2225,7 @@ public class ProductoBean implements Serializable {
                 txtComisionModificar1.setValue(productoModificar1.getPorcentajeComision());
                 txtPrecioComisionModificar1.setValue(productoModificar1.getComision());
                 txtStockMinimoModificar1.setValue(productoModificar1.getStockMinUni());
+                fechaVencimientoInputModificar1.setValue(productoModificar1.getFechaVencimiento());
 
                 txtCodigoBarrasModificar1.setDisabled(false);
                 txtCantidadPaqueteModificar1.setDisabled(false);
@@ -2104,6 +2237,7 @@ public class ProductoBean implements Serializable {
                 txtVentaRealModificar1.setDisabled(false);
                 txtComisionModificar1.setDisabled(false);
                 txtStockMinimoModificar1.setDisabled(false);
+                fechaVencimientoInputModificar1.setDisabled(false);
 
                 context.execute("PF('dialogModificarProducto').show();");
 
@@ -2125,6 +2259,7 @@ public class ProductoBean implements Serializable {
                     txtComisionModificar1.setValue(productoModificar1.getPorcentajeComision());
                     txtPrecioComisionModificar1.setValue(productoModificar1.getComision());
                     txtStockMinimoModificar1.setValue(productoModificar1.getStockMinUni());
+                    fechaVencimientoInputModificar1.setValue(productoModificar1.getFechaVencimiento());
 
                     productoModificar2 = listaProductosModificarCodComun.get(1);
                     txtCodigoBarrasModificar2.setValue(productoModificar2.getCodBarras());
@@ -2140,6 +2275,7 @@ public class ProductoBean implements Serializable {
                     txtComisionModificar2.setValue(productoModificar2.getPorcentajeComision());
                     txtPrecioComisionModificar2.setValue(productoModificar2.getComision());
                     txtStockMinimoModificar2.setValue(productoModificar2.getStockMinUni());
+                    fechaVencimientoInputModificar2.setValue(productoModificar2.getFechaVencimiento());
 
                 } else if (listaProductosModificarCodComun.get(1).getOrden() == 3) {
 
@@ -2157,6 +2293,7 @@ public class ProductoBean implements Serializable {
                     txtComisionModificar1.setValue(productoModificar1.getPorcentajeComision());
                     txtPrecioComisionModificar1.setValue(productoModificar1.getComision());
                     txtStockMinimoModificar1.setValue(productoModificar1.getStockMinUni());
+                    fechaVencimientoInputModificar1.setValue(productoModificar1.getFechaVencimiento());
 
                     productoModificar2 = listaProductosModificarCodComun.get(0);
                     txtCodigoBarrasModificar2.setValue(productoModificar2.getCodBarras());
@@ -2172,6 +2309,7 @@ public class ProductoBean implements Serializable {
                     txtComisionModificar2.setValue(productoModificar2.getPorcentajeComision());
                     txtPrecioComisionModificar2.setValue(productoModificar2.getComision());
                     txtStockMinimoModificar2.setValue(productoModificar2.getStockMinUni());
+                    fechaVencimientoInputModificar2.setValue(productoModificar2.getFechaVencimiento());
                 }
 
                 txtCodigoBarrasModificar1.setDisabled(false);
@@ -2184,6 +2322,7 @@ public class ProductoBean implements Serializable {
                 txtVentaRealModificar1.setDisabled(false);
                 txtComisionModificar1.setDisabled(false);
                 txtStockMinimoModificar1.setDisabled(false);
+                fechaVencimientoInputModificar1.setDisabledWeekends(false);
 
                 txtCodigoBarrasModificar2.setDisabled(false);
                 txtCantidadPaqueteModificar2.setDisabled(false);
@@ -2195,6 +2334,7 @@ public class ProductoBean implements Serializable {
                 txtVentaRealModificar2.setDisabled(false);
                 txtComisionModificar2.setDisabled(false);
                 txtStockMinimoModificar2.setDisabled(false);
+                fechaVencimientoInputModificar2.setDisabled(false);
 
                 context.execute("PF('dialogModificarProducto').show();");
 
@@ -2217,6 +2357,7 @@ public class ProductoBean implements Serializable {
                     txtComisionModificar1.setValue(productoModificar1.getPorcentajeComision());
                     txtPrecioComisionModificar1.setValue(productoModificar1.getComision());
                     txtStockMinimoModificar1.setValue(productoModificar1.getStockMinUni());
+                    fechaVencimientoInputModificar1.setValue(productoModificar1.getFechaVencimiento());
 
                     if (listaProductosModificarCodComun.get(1).getOrden() == 2) {
 
@@ -2234,6 +2375,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar2.setValue(productoModificar2.getPorcentajeComision());
                         txtPrecioComisionModificar2.setValue(productoModificar2.getComision());
                         txtStockMinimoModificar2.setValue(productoModificar2.getStockMinUni());
+                        fechaVencimientoInputModificar2.setValue(productoModificar2.getFechaVencimiento());
 
                         productoModificar3 = listaProductosModificarCodComun.get(2);
                         txtCodigoBarrasModificar3.setValue(productoModificar3.getCodBarras());
@@ -2249,6 +2391,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar3.setValue(productoModificar3.getPorcentajeComision());
                         txtPrecioComisionModificar3.setValue(productoModificar3.getComision());
                         txtStockMinimoModificar3.setValue(productoModificar3.getStockMinUni());
+                        fechaVencimientoInputModificar3.setValue(productoModificar3.getFechaVencimiento());
 
                     } else {
                         //la pos 0 es la orden 2
@@ -2267,6 +2410,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar2.setValue(productoModificar2.getPorcentajeComision());
                         txtPrecioComisionModificar2.setValue(productoModificar2.getComision());
                         txtStockMinimoModificar2.setValue(productoModificar2.getStockMinUni());
+                        fechaVencimientoInputModificar2.setValue(productoModificar2.getFechaVencimiento());
 
                         productoModificar3 = listaProductosModificarCodComun.get(1);
                         txtCodigoBarrasModificar3.setValue(productoModificar3.getCodBarras());
@@ -2282,6 +2426,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar3.setValue(productoModificar3.getPorcentajeComision());
                         txtPrecioComisionModificar3.setValue(productoModificar3.getComision());
                         txtStockMinimoModificar3.setValue(productoModificar3.getStockMinUni());
+                        fechaVencimientoInputModificar3.setValue(productoModificar3.getFechaVencimiento());
 
                     }
 
@@ -2301,6 +2446,7 @@ public class ProductoBean implements Serializable {
                     txtComisionModificar1.setValue(productoModificar1.getPorcentajeComision());
                     txtPrecioComisionModificar1.setValue(productoModificar1.getComision());
                     txtStockMinimoModificar1.setValue(productoModificar1.getStockMinUni());
+                    fechaVencimientoInputModificar1.setValue(productoModificar1.getFechaVencimiento());
 
                     if (listaProductosModificarCodComun.get(0).getOrden() == 2) {
 
@@ -2318,6 +2464,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar2.setValue(productoModificar2.getPorcentajeComision());
                         txtPrecioComisionModificar2.setValue(productoModificar2.getComision());
                         txtStockMinimoModificar2.setValue(productoModificar2.getStockMinUni());
+                        fechaVencimientoInputModificar2.setValue(productoModificar2.getFechaVencimiento());
 
                         productoModificar3 = listaProductosModificarCodComun.get(2);
                         txtCodigoBarrasModificar3.setValue(productoModificar3.getCodBarras());
@@ -2333,6 +2480,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar3.setValue(productoModificar3.getPorcentajeComision());
                         txtPrecioComisionModificar3.setValue(productoModificar3.getComision());
                         txtStockMinimoModificar3.setValue(productoModificar3.getStockMinUni());
+                        fechaVencimientoInputModificar3.setValue(productoModificar3.getFechaVencimiento());
 
                     } else {
                         //la pos 2 es la orden 2
@@ -2350,6 +2498,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar2.setValue(productoModificar2.getPorcentajeComision());
                         txtPrecioComisionModificar2.setValue(productoModificar2.getComision());
                         txtStockMinimoModificar2.setValue(productoModificar2.getStockMinUni());
+                        fechaVencimientoInputModificar2.setValue(productoModificar2.getFechaVencimiento());
 
                         productoModificar3 = listaProductosModificarCodComun.get(0);
                         txtCodigoBarrasModificar3.setValue(productoModificar3.getCodBarras());
@@ -2365,6 +2514,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar3.setValue(productoModificar3.getPorcentajeComision());
                         txtPrecioComisionModificar3.setValue(productoModificar3.getComision());
                         txtStockMinimoModificar3.setValue(productoModificar3.getStockMinUni());
+                        fechaVencimientoInputModificar3.setValue(productoModificar3.getFechaVencimiento());
 
                     }
 
@@ -2384,6 +2534,7 @@ public class ProductoBean implements Serializable {
                     txtComisionModificar1.setValue(productoModificar1.getPorcentajeComision());
                     txtPrecioComisionModificar1.setValue(productoModificar1.getComision());
                     txtStockMinimoModificar1.setValue(productoModificar1.getStockMinUni());
+                    fechaVencimientoInputModificar1.setValue(productoModificar1.getFechaVencimiento());
 
                     if (listaProductosModificarCodComun.get(1).getOrden() == 2) {
 
@@ -2401,6 +2552,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar2.setValue(productoModificar2.getPorcentajeComision());
                         txtPrecioComisionModificar2.setValue(productoModificar2.getComision());
                         txtStockMinimoModificar2.setValue(productoModificar2.getStockMinUni());
+                        fechaVencimientoInputModificar2.setValue(productoModificar2.getFechaVencimiento());
 
                         productoModificar3 = listaProductosModificarCodComun.get(0);
                         txtCodigoBarrasModificar3.setValue(productoModificar3.getCodBarras());
@@ -2416,6 +2568,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar3.setValue(productoModificar3.getPorcentajeComision());
                         txtPrecioComisionModificar3.setValue(productoModificar3.getComision());
                         txtStockMinimoModificar3.setValue(productoModificar3.getStockMinUni());
+                        fechaVencimientoInputModificar3.setValue(productoModificar3.getFechaVencimiento());
 
                     } else {
                         //el de la posicion 0 es el orden 2
@@ -2433,6 +2586,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar2.setValue(productoModificar2.getPorcentajeComision());
                         txtPrecioComisionModificar2.setValue(productoModificar2.getComision());
                         txtStockMinimoModificar2.setValue(productoModificar2.getStockMinUni());
+                        fechaVencimientoInputModificar2.setValue(productoModificar2.getFechaVencimiento());
 
                         productoModificar3 = listaProductosModificarCodComun.get(1);
                         txtCodigoBarrasModificar3.setValue(productoModificar3.getCodBarras());
@@ -2448,6 +2602,7 @@ public class ProductoBean implements Serializable {
                         txtComisionModificar3.setValue(productoModificar3.getPorcentajeComision());
                         txtPrecioComisionModificar3.setValue(productoModificar3.getComision());
                         txtStockMinimoModificar3.setValue(productoModificar3.getStockMinUni());
+                        fechaVencimientoInputModificar3.setValue(productoModificar3.getFechaVencimiento());
 
                     }
 
@@ -2463,6 +2618,7 @@ public class ProductoBean implements Serializable {
                 txtVentaRealModificar1.setDisabled(false);
                 txtComisionModificar1.setDisabled(false);
                 txtStockMinimoModificar1.setDisabled(false);
+                fechaVencimientoInputModificar1.setDisabled(false);
 
                 txtCodigoBarrasModificar2.setDisabled(false);
                 txtCantidadPaqueteModificar2.setDisabled(false);
@@ -2474,6 +2630,7 @@ public class ProductoBean implements Serializable {
                 txtVentaRealModificar2.setDisabled(false);
                 txtComisionModificar2.setDisabled(false);
                 txtStockMinimoModificar2.setDisabled(false);
+                fechaVencimientoInputModificar2.setDisabled(false);
 
                 txtCodigoBarrasModificar3.setDisabled(false);
                 txtCantidadPaqueteModificar3.setDisabled(false);
@@ -2485,6 +2642,7 @@ public class ProductoBean implements Serializable {
                 txtVentaRealModificar3.setDisabled(false);
                 txtComisionModificar3.setDisabled(false);
                 txtStockMinimoModificar3.setDisabled(false);
+                fechaVencimientoInputModificar3.setDisabled(false);
 
                 context.execute("PF('dialogModificarProducto').show();");
 
@@ -2505,7 +2663,7 @@ public class ProductoBean implements Serializable {
             switch (this.listaProductosModificarCodComun.size()) {
                 case 1:
                     //pida la 1 fila
-                    if (productoModificar1.getNombre() == null || txtCodigoBarrasModificar1.getValue() == null || txtCantidadPaqueteModificar1.getValue() == null || txtDescripcionPaqueteModificar1.getValue() == null || txtUnidadXPaqueteModificar1.getValue() == null || txtCompraModificar1.getValue() == null || txtDescuentoCompraModificar1.getValue() == null || txtCompraRealModificar1.getValue() == null || txtPorcentajeUtilidadModificar1.getValue() == null || txtVentaSugeridaModificar1.getValue() == null || txtVentaRealModificar1.getValue() == null || txtComisionModificar1.getValue() == null || txtPrecioComisionModificar1.getValue() == null || txtStockMinimoModificar1.getValue() == null) {
+                    if (productoModificar1.getNombre() == null || txtCodigoBarrasModificar1.getValue() == null || txtCantidadPaqueteModificar1.getValue() == null || txtDescripcionPaqueteModificar1.getValue() == null || txtUnidadXPaqueteModificar1.getValue() == null || txtCompraModificar1.getValue() == null || txtDescuentoCompraModificar1.getValue() == null || txtCompraRealModificar1.getValue() == null || txtPorcentajeUtilidadModificar1.getValue() == null || txtVentaSugeridaModificar1.getValue() == null || txtVentaRealModificar1.getValue() == null || txtComisionModificar1.getValue() == null || txtPrecioComisionModificar1.getValue() == null || txtStockMinimoModificar1.getValue() == null || fechaVencimientoInputModificar1.getValue() == null) {
 
                         context.execute("PF('dialogModificarProducto').show();");
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
@@ -2513,7 +2671,7 @@ public class ProductoBean implements Serializable {
 
                     } else {
 
-                        if (productoModificar1.getNombre().equals("") || txtCodigoBarrasModificar1.getValue().toString().equals("") || txtCantidadPaqueteModificar1.getValue().equals("0") || txtDescripcionPaqueteModificar1.getValue().toString().equals("") || txtUnidadXPaqueteModificar1.getValue().equals("0") || txtCompraModificar1.getValue().equals("0") || txtPorcentajeUtilidadModificar1.getValue().equals("0") || txtVentaRealModificar1.getValue().equals("0") || txtStockMinimoModificar1.getValue().equals("0")) {
+                        if (productoModificar1.getNombre().equals("") || txtCodigoBarrasModificar1.getValue().toString().equals("") || txtCantidadPaqueteModificar1.getValue().equals("0") || txtDescripcionPaqueteModificar1.getValue().toString().equals("") || txtUnidadXPaqueteModificar1.getValue().equals("0") || txtCompraModificar1.getValue().equals("0") || txtPorcentajeUtilidadModificar1.getValue().equals("0") || txtVentaRealModificar1.getValue().equals("0") || txtStockMinimoModificar1.getValue().equals("0") || fechaVencimientoInputModificar1.getValue().toString().equals("")) {
 
                             context.execute("PF('dialogModificarProducto').show();");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
@@ -2576,6 +2734,8 @@ public class ProductoBean implements Serializable {
 
                                             BigDecimal porcentaje_comision = new BigDecimal(txtComisionModificar1.getValue().toString());
                                             productoModificar1.setPorcentajeComision(porcentaje_comision);
+                                            
+                                            productoModificar1.setFechaVencimiento(fechaVencimientoModificar1);
 
                                             ProductoController.updateProducto(productoModificar1);
                                             context.execute("PF('dialogModificarProducto').hide();");
@@ -2625,6 +2785,8 @@ public class ProductoBean implements Serializable {
 
                                         BigDecimal porcentaje_comision = new BigDecimal(txtComisionModificar1.getValue().toString());
                                         productoModificar1.setPorcentajeComision(porcentaje_comision);
+                                        
+                                        productoModificar1.setFechaVencimiento(fechaVencimientoModificar1);
 
                                         ProductoController.updateProducto(productoModificar1);
                                         context.execute("PF('dialogModificarProducto').hide();");
@@ -2646,7 +2808,7 @@ public class ProductoBean implements Serializable {
                     break;
                 case 2:
                     //pida la 1 fila
-                    if (productoModificar1.getNombre() == null || txtCodigoBarrasModificar1.getValue() == null || txtCantidadPaqueteModificar1.getValue() == null || txtDescripcionPaqueteModificar1.getValue() == null || txtUnidadXPaqueteModificar1.getValue() == null || txtCompraModificar1.getValue() == null || txtDescuentoCompraModificar1.getValue() == null || txtCompraRealModificar1.getValue() == null || txtPorcentajeUtilidadModificar1.getValue() == null || txtVentaSugeridaModificar1.getValue() == null || txtVentaRealModificar1.getValue() == null || txtComisionModificar1.getValue() == null || txtPrecioComisionModificar1.getValue() == null || txtStockMinimoModificar1.getValue() == null || productoModificar2.getNombre() == null || txtCodigoBarrasModificar2.getValue() == null || txtCantidadPaqueteModificar2.getValue() == null || txtDescripcionPaqueteModificar2.getValue() == null || txtUnidadXPaqueteModificar2.getValue() == null || txtCompraModificar2.getValue() == null || txtDescuentoCompraModificar2.getValue() == null || txtCompraRealModificar2.getValue() == null || txtPorcentajeUtilidadModificar2.getValue() == null || txtVentaSugeridaModificar2.getValue() == null || txtVentaRealModificar2.getValue() == null || txtComisionModificar2.getValue() == null || txtPrecioComisionModificar2.getValue() == null || txtStockMinimoModificar2.getValue() == null) {
+                    if (productoModificar1.getNombre() == null || txtCodigoBarrasModificar1.getValue() == null || txtCantidadPaqueteModificar1.getValue() == null || txtDescripcionPaqueteModificar1.getValue() == null || txtUnidadXPaqueteModificar1.getValue() == null || txtCompraModificar1.getValue() == null || txtDescuentoCompraModificar1.getValue() == null || txtCompraRealModificar1.getValue() == null || txtPorcentajeUtilidadModificar1.getValue() == null || txtVentaSugeridaModificar1.getValue() == null || txtVentaRealModificar1.getValue() == null || txtComisionModificar1.getValue() == null || txtPrecioComisionModificar1.getValue() == null || txtStockMinimoModificar1.getValue() == null || fechaVencimientoInputModificar1.getValue() == null || productoModificar2.getNombre() == null || txtCodigoBarrasModificar2.getValue() == null || txtCantidadPaqueteModificar2.getValue() == null || txtDescripcionPaqueteModificar2.getValue() == null || txtUnidadXPaqueteModificar2.getValue() == null || txtCompraModificar2.getValue() == null || txtDescuentoCompraModificar2.getValue() == null || txtCompraRealModificar2.getValue() == null || txtPorcentajeUtilidadModificar2.getValue() == null || txtVentaSugeridaModificar2.getValue() == null || txtVentaRealModificar2.getValue() == null || txtComisionModificar2.getValue() == null || txtPrecioComisionModificar2.getValue() == null || txtStockMinimoModificar2.getValue() == null || fechaVencimientoInputModificar2.getValue() == null) {
 
                         context.execute("PF('dialogModificarProducto').show();");
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
@@ -2654,7 +2816,7 @@ public class ProductoBean implements Serializable {
 
                     } else {
 
-                        if (productoModificar1.getNombre().equals("") || txtCodigoBarrasModificar1.getValue().toString().equals("") || txtCantidadPaqueteModificar1.getValue().equals("0") || txtDescripcionPaqueteModificar1.getValue().toString().equals("") || txtUnidadXPaqueteModificar1.getValue().equals("0") || txtCompraModificar1.getValue().equals("0") || txtPorcentajeUtilidadModificar1.getValue().equals("0") || txtVentaRealModificar1.getValue().equals("0") || txtStockMinimoModificar1.getValue().equals("0") || productoModificar2.getNombre().equals("") || txtCodigoBarrasModificar2.getValue().toString().equals("") || txtCantidadPaqueteModificar2.getValue().equals("0") || txtDescripcionPaqueteModificar2.getValue().toString().equals("") || txtUnidadXPaqueteModificar2.getValue().equals("0") || txtCompraModificar2.getValue().equals("0") || txtPorcentajeUtilidadModificar2.getValue().equals("0") || txtVentaRealModificar2.getValue().equals("0") || txtStockMinimoModificar2.getValue().equals("0")) {
+                        if (productoModificar1.getNombre().equals("") || txtCodigoBarrasModificar1.getValue().toString().equals("") || txtCantidadPaqueteModificar1.getValue().equals("0") || txtDescripcionPaqueteModificar1.getValue().toString().equals("") || txtUnidadXPaqueteModificar1.getValue().equals("0") || txtCompraModificar1.getValue().equals("0") || txtPorcentajeUtilidadModificar1.getValue().equals("0") || txtVentaRealModificar1.getValue().equals("0") || txtStockMinimoModificar1.getValue().equals("0") || fechaVencimientoInputModificar1.getValue().toString().equals("") || productoModificar2.getNombre().equals("") || txtCodigoBarrasModificar2.getValue().toString().equals("") || txtCantidadPaqueteModificar2.getValue().equals("0") || txtDescripcionPaqueteModificar2.getValue().toString().equals("") || txtUnidadXPaqueteModificar2.getValue().equals("0") || txtCompraModificar2.getValue().equals("0") || txtPorcentajeUtilidadModificar2.getValue().equals("0") || txtVentaRealModificar2.getValue().equals("0") || txtStockMinimoModificar2.getValue().equals("0") || fechaVencimientoInputModificar2.getValue().toString().equals("")) {
 
                             context.execute("PF('dialogModificarProducto').show();");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos son obligatorios."));
@@ -2729,6 +2891,8 @@ public class ProductoBean implements Serializable {
 
                                                 BigDecimal porcentaje_comision = new BigDecimal(txtComisionModificar1.getValue().toString());
                                                 productoModificar1.setPorcentajeComision(porcentaje_comision);
+                                                
+                                                productoModificar1.setFechaVencimiento(fechaVencimientoModificar1);
 
                                                 //la segunda 
                                                 //aqui
@@ -2767,6 +2931,8 @@ public class ProductoBean implements Serializable {
 
                                                 BigDecimal porcentaje_comision2 = new BigDecimal(txtComisionModificar2.getValue().toString());
                                                 productoModificar2.setPorcentajeComision(porcentaje_comision2);
+                                                
+                                                productoModificar2.setFechaVencimiento(fechaVencimientoModificar2);
 
                                                 ProductoController.updateProducto(productoModificar1);
                                                 ProductoController.updateProducto(productoModificar2);
@@ -2818,6 +2984,8 @@ public class ProductoBean implements Serializable {
 
                                             BigDecimal porcentaje_comision = new BigDecimal(txtComisionModificar1.getValue().toString());
                                             productoModificar1.setPorcentajeComision(porcentaje_comision);
+                                            
+                                            productoModificar1.setFechaVencimiento(fechaVencimientoModificar1);
 
                                             //la segunda 
                                             //aqui
@@ -2856,6 +3024,8 @@ public class ProductoBean implements Serializable {
 
                                             BigDecimal porcentaje_comision2 = new BigDecimal(txtComisionModificar2.getValue().toString());
                                             productoModificar2.setPorcentajeComision(porcentaje_comision2);
+                                            
+                                            productoModificar2.setFechaVencimiento(fechaVencimientoModificar2);
 
                                             ProductoController.updateProducto(productoModificar1);
                                             ProductoController.updateProducto(productoModificar2);
@@ -2878,13 +3048,13 @@ public class ProductoBean implements Serializable {
 
                     break;
                 case 3:
-                    if (productoModificar1.getNombre() == null || txtCodigoBarrasModificar1.getValue() == null || txtCantidadPaqueteModificar1.getValue() == null || txtDescripcionPaqueteModificar1.getValue() == null || txtUnidadXPaqueteModificar1.getValue() == null || txtCompraModificar1.getValue() == null || txtDescuentoCompraModificar1.getValue() == null || txtCompraRealModificar1.getValue() == null || txtPorcentajeUtilidadModificar1.getValue() == null || txtVentaSugeridaModificar1.getValue() == null || txtVentaRealModificar1.getValue() == null || txtComisionModificar1.getValue() == null || txtPrecioComisionModificar1.getValue() == null || txtStockMinimoModificar1.getValue() == null || productoModificar2.getNombre() == null || txtCodigoBarrasModificar2.getValue() == null || txtCantidadPaqueteModificar2.getValue() == null || txtDescripcionPaqueteModificar2.getValue() == null || txtUnidadXPaqueteModificar2.getValue() == null || txtCompraModificar2.getValue() == null || txtDescuentoCompraModificar2.getValue() == null || txtCompraRealModificar2.getValue() == null || txtPorcentajeUtilidadModificar2.getValue() == null || txtVentaSugeridaModificar2.getValue() == null || txtVentaRealModificar2.getValue() == null || txtComisionModificar2.getValue() == null || txtPrecioComisionModificar2.getValue() == null || txtStockMinimoModificar2.getValue() == null || productoModificar3.getNombre() == null || txtCodigoBarrasModificar3.getValue() == null || txtCantidadPaqueteModificar3.getValue() == null || txtDescripcionPaqueteModificar3.getValue() == null || txtUnidadXPaqueteModificar3.getValue() == null || txtCompraModificar3.getValue() == null || txtDescuentoCompraModificar3.getValue() == null || txtCompraRealModificar3.getValue() == null || txtPorcentajeUtilidadModificar3.getValue() == null || txtVentaSugeridaModificar3.getValue() == null || txtVentaRealModificar3.getValue() == null || txtComisionModificar3.getValue() == null || txtPrecioComisionModificar3.getValue() == null || txtStockMinimoModificar3.getValue() == null) {
+                    if (productoModificar1.getNombre() == null || txtCodigoBarrasModificar1.getValue() == null || txtCantidadPaqueteModificar1.getValue() == null || txtDescripcionPaqueteModificar1.getValue() == null || txtUnidadXPaqueteModificar1.getValue() == null || txtCompraModificar1.getValue() == null || txtDescuentoCompraModificar1.getValue() == null || txtCompraRealModificar1.getValue() == null || txtPorcentajeUtilidadModificar1.getValue() == null || txtVentaSugeridaModificar1.getValue() == null || txtVentaRealModificar1.getValue() == null || txtComisionModificar1.getValue() == null || txtPrecioComisionModificar1.getValue() == null || txtStockMinimoModificar1.getValue() == null || fechaVencimientoInputModificar1.getValue() == null || productoModificar2.getNombre() == null || txtCodigoBarrasModificar2.getValue() == null || txtCantidadPaqueteModificar2.getValue() == null || txtDescripcionPaqueteModificar2.getValue() == null || txtUnidadXPaqueteModificar2.getValue() == null || txtCompraModificar2.getValue() == null || txtDescuentoCompraModificar2.getValue() == null || txtCompraRealModificar2.getValue() == null || txtPorcentajeUtilidadModificar2.getValue() == null || txtVentaSugeridaModificar2.getValue() == null || txtVentaRealModificar2.getValue() == null || txtComisionModificar2.getValue() == null || txtPrecioComisionModificar2.getValue() == null || txtStockMinimoModificar2.getValue() == null || fechaVencimientoInputModificar2.getValue() == null || productoModificar3.getNombre() == null || txtCodigoBarrasModificar3.getValue() == null || txtCantidadPaqueteModificar3.getValue() == null || txtDescripcionPaqueteModificar3.getValue() == null || txtUnidadXPaqueteModificar3.getValue() == null || txtCompraModificar3.getValue() == null || txtDescuentoCompraModificar3.getValue() == null || txtCompraRealModificar3.getValue() == null || txtPorcentajeUtilidadModificar3.getValue() == null || txtVentaSugeridaModificar3.getValue() == null || txtVentaRealModificar3.getValue() == null || txtComisionModificar3.getValue() == null || txtPrecioComisionModificar3.getValue() == null || txtStockMinimoModificar3.getValue() == null || fechaVencimientoInputModificar3.getValue() == null) {
                         context.execute("PF('dialogModificarProducto').show();");
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 1 y 2 son obligatorios."));
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
                     } else {
 
-                        if (productoModificar1.getNombre().equals("") || txtCodigoBarrasModificar1.getValue().toString().equals("") || txtCantidadPaqueteModificar1.getValue().equals("0") || txtDescripcionPaqueteModificar1.getValue().toString().equals("") || txtUnidadXPaqueteModificar1.getValue().equals("0") || txtCompraModificar1.getValue().equals("0") || txtPorcentajeUtilidadModificar1.getValue().equals("0") || txtVentaRealModificar1.getValue().equals("0") || txtStockMinimoModificar1.getValue().equals("0") || productoModificar2.getNombre().equals("") || txtCodigoBarrasModificar2.getValue().toString().equals("") || txtCantidadPaqueteModificar2.getValue().equals("0") || txtDescripcionPaqueteModificar2.getValue().toString().equals("") || txtUnidadXPaqueteModificar2.getValue().equals("0") || txtCompraModificar2.getValue().equals("0") || txtPorcentajeUtilidadModificar2.getValue().equals("0") || txtVentaRealModificar2.getValue().equals("0") || txtStockMinimoModificar2.getValue().equals("0") || productoModificar3.getNombre().equals("") || txtCodigoBarrasModificar3.getValue().toString().equals("") || txtCantidadPaqueteModificar3.getValue().equals("0") || txtDescripcionPaqueteModificar3.getValue().toString().equals("") || txtUnidadXPaqueteModificar3.getValue().equals("0") || txtCompraModificar3.getValue().equals("0") || txtPorcentajeUtilidadModificar3.getValue().equals("0") || txtVentaRealModificar3.getValue().equals("0") || txtStockMinimoModificar3.getValue().equals("0")) {
+                        if (productoModificar1.getNombre().equals("") || txtCodigoBarrasModificar1.getValue().toString().equals("") || txtCantidadPaqueteModificar1.getValue().equals("0") || txtDescripcionPaqueteModificar1.getValue().toString().equals("") || txtUnidadXPaqueteModificar1.getValue().equals("0") || txtCompraModificar1.getValue().equals("0") || txtPorcentajeUtilidadModificar1.getValue().equals("0") || txtVentaRealModificar1.getValue().equals("0") || txtStockMinimoModificar1.getValue().equals("0") || fechaVencimientoInputModificar1.getValue().toString().equals("") || productoModificar2.getNombre().equals("") || txtCodigoBarrasModificar2.getValue().toString().equals("") || txtCantidadPaqueteModificar2.getValue().equals("0") || txtDescripcionPaqueteModificar2.getValue().toString().equals("") || txtUnidadXPaqueteModificar2.getValue().equals("0") || txtCompraModificar2.getValue().equals("0") || txtPorcentajeUtilidadModificar2.getValue().equals("0") || txtVentaRealModificar2.getValue().equals("0") || txtStockMinimoModificar2.getValue().equals("0") || fechaVencimientoInputModificar2.getValue().toString().equals("") || productoModificar3.getNombre().equals("") || txtCodigoBarrasModificar3.getValue().toString().equals("") || txtCantidadPaqueteModificar3.getValue().equals("0") || txtDescripcionPaqueteModificar3.getValue().toString().equals("") || txtUnidadXPaqueteModificar3.getValue().equals("0") || txtCompraModificar3.getValue().equals("0") || txtPorcentajeUtilidadModificar3.getValue().equals("0") || txtVentaRealModificar3.getValue().equals("0") || txtStockMinimoModificar3.getValue().equals("0") || fechaVencimientoInputModificar3.getValue().toString().equals("")) {
                             context.execute("PF('dialogModificarProducto').show();");
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Todos los campos del check 1 y 2 son obligatorios."));
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Los campos marcados con * no pueden ser 0"));
@@ -2967,6 +3137,8 @@ public class ProductoBean implements Serializable {
 
                                                     BigDecimal porcentaje_comision = new BigDecimal(txtComisionModificar1.getValue().toString());
                                                     productoModificar1.setPorcentajeComision(porcentaje_comision);
+                                                    
+                                                    productoModificar1.setFechaVencimiento(fechaVencimientoModificar1);
 
                                                     //la segunda 
                                                     //aqui
@@ -3005,6 +3177,8 @@ public class ProductoBean implements Serializable {
 
                                                     BigDecimal porcentaje_comision2 = new BigDecimal(txtComisionModificar2.getValue().toString());
                                                     productoModificar2.setPorcentajeComision(porcentaje_comision2);
+                                                    
+                                                    productoModificar2.setFechaVencimiento(fechaVencimientoModificar2);
 
                                                     //la tercera 
                                                     //aqui
@@ -3043,6 +3217,8 @@ public class ProductoBean implements Serializable {
 
                                                     BigDecimal porcentaje_comision3 = new BigDecimal(txtComisionModificar3.getValue().toString());
                                                     productoModificar3.setPorcentajeComision(porcentaje_comision3);
+                                                    
+                                                    productoModificar3.setFechaVencimiento(fechaVencimientoModificar3);
 
                                                     ProductoController.updateProducto(productoModificar1);
                                                     ProductoController.updateProducto(productoModificar2);
@@ -3096,6 +3272,8 @@ public class ProductoBean implements Serializable {
 
                                                 BigDecimal porcentaje_comision = new BigDecimal(txtComisionModificar1.getValue().toString());
                                                 productoModificar1.setPorcentajeComision(porcentaje_comision);
+                                                
+                                                productoModificar1.setFechaVencimiento(fechaVencimientoModificar1);
 
                                                 //la segunda 
                                                 //aqui
@@ -3134,6 +3312,8 @@ public class ProductoBean implements Serializable {
 
                                                 BigDecimal porcentaje_comision2 = new BigDecimal(txtComisionModificar2.getValue().toString());
                                                 productoModificar2.setPorcentajeComision(porcentaje_comision2);
+                                                
+                                                productoModificar2.setFechaVencimiento(fechaVencimientoModificar2);
 
                                                 //la tercera 
                                                 //aqui
@@ -3173,6 +3353,8 @@ public class ProductoBean implements Serializable {
                                                 BigDecimal porcentaje_comision3 = new BigDecimal(txtComisionModificar3.getValue().toString());
                                                 productoModificar3.setPorcentajeComision(porcentaje_comision3);
 
+                                                productoModificar3.setFechaVencimiento(fechaVencimientoModificar3);
+                                                
                                                 ProductoController.updateProducto(productoModificar1);
                                                 ProductoController.updateProducto(productoModificar2);
                                                 ProductoController.updateProducto(productoModificar3);
@@ -3915,6 +4097,7 @@ public class ProductoBean implements Serializable {
         txtComision.setValue(null);
         txtPrecioComision.setValue(null);
         txtStockMinimo.setValue(null);
+        fechaVencimientoInput.setValue(null);
 
         txtCodigoBarras1.setValue(null);
         txtCantidadPaquete1.setValue(null);
@@ -3929,6 +4112,7 @@ public class ProductoBean implements Serializable {
         txtComision1.setValue(null);
         txtPrecioComision1.setValue(null);
         txtStockMinimo1.setValue(null);
+        fechaVencimientoInput1.setValue(null);
 
         txtCodigoBarras2.setValue(null);
         txtCantidadPaquete2.setValue(null);
@@ -3943,6 +4127,7 @@ public class ProductoBean implements Serializable {
         txtComision2.setValue(null);
         txtPrecioComision2.setValue(null);
         txtStockMinimo2.setValue(null);
+        fechaVencimientoInput2.setValue(null);
 
         setCheck1(false);
         setCheck2(false);
@@ -3973,6 +4158,7 @@ public class ProductoBean implements Serializable {
         txtComision.setValue(null);
         txtPrecioComision.setValue(null);
         txtStockMinimo.setValue(null);
+        fechaVencimientoInput.setValue(null);
 
         txtCodigoBarras1.setValue(null);
         txtCantidadPaquete1.setValue(null);
@@ -3987,6 +4173,7 @@ public class ProductoBean implements Serializable {
         txtComision1.setValue(null);
         txtPrecioComision1.setValue(null);
         txtStockMinimo1.setValue(null);
+        fechaVencimientoInput1.setValue(null);
 
         txtCodigoBarras2.setValue(null);
         txtCantidadPaquete2.setValue(null);
@@ -4001,6 +4188,7 @@ public class ProductoBean implements Serializable {
         txtComision2.setValue(null);
         txtPrecioComision2.setValue(null);
         txtStockMinimo2.setValue(null);
+        fechaVencimientoInput2.setValue(null);
 
         setCheck1(false);
         setCheck2(false);
@@ -4401,66 +4589,6 @@ public class ProductoBean implements Serializable {
         txtPrecioComisionModificar3.setDisabled(true);
         txtStockMinimoModificar3.setDisabled(true);
 
-    }
-
-    //--------------------------------
-    public void cambioTxtCompraNuevo() {
-
-        if (txtCompraNuevo.getValue() == null) {
-            txtCompraRealNuevo.setValue("0");
-        } else {
-            if (txtCompraNuevo.getValue().equals("0")) {
-                txtCompraRealNuevo.setValue("0");
-            } else {
-                if (txtDescuentoCompraNuevo.getValue() == null) {
-                    txtCompraRealNuevo.setValue(txtCompraNuevo.getValue());
-                } else {
-                    if (txtDescuentoCompraNuevo.getValue().equals("0")) {
-                        txtCompraRealNuevo.setValue(txtCompraNuevo.getValue());
-                    } else {
-                        double txt_compra = Double.parseDouble(txtCompraNuevo.getValue().toString());
-                        double txt_descuento = Double.parseDouble(txtDescuentoCompraNuevo.getValue().toString());
-                        double descuento = (txt_compra * txt_descuento) / 100;
-                        txtCompraRealNuevo.setValue(txt_compra - descuento);
-                    }
-                }
-            }
-        }
-
-        if (txtCompraRealNuevo.getValue() == null) {
-            txtVentaSugeridaNuevo.setValue("0");
-        } else {
-            if (txtCompraRealNuevo.getValue().equals("0")) {
-                txtVentaSugeridaNuevo.setValue("0");
-            } else {
-                if (txtPorcentajeUtilidadNuevo.getValue() == null) {
-                    txtVentaSugeridaNuevo.setValue(txtCompraRealNuevo.getValue());
-                } else {
-                    if (txtPorcentajeUtilidadNuevo.getValue().equals("0")) {
-                        txtVentaSugeridaNuevo.setValue(txtCompraRealNuevo.getValue());
-                    } else {
-                        double compra_real = Double.parseDouble(txtCompraRealNuevo.getValue().toString());
-                        double utilidad = Double.parseDouble(txtPorcentajeUtilidadNuevo.getValue().toString());
-                        txtVentaSugeridaNuevo.setValue(compra_real + ((compra_real * utilidad) / 100));
-                    }
-                }
-            }
-        }
-
-    }
-
-    public void cambioComisionNuevo() {
-
-        if (txtVentaRealNuevo.getValue() == null || txtComisionNuevo.getValue() == null) {
-        } else {
-            if (txtVentaRealNuevo.getValue().equals("0") || txtComisionNuevo.getValue().equals("0")) {
-                txtPrecioComisionNuevo.setValue("0");
-            } else {
-                double txt_venta_real = Double.parseDouble(txtVentaRealNuevo.getValue().toString());
-                double txt_porcentaje_comision = Double.parseDouble(txtComisionNuevo.getValue().toString());
-                txtPrecioComisionNuevo.setValue((txt_venta_real * txt_porcentaje_comision) / 100);
-            }
-        }
     }
 
     public void inicializar() {

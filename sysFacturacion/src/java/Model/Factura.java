@@ -1,5 +1,5 @@
 package Model;
-// Generated 24-ago-2017 11:56:35 by Hibernate Tools 4.3.1
+// Generated 12-sep-2017 18:01:40 by Hibernate Tools 4.3.1
 
 
 import java.math.BigDecimal;
