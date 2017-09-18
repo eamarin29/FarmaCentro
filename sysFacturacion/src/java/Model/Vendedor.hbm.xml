@@ -10,7 +10,7 @@
                 <param name="property">usuario</param>
             </generator>
         </id>
-        <one-to-one name="usuario" class="Model.Usuario" constrained="true"></one-to-one>
+        <one-to-one name="usuario" class="Model.Usuario" constrained="true" lazy="false"></one-to-one>
         <property name="nombres" type="string">
             <column name="NOMBRES" length="200" />
         </property>

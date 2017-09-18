@@ -107,34 +107,13 @@
                                 <h:outputText value="#{prC.nombre}"></h:outputText>
                             </p:column>
                             <p:column style="text-align: center; width: 140px;" filterBy="#{prC.stockActUni}" filterMatchMode="contains" headerText="Stock actual">
-                                <h:outputText value="#{Cpr.stockActUni}"></h:outputText>
+                                <h:outputText value="#{prC.stockActUni}"></h:outputText>
                             </p:column>
                             <p:column style="text-align: center; width: 130px;" filterBy="#{prC.paquete}" filterMatchMode="contains"  headerText="Descripción Paquete">
                                 <h:outputText value="#{prC.paquete}"></h:outputText>
                             </p:column>
                             <p:column style="text-align: center; width: 140px;" filterBy="#{prC.unidadXPaquete}" filterMatchMode="contains" headerText="Unidades X Paquete">
                                 <h:outputText value="#{prC.unidadXPaquete}"></h:outputText>
-                            </p:column>
-                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.precioCompra}" filterMatchMode="contains" headerText="Precio Compra">
-                                <h:outputText value="#{prC.precioCompra}">
-                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
-                                </h:outputText>    
-                            </p:column>
-                            <p:column style="text-align: center; width: 130px;" filterBy="#{prC.porcentajeDescuento}" filterMatchMode="contains"  headerText="%Descuento Compra">
-                                <h:outputText value="#{prC.porcentajeDescuento}"></h:outputText>
-                            </p:column>
-                            <p:column style="text-align: center; width: 150px;" filterBy="#{prC.precioCompraReal}" filterMatchMode="contains" headerText="Precio Compra Real">
-                                <h:outputText value="#{prC.precioCompraReal}">
-                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
-                                </h:outputText>    
-                            </p:column>
-                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.porcentajeUtilidad}" filterMatchMode="contains"  headerText="% de Utilidad">
-                                <h:outputText value="#{prC.porcentajeUtilidad}"></h:outputText>
-                            </p:column>
-                            <p:column style="text-align: center; width: 140px;" filterBy="#{prC.ventaSugerida}" filterMatchMode="contains" headerText="Precio Venta Sugerido">
-                                <h:outputText value="#{prC.ventaSugerida}">
-                                    <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
-                                </h:outputText>    
                             </p:column>
                             <p:column style="text-align: center; width: 140px;" filterBy="#{prC.precioVentaReal}" filterMatchMode="contains" headerText="Precio Venta Real">
                                 <h:outputText value="#{prC.precioVentaReal}">
