@@ -68,7 +68,7 @@ public class FacturaBean implements Serializable {
     private String codigoBarras;
 
     private List<DetalleFactura> listaDetalleFactura;
-    private String codBarrasProductoEliminarDetalle;
+    private BigDecimal codBarrasProductoEliminarDetalle;
     private String codBarrasProductoModificarCantidad;
 
     private String cantidadProductoDigitado;
@@ -131,6 +131,11 @@ public class FacturaBean implements Serializable {
         this.codigoBarras = "";
 
         limpiarFactura();
+        
+        this.codigoCliente = "1";
+        
+        agregarDatosClienteAfacturaPorText();
+        
     }
 
     public List<Producto> getListaProductosSecundario3() {
@@ -325,11 +330,11 @@ public class FacturaBean implements Serializable {
         this.numeroFactura = numeroFactura;
     }
 
-    public String getCodBarrasProductoEliminarDetalle() {
+    public BigDecimal getCodBarrasProductoEliminarDetalle() {
         return codBarrasProductoEliminarDetalle;
     }
 
-    public void setCodBarrasProductoEliminarDetalle(String codBarrasProductoEliminarDetalle) {
+    public void setCodBarrasProductoEliminarDetalle(BigDecimal codBarrasProductoEliminarDetalle) {
         this.codBarrasProductoEliminarDetalle = codBarrasProductoEliminarDetalle;
     }
 
@@ -499,8 +504,8 @@ public class FacturaBean implements Serializable {
                 context.execute("PF('dialogMostrarTodosProdutos').show();");
                 context.update("frmMostrarTodosProductos:dlgMostrarTodosProdutos");
                 context.update("frmMostrarTodosProductos:tablaProductos");
-                
-                
+
+
             } else {
 
             }
@@ -1796,7 +1801,7 @@ public class FacturaBean implements Serializable {
     }
 
     public void cancelarTablaConsultarProductos() {
-        
+
         RequestContext context = RequestContext.getCurrentInstance();
         context.execute("PF('dialogConsultarProductos').hide();");
         context.execute("PF('parametrosTablaConsultar').filter();");

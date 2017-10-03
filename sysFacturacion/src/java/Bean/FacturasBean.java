@@ -106,7 +106,7 @@ public class FacturasBean implements Serializable {
 
     }
 
-    public void anularFactura() {
+    public void anularFacturaMetodo() {
 
         FacturasController FacturasController = new FacturasController();
         FacturaController FacturaController = new FacturaController();
@@ -143,12 +143,13 @@ public class FacturasBean implements Serializable {
                         ComisionController.updateComision(co);
                         this.anularFactura.setAnulada('S');
                         FacturaController.updateFactura(this.anularFactura);
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación Exitosa:", "La factura se ha anulado exitosamente."));
+
                     }
 
                 }
 
             }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación Exitosa:", "La factura se ha anulado exitosamente."));
         }
 
     }

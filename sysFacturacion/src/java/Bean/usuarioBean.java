@@ -103,7 +103,7 @@ public class usuarioBean implements Serializable {
         
         if(pVencido == null){
         }else{
-              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Existen productos vencidos en el inventario. Consultar reporte"));
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Existen productos próximos a vencer en el inventario. Consultar reporte"));
         }
         
         return btnLogin;

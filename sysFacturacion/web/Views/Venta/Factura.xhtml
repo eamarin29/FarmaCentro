@@ -21,29 +21,22 @@
                                      widgetVar="parametrosTabla" paginatorPosition="bottom"
                                      filteredValue="#{productoBean.filtroProductos}" style="width: 100%;"
                                      scrollable="true" scrollHeight="100%" >
-                            <f:facet name="header">
-                                <p:outputPanel>
-                                    <h:outputText value="Buscar en cualquier columna: " />
-                                    <p:spacer></p:spacer>
-                                    <p:inputText id="globalFilter" onkeyup="PF('parametrosTabla').filter()" style="width:150px" placeholder="Buscar..."/>
-                                </p:outputPanel>
-                            </f:facet>
-                            <p:column style="text-align: center;  width: 200px;"  filterBy="#{pr.codBarras}" filterMatchMode="exact" headerText="Código de Barras:">
+                            <p:column style="text-align: center;  width: 200px;"  headerText="Código de Barras:">
                                 <h:outputText value="#{pr.codBarras}"></h:outputText>
                             </p:column>
-                            <p:column style="text-align: center; width: 250px;" filterBy="#{pr.nombre}" filterMatchMode="contains"  headerText="Descripción del Producto:">
+                            <p:column style="text-align: center; width: 250px;" headerText="Descripción del Producto:">
                                 <h:outputText value="#{pr.nombre}"></h:outputText>
                             </p:column>
-                            <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockActUni}" filterMatchMode="contains" headerText="Stock actual (U)">
+                            <p:column style="text-align: center; width: 140px;" headerText="Stock actual (U)">
                                 <h:outputText value="#{pr.stockActUni}"></h:outputText>
                             </p:column>
-                            <p:column style="text-align: center; width: 130px;" filterBy="#{pr.paquete}" filterMatchMode="contains"  headerText="Descripción Paquete">
+                            <p:column style="text-align: center; width: 130px;"   headerText="Descripción Paquete">
                                 <h:outputText value="#{pr.paquete}"></h:outputText>
                             </p:column>
-                            <p:column style="text-align: center; width: 140px;" filterBy="#{pr.unidadXPaquete}" filterMatchMode="contains" headerText="Unidades x paquete">
+                            <p:column style="text-align: center; width: 140px;"  headerText="Unidades x paquete">
                                 <h:outputText value="#{pr.unidadXPaquete}"></h:outputText>
                             </p:column>
-                            <p:column style="text-align: center; width: 140px;" filterBy="#{pr.precioVentaReal}" filterMatchMode="contains" headerText="Precio Venta Real">
+                            <p:column style="text-align: center; width: 140px;" headerText="Precio Venta Real">
                                 <h:outputText value="#{pr.precioVentaReal}">
                                     <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
                                 </h:outputText>    
@@ -325,21 +318,24 @@
                         </p:layout>
                         <p:separator></p:separator>
                         <!-- BUSCAR PRODUCTO -->
-                        <h:panelGrid id="gridBuscarProducto" columns="3" style="font-size: 14px;">
-                            <p:outputLabel value="Código de barras:  "></p:outputLabel>
-                            <p:inputText id="txtBuscarProductoXcodigoBarras"
-                                         value="#{facturaBean.codigoBarras}" size="12"
-                                         onkeypress="if (event.keyCode === 13) {
-                                                     onchange();
-                                                     return false;
-                                                 }" >
-                                <p:ajax  event="change" listener="#{facturaBean.mostrarDialogPedirCantidadProductoPorText()}"
-                                         update=":frmMostrarTodosProductos:dlgMostrarTodosProdutos, frmMostrarTodosProductos:tablaProductos"></p:ajax>  
-                            </p:inputText>
-                            <p:commandButton title="Buscar producto" icon="buscar" oncomplete="PF('dialogConsultarProductos').show();"
-                                             update="">  
-                            </p:commandButton> 
-                        </h:panelGrid>
+                        <p:panel id="panel" header="Register">
+                            <p:focus context="panel"/>
+                            <h:panelGrid id="gridBuscarProducto" columns="3" style="font-size: 14px;">
+                                <p:outputLabel value="Código de barras:  "></p:outputLabel>
+                                <p:inputText id="txtBuscarProductoXcodigoBarras"
+                                             value="#{facturaBean.codigoBarras}" size="12"
+                                             onkeypress="if (event.keyCode === 13) {
+                                                         onchange();
+                                                         return false;
+                                                     }"  >
+                                    <p:ajax  event="change" listener="#{facturaBean.mostrarDialogPedirCantidadProductoPorText()}"
+                                             update=":frmMostrarTodosProductos:dlgMostrarTodosProdutos, frmMostrarTodosProductos:tablaProductos"></p:ajax>  
+                                </p:inputText>
+                                <p:commandButton title="Buscar producto" icon="buscar" oncomplete="PF('dialogConsultarProductos').show();"
+                                                 update="">  
+                                </p:commandButton> 
+                            </h:panelGrid>
+                        </p:panel>
                         <p:separator/>
                         <!-- DETALLE DE FACTURA -->
                         <p:dataTable id="tablaProductosFactura" var="item" value="#{facturaBean.listaDetalleFactura}"
@@ -373,12 +369,12 @@
                                        <f:setPropertyActionListener target="#{facturaBean.codBarrasProductoModificarCantidad}"
                                                                     value="#{item.producto.codBarras}">
                                        </f:setPropertyActionListener> 
-                                   </p:commandButton>
+                                   </p:commandButton> 
                                    <p:commandButton title="Eliminar detalle" icon="ui-icon-delete2" 
                                                     oncomplete="PF('dialogEliminarDetalle').show();"
                                                     update=":frmFactura:dlgEliminarDetalle">  
                                        <f:setPropertyActionListener target="#{facturaBean.codBarrasProductoEliminarDetalle}"
-                                                                    value="#{item.producto.codBarras}">
+                                                                    value="#{item.producto.codigo}">
                                        </f:setPropertyActionListener> 
                                    </p:commandButton>  -->
                             </p:column>

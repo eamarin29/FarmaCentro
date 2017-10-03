@@ -13,7 +13,7 @@ public class ReporteController {
         List<Reporte> lista = null;
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = session.beginTransaction();
-        String hql = "FROM Reporte";
+        String hql = "FROM Reporte ORDER BY codigo ASC";
 
         try {
             lista = session.createQuery(hql).list();

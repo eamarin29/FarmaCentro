@@ -16,10 +16,13 @@ import javax.faces.context.FacesContext;
 import Model.Reporte;
 import Model.Vendedor;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContext;
-import net.sf.jasperreports.engine.JRException;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -28,7 +31,7 @@ import org.primefaces.context.RequestContext;
 public class ReporteBean implements Serializable {
 
     private String reporte;
-    private Map<String, String> reportes;
+    private HashMap<String, String> reportes;
 
     private Date fechaInicial;
     private Date fechaFinal;
@@ -51,7 +54,36 @@ public class ReporteBean implements Serializable {
         for (int i = 0; i < listaReportes.size(); i++) {
             reportes.put(listaReportes.get(i).getDescripcion(), String.valueOf(listaReportes.get(i).getCodigo()));
         }
+         HashMap<String, String> passedMap = new HashMap<String, String>();
+         passedMap = reportes;
+         
+           List<String> mapKeys = new ArrayList<>(passedMap.keySet());
+        List<String> mapValues = new ArrayList<>(passedMap.values());
+        Collections.sort(mapValues);
+        Collections.sort(mapKeys);
 
+        LinkedHashMap<String, String> sortedMap
+                = new LinkedHashMap<>();
+
+        Iterator<String> valueIt = mapValues.iterator();
+        while (valueIt.hasNext()) {
+            String val = valueIt.next();
+            Iterator<String> keyIt = mapKeys.iterator();
+
+            while (keyIt.hasNext()) {
+                String key = keyIt.next();
+                String comp1 = passedMap.get(key);
+                String comp2 = val;
+
+                if (comp1.equals(comp2)) {
+                    keyIt.remove();
+                    sortedMap.put(key, val);
+                    break;
+                }
+            }
+        }
+         
+        reportes = sortedMap;
     }
 
     public Date getFechaInicial_3() {
@@ -94,11 +126,11 @@ public class ReporteBean implements Serializable {
         this.reporte = reporte;
     }
 
-    public Map<String, String> getReportes() {
+    public HashMap<String, String> getReportes() {
         return reportes;
     }
 
-    public void setReportes(Map<String, String> reportes) {
+    public void setReportes(HashMap<String, String> reportes) {
         this.reportes = reportes;
     }
 
@@ -124,15 +156,13 @@ public class ReporteBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Debe seleccionar un reporte."));
         } else {
             if (this.reporte.equals("1")) {
-
                 //combo de empleados
                 vendedores = new HashMap<String, String>();
                 VendedorController VendedorController = new VendedorController();
                 List<Vendedor> listaVendedores = VendedorController.listarVendedores();
                 for (int i = 0; i < listaVendedores.size(); i++) {
-                    vendedores.put(listaVendedores.get(i).getNombres() + listaVendedores.get(i).getApellidos(), String.valueOf(listaVendedores.get(i).getCedula()));
+                    vendedores.put(listaVendedores.get(i).getNombres() + " " + listaVendedores.get(i).getApellidos(), String.valueOf(listaVendedores.get(i).getCedula()));
                 }
-
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("PF('dialogReporte1').show();");
             } else if (this.reporte.equals("2")) {
@@ -144,6 +174,9 @@ public class ReporteBean implements Serializable {
             } else if (this.reporte.equals("4")) {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("PF('dialogReporte4').show();");
+            } else if (this.reporte.equals("5")) {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("PF('dialogReporte5').show();");
             }
         }
     }
@@ -163,7 +196,7 @@ public class ReporteBean implements Serializable {
 
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-            String ruta = servletContext.getRealPath("/Reportes/1/1.jasper");
+            String ruta = servletContext.getRealPath("/Reportes/CuadreCaja/CuadreCaja.jasper");
 
             rFactura.getReporte1(ruta, cedula_vendedor, this.fechaFinal, this.fechaInicial);
             FacesContext.getCurrentInstance().responseComplete();
@@ -184,7 +217,7 @@ public class ReporteBean implements Serializable {
 
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-            String ruta = servletContext.getRealPath("/Reportes/2/Inventario.jasper");
+            String ruta = servletContext.getRealPath("/Reportes/Inventario/Inventario.jasper");
 
             rFactura.getReporte2(ruta);
             FacesContext.getCurrentInstance().responseComplete();
@@ -209,7 +242,7 @@ public class ReporteBean implements Serializable {
 
             FacesContext facesContext = FacesContext.getCurrentInstance();
             ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
-            String ruta = servletContext.getRealPath("/Reportes/CierreCaja/CierreCaja.jasper");
+            String ruta = servletContext.getRealPath("/Reportes/CierreDelDia/CierreDelDia.jasper");
 
             rFactura.getReporte3(ruta, this.fechaFinal_3, this.fechaInicial_3);
             FacesContext.getCurrentInstance().responseComplete();
@@ -233,6 +266,27 @@ public class ReporteBean implements Serializable {
             String ruta = servletContext.getRealPath("/Reportes/ProductosVencidos/ProductosVencidos.jasper");
 
             rFactura.getReporte4(ruta);
+            FacesContext.getCurrentInstance().responseComplete();
+
+            //finaliza metodo de la visualizacion de la factura
+        } catch (Exception ex) {
+            Logger.getLogger(FacturaBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void imprimirReporte5() {
+
+        try {
+
+            //inicia metodo de visualizacion de la factura
+            ImpresionReportes rFactura = new ImpresionReportes();
+
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            ServletContext servletContext = (ServletContext) facesContext.getExternalContext().getContext();
+            String ruta = servletContext.getRealPath("/Reportes/ProductosAgotados/ProductosAgotados.jasper");
+
+            rFactura.getReporte5(ruta);
             FacesContext.getCurrentInstance().responseComplete();
 
             //finaliza metodo de la visualizacion de la factura

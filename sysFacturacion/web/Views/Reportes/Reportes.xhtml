@@ -13,7 +13,7 @@
                 <h:form id="frmReportes">
                     <p:growl id="message" showDetail="true" />  
 
-                    <!--DIALOGO REPORTE 1  -->
+                    <!--DIALOGO REPORTE 1 CUADRE CAJA -->
                     <p:dialog id="dlgReporte1" widgetVar="dialogReporte1" modal="true" resizable="false" 
                               showEffect="explode" hideEffect="explode" header="Parámetros" >
 
@@ -57,7 +57,7 @@
 
                     </p:dialog>
 
-                    <!--DIALOGO REPORTE 2  -->
+                    <!--DIALOGO REPORTE 2  INVENTARIO -->
                     <p:dialog id="dlgReporte2" widgetVar="dialogReporte2" modal="true" resizable="false" 
                               showEffect="explode" hideEffect="explode" header="Imprimir Reporte de Inventario" >
 
@@ -75,7 +75,7 @@
 
                     </p:dialog>
 
-                    <!--DIALOGO REPORTE 3  -->
+                    <!--DIALOGO REPORTE 3  CIERRE DEL DIA -->
                     <p:dialog id="dlgReporte3" widgetVar="dialogReporte3" modal="true" resizable="false" 
                               showEffect="explode" hideEffect="explode" header="Parámetros" >
 
@@ -108,13 +108,13 @@
 
                     </p:dialog>
 
-                    <!--DIALOGO REPORTE 4  -->
+                    <!--DIALOGO REPORTE 4 PRODUCTOS VENCIDOS -->
                     <p:dialog id="dlgReporte4" widgetVar="dialogReporte4" modal="true" resizable="false" 
-                              showEffect="explode" hideEffect="explode" header="Imprimir Reporte de Productos vencidos" >
+                              showEffect="explode" hideEffect="explode" header="Imprimir Reporte de Productos Vencidos" >
 
                         <p:messages id="messageReporte4"  showDetail="true" autoUpdate="true" closable="true"  />
 
-                        ¿Está seguro que quiere imprimir el reporte de Productos vencidos?
+                        ¿Está seguro que quiere imprimir el reporte de Productos Vencidos?
 
                         <br></br> 
                         <br></br> 
@@ -122,6 +122,24 @@
                             <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
                         </h:commandLink>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte4').hide();">    
+                        </p:commandButton> 
+
+                    </p:dialog>
+
+                    <!--DIALOGO REPORTE 5  PRODUCTOS AGOTADOS-->
+                    <p:dialog id="dlgReporte5" widgetVar="dialogReporte5" modal="true" resizable="false" 
+                              showEffect="explode" hideEffect="explode" header="Imprimir Reporte de Productos Agotados" >
+
+                        <p:messages id="messageReporte5"  showDetail="true" autoUpdate="true" closable="true"  />
+
+                        ¿Está seguro que quiere imprimir el reporte de Productos Agotados?
+
+                        <br></br> 
+                        <br></br> 
+                        <h:commandLink action="#{reporteBean.imprimirReporte5()}" target="_blank" >
+                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                        </h:commandLink>
+                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte5').hide();">    
                         </p:commandButton> 
 
                     </p:dialog>

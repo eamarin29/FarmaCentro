@@ -83,7 +83,7 @@
                         <p:column style="text-align: center;  width: 200px;"  filterBy="#{fa.fechaRegistro}" filterMatchMode="contains" headerText="Fecha de registro">
                             <h:outputText value="#{fa.fechaRegistro}"></h:outputText>
                         </p:column>
-                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{fa.anulada}" filterMatchMode="contains" headerText="Anulada">
+                        <p:column style="text-align: center;  width: 150px;"  filterBy="#{fa.anulada}" filterMatchMode="contains" headerText="Anulada">
                             <h:outputText value="#{fa.anulada}"></h:outputText>
                         </p:column>
                         <p:column  style="text-align: center;  width: 300px;"  headerText="Acciones">
@@ -92,7 +92,7 @@
                                 <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
                                 </f:setPropertyActionListener> 
                             </p:commandButton> 
-                            <p:commandButton action="#{facturasBean.anularFactura()}" title="Anular factura" icon="ui-icon-anular"
+                            <p:commandButton action="#{facturasBean.anularFacturaMetodo()}" title="Anular factura" icon="ui-icon-anular"
                                              update="frmMostrarFacturas, frmEliminarFactura:message" >
                                 <p:confirm header="Confirmation" message="¿Está seguro que desea anular esta factura?" icon="ui-icon-alert" />
                                 <f:setPropertyActionListener target="#{facturasBean.anularFactura}" value="#{fa}">

@@ -3,11 +3,8 @@
 }
 
 .body {
-
     background-image: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.1) 100%), url("#{facesContext.externalContext.request.contextPath}/resources/images/fondo.jpg");
-
 }
-
 
 /*
 estilos header
@@ -17,7 +14,6 @@ estilos header
     height: 100px;
     background: rgb(72, 97, 123);
     z-index: 100;
-
 }
 
 .div_header_uno{ 
@@ -29,7 +25,6 @@ estilos header
 }
 
 .div_header_dos{
-
     width: 67%;
     height: 80%;
     margin-left: 10px;
@@ -40,7 +35,6 @@ estilos header
 }
 
 .div_header_tres{
-
     width: 15%;
     height: 80%;
     margin-left: 10px;
@@ -64,14 +58,12 @@ estilos header
     margin-top: 20px;
 }
 
-
 /*
 estilos nav y contenido
 */
 #divGeneral{
     margin: 0 auto;
     width: 1300px;
-    
 }
 
 #top {
@@ -83,7 +75,6 @@ estilos nav y contenido
     position: relative;
     top: 5px; 
     margin-bottom: 15px;
-    
 
 }
 
@@ -168,25 +159,25 @@ estilos footer
 estilos menus de navegacion
 */
 #top a:link, #top a:visited {
-    color: greenyellow;
+    color: black;
     font-weight : bold;
     text-decoration: none;
 }
 
 #top a:link:hover, #top a:visited:hover  {
-    color: greenyellow;
+    color: black;
     font-weight : bold;
     text-decoration : underline;
 }
 
 a:link, a:visited {
-    color: greenyellow;
+    color: black;
     font-weight : bold;
     text-decoration: none;
 }
 
 a:link:hover, a:visited:hover  {
-    color: greenyellow;
+    color: black;
     font-weight : bold;
     text-decoration : underline;
 }
@@ -219,7 +210,7 @@ h2 {
 }
 
 a:link, a:visited {
-    color: greenyellow;
+    color: black;
     font-weight : bold;
     text-decoration: none;
 }
