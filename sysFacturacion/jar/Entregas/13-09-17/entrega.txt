@@ -1,6 +1,0 @@
-ALTER TABLE PRODUCTO 
-ADD (FECHA_VENCIMIENTO DATE );
-
-+
-
-agregar insert reporte numero 4
