@@ -195,7 +195,7 @@ public class usuarioBean implements Serializable {
                                     loggedIn = true;
                                     //redirecciono
                                     FacesContext contex = FacesContext.getCurrentInstance();
-                                    contex.getExternalContext().redirect("/" + Statics.nombreApp + "/faces/Views/bienvenido.xhtml");
+                                    contex.getExternalContext().redirect("/" + Statics.nombreApp + "/faces/Views/Venta/Factura.xhtml");
                                 } catch (IOException ex) {
                                     Logger.getLogger(usuarioBean.class.getName()).log(Level.SEVERE, null, ex);
                                 }

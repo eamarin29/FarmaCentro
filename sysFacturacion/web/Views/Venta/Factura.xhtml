@@ -127,7 +127,7 @@
 
                 </h:form> 
 
-                <h:form id="frmFactura">  
+                <h:form  id="frmFactura">  
                     <p:growl id="message" showDetail="true" />  
                     <!--DIALOGO PARA BUSCAR EL CLIENTE  -->
                     <p:dialog id="dlgCliente" widgetVar="dialogBuscarCliente" modal="true" resizable="false" 
@@ -308,9 +308,6 @@
                             <p:layoutUnit id="datosFactura" position="east" style="padding: 5px; text-align:  center;
                                           font-size: 14px;" size="200" > 
                                 <h:panelGrid columns="1" style="font-size: 20px; font-weight: bold; margin-top: 30px; margin: 0 auto;">
-                                    FACTURA
-                                    <p:outputLabel value="-0945"></p:outputLabel> 
-                                    ---
                                     <p:outputLabel value="Fecha: " style="font-weight: bold;"></p:outputLabel>
                                     <p:outputLabel value="#{facturaBean.fechaActual}" style="font-weight: bold;" ></p:outputLabel>
                                 </h:panelGrid>
@@ -318,7 +315,7 @@
                         </p:layout>
                         <p:separator></p:separator>
                         <!-- BUSCAR PRODUCTO -->
-                        <p:panel id="panel" header="Register">
+                        <p:panel id="panel" header="Detalle de la Factura">
                             <p:focus context="panel"/>
                             <h:panelGrid id="gridBuscarProducto" columns="3" style="font-size: 14px;">
                                 <p:outputLabel value="Código de barras:  "></p:outputLabel>
@@ -369,14 +366,14 @@
                                        <f:setPropertyActionListener target="#{facturaBean.codBarrasProductoModificarCantidad}"
                                                                     value="#{item.producto.codBarras}">
                                        </f:setPropertyActionListener> 
-                                   </p:commandButton> 
+                                   </p:commandButton>  
                                    <p:commandButton title="Eliminar detalle" icon="ui-icon-delete2" 
                                                     oncomplete="PF('dialogEliminarDetalle').show();"
                                                     update=":frmFactura:dlgEliminarDetalle">  
-                                       <f:setPropertyActionListener target="#{facturaBean.codBarrasProductoEliminarDetalle}"
+                                       <f:setPropertyActionListener target="#{facturaBean.codProductoEliminarDetalle}"
                                                                     value="#{item.producto.codigo}">
                                        </f:setPropertyActionListener> 
-                                   </p:commandButton>  -->
+                                   </p:commandButton> -->
                             </p:column>
                         </p:dataTable>
                         <br></br>
@@ -400,8 +397,8 @@
                         <h:commandLink style="margin-left: 50px;" action="#{facturaBean.reiniciarVenta()}" target="_blank" value="Nueva Venta">
                         </h:commandLink>
                     </p:panel> 
-                </h:form>  
-
+                </h:form> 
+                
                 <h:form>  
                     <p:confirmDialog id="dlgConfirmDialog" widgetVar="dialogConfirmarVenta" global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />

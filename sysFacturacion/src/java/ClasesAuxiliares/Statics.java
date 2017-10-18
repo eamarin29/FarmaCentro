@@ -7,8 +7,8 @@ public class Statics {
     public static String passCorreoApp = "123456789000";
     
     //Conexion a la app
-    public static String direccionIp = "eduar-pc";
-    public static String puerto = "8084";
+    public static String direccionIp = "localhost";
+    public static String puerto = "8089";
     public static String nombreApp = "FarmaCentro";
     
     //Conexion a la bd

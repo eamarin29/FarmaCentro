@@ -68,7 +68,7 @@ public class FacturaBean implements Serializable {
     private String codigoBarras;
 
     private List<DetalleFactura> listaDetalleFactura;
-    private BigDecimal codBarrasProductoEliminarDetalle;
+    private BigDecimal codProductoEliminarDetalle;
     private String codBarrasProductoModificarCantidad;
 
     private String cantidadProductoDigitado;
@@ -131,11 +131,19 @@ public class FacturaBean implements Serializable {
         this.codigoBarras = "";
 
         limpiarFactura();
-        
+
         this.codigoCliente = "1";
-        
+
         agregarDatosClienteAfacturaPorText();
-        
+
+    }
+
+    public BigDecimal getCodProductoEliminarDetalle() {
+        return codProductoEliminarDetalle;
+    }
+
+    public void setCodProductoEliminarDetalle(BigDecimal codProductoEliminarDetalle) {
+        this.codProductoEliminarDetalle = codProductoEliminarDetalle;
     }
 
     public List<Producto> getListaProductosSecundario3() {
@@ -330,14 +338,6 @@ public class FacturaBean implements Serializable {
         this.numeroFactura = numeroFactura;
     }
 
-    public BigDecimal getCodBarrasProductoEliminarDetalle() {
-        return codBarrasProductoEliminarDetalle;
-    }
-
-    public void setCodBarrasProductoEliminarDetalle(BigDecimal codBarrasProductoEliminarDetalle) {
-        this.codBarrasProductoEliminarDetalle = codBarrasProductoEliminarDetalle;
-    }
-
     public String getCantidadModificar() {
         return cantidadModificar;
     }
@@ -505,7 +505,6 @@ public class FacturaBean implements Serializable {
                 context.update("frmMostrarTodosProductos:dlgMostrarTodosProdutos");
                 context.update("frmMostrarTodosProductos:tablaProductos");
 
-
             } else {
 
             }
@@ -560,7 +559,7 @@ public class FacturaBean implements Serializable {
                     List<Producto> listaProductosCodComunSecundaria = new ArrayList();
                     int posListaProductosCodComunSecundaria = -1;
 
-                    if (this.listaActualizarStock.size() >= 1) {
+                    if (this.listaDetalleFactura.size() >= 1) {
                         for (int i = 0; i < this.listaActualizarStock.size(); i++) {
                             if (this.listaActualizarStock.get(i).getCodComun().intValue() == productoSeleccionado.getCodComun().intValue()) {
                                 posListaProductosCodComunSecundaria++;
@@ -620,7 +619,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
 
                             } else if (productoSeleccionado.getOrden() == 2) {
                                 //tres lineas
@@ -672,7 +671,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
 
                             } else {
                                 //tres lineas
@@ -724,7 +723,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
 
                             }
 
@@ -765,7 +764,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
 
                             } else if (productoSeleccionado.getOrden() == 2) {
                                 //dos lineas
@@ -802,7 +801,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
 
                             }
 
@@ -847,7 +846,7 @@ public class FacturaBean implements Serializable {
                                     context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                     context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                    this.cantidad.setValue("0");
+                                    this.cantidad.setValue("");
 
                                 } else if (productoSeleccionado.getOrden() == 2) {
 
@@ -883,7 +882,7 @@ public class FacturaBean implements Serializable {
                                     context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                     context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                    this.cantidad.setValue("0");
+                                    this.cantidad.setValue("");
 
                                 } else {
 
@@ -921,7 +920,7 @@ public class FacturaBean implements Serializable {
                                     context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                     context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                    this.cantidad.setValue("0");
+                                    this.cantidad.setValue("");
                                 }
 
                             } else if (listaProductosCodComun.size() == 2) {
@@ -956,7 +955,7 @@ public class FacturaBean implements Serializable {
                                     context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                     context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                    this.cantidad.setValue("0");
+                                    this.cantidad.setValue("");
 
                                 } else if (productoSeleccionado.getOrden() == 2) {
                                     //dos lineas
@@ -990,7 +989,7 @@ public class FacturaBean implements Serializable {
                                     context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                     context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                    this.cantidad.setValue("0");
+                                    this.cantidad.setValue("");
 
                                 }
 
@@ -1010,7 +1009,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
                             }
                         }
 
@@ -1053,7 +1052,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
 
                             } else if (productoSeleccionado.getOrden() == 2) {
 
@@ -1089,7 +1088,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
 
                             } else {
 
@@ -1127,7 +1126,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
                             }
 
                         } else if (listaProductosCodComun.size() == 2) {
@@ -1162,7 +1161,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
 
                             } else if (productoSeleccionado.getOrden() == 2) {
                                 //dos lineas
@@ -1196,7 +1195,7 @@ public class FacturaBean implements Serializable {
                                 context.execute("PF('dialogMostrarTodosProdutos').hide();");
                                 context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                                this.cantidad.setValue("0");
+                                this.cantidad.setValue("");
 
                             }
 
@@ -1209,6 +1208,16 @@ public class FacturaBean implements Serializable {
                             productoSeleccionado.setStockActUni(productoSeleccionado.getStockActUni() - cantidad_ingresada);
 
                             //actualizo objetos
+                            for (int i = 0; i < this.listaActualizarStock.size(); i++) {
+                                if(this.listaActualizarStock.get(i).getCodigo().intValue() == productoSeleccionado.getCodigo().intValue()){
+                                    this.listaActualizarStock.remove(i);
+                                }
+                                
+                            }
+                                
+                            System.out.println("--posListaActualizarStock es: " + this.posListaActualizarStock);
+                            System.out.println("--tamaño de la lista es: " + this.listaActualizarStock.size());
+                            
                             this.posListaActualizarStock++;
                             this.listaActualizarStock.add(this.posListaActualizarStock, productoSeleccionado);
 
@@ -1218,12 +1227,14 @@ public class FacturaBean implements Serializable {
                             context.execute("PF('dialogMostrarTodosProdutos').hide();");
                             context.execute("PF('dialogPedirCantidadProductoSeleccionado').hide();");
 
-                            this.cantidad.setValue("0");
+                            this.cantidad.setValue("");
                         }
                     }
                 }
             }
         }
+
+        context.update("frmFactura:tablaProductosFactura");
     }
 
     public boolean verificarDetalleFactura(BigDecimal codigo) {
@@ -1408,7 +1419,7 @@ public class FacturaBean implements Serializable {
         this.codigoBarras = "";
         this.posListaActualizarStock = -1;
         InputNumber n = new InputNumber();
-        n.setValue("0");
+        n.setValue("");
         setCantidad(n);
 
     }
@@ -1507,8 +1518,6 @@ public class FacturaBean implements Serializable {
         this.tr = null;
         Double precio_Real = null;
         int cantidadIngresada;
-
-        System.out.println("--el precio real es: " + this.precioReal);
 
         if (this.precioReal == null) {
 
@@ -1687,14 +1696,55 @@ public class FacturaBean implements Serializable {
 
         int tamañoLista = listaDetalleFactura.size();
         int error = 0;
+        ProductoController ProductoController = new ProductoController();
+        Producto p = new Producto();
+        int cod_comun_eliminar = 0;
+        int orden_eliminar = 0;
+
+        List<Producto> listaProductos2 = new ArrayList();
+        int poslistaProductos2 = -1;
 
         for (int i = 0; i < tamañoLista; i++) {
-            if (listaDetalleFactura.get(i).getProducto().getCodBarras().equals(this.codBarrasProductoEliminarDetalle)) {
-                //eliminelo de la lista
+            if (listaDetalleFactura.get(i).getProducto().getCodigo().intValue() == (this.codProductoEliminarDetalle.intValue())) {
+
+                p = ProductoController.obtenerProductoPorCodigo(this.codProductoEliminarDetalle);
+
+                //actualizar la lista en backgraund
+                for (int j = 0; j < this.listaActualizarStock.size(); j++) {
+
+                    if (this.listaActualizarStock.get(j).getCodigo().intValue() == this.codProductoEliminarDetalle.intValue()) {
+                        cod_comun_eliminar = this.listaActualizarStock.get(j).getCodComun().intValue();
+                        orden_eliminar = this.listaActualizarStock.get(j).getOrden();
+
+                    }
+                }
+
+                for (int k = 0; k < this.listaActualizarStock.size(); k++) {
+                    if (this.listaActualizarStock.get(k).getCodComun().intValue() == cod_comun_eliminar) {
+                        poslistaProductos2++;
+                        listaProductos2.add(poslistaProductos2, this.listaActualizarStock.get(k));
+                    }
+
+                }
+
+                if (listaProductos2.size() == 1) {
+
+                    for (int j = 0; j < this.listaActualizarStock.size(); j++) {
+
+                        if (this.listaActualizarStock.get(j).getCodigo().intValue() == this.codProductoEliminarDetalle.intValue()) {
+                            this.listaActualizarStock.get(j).setStockActUni(this.listaActualizarStock.get(j).getStockActUni() + this.listaDetalleFactura.get(i).getCantidad().intValue());
+
+                        }
+                    }
+
+                } else if (listaProductos2.size() == 2) {
+
+                } else if (listaProductos2.size() == 3) {
+
+                }
+
                 listaDetalleFactura.remove(i);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Operación exitosa:", "El detalle se ha eliminado."));
-
-                //actualizar total a pagar
                 totalPagarFactura();
             }
         }
