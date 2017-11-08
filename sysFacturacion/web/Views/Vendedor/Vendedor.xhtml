@@ -9,14 +9,16 @@
     <body>
         <ui:composition template="./../../Plantilla/Plantilla.xhtml">
             <ui:define name="content">
+                <br></br>
                 <h3 class="titulo_gestion"> Gestión de Vendedores</h3>
                 <h:form id="frmVendedor">
                     <p:growl id="messageGeneral" showDetail="true" />
                 </h:form> 
+                
                 <h:form id="frmNuevoVendedor">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgNuevoVendedor" widgetVar="dialogNuevoVendedor" resizable="false" showEffect="explode"
-                              hideEffect="explode" modal="true" header="Crear un nuevo vendedor" >
+                              hideEffect="explode" modal="true" header="Crear un nuevo Vendedor" >
                         <p:panelGrid columns="2" style="margin: 0 auto; width: 600px;">
 
                             <p:outputLabel  value="Cédula"></p:outputLabel>
@@ -48,6 +50,7 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>
+                
                 <h:form id="frmModificarVendedor">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgModificarVendedor" widgetVar="dialogModificarVendedor" resizable="false" showEffect="explode"
@@ -79,6 +82,7 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>
+                
                 <h:form id="frmEliminarVendedor">
                     <p:growl id="message" showDetail="true" />
                     <p:dialog id="dgEliminarVendedor" widgetVar="dialogEliminarVendedor" resizable="false" showEffect="explode"
@@ -94,12 +98,14 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>
+                
                 <h:form>
                     <p:commandButton value="Nuevo Vendedor" actionListener="#{vendedorBean.prepararNuevoVendedor()}" 
                                      oncomplete="PF('dialogNuevoVendedor').show();"
                                      update=":frmNuevoVendedor">
                     </p:commandButton> 
                 </h:form>
+                
                 <br></br>
                 <h:form id="frmMostrarVendedores">
                     <p:dataTable id="tablaVendedores" var="vd" value="#{vendedorBean.listaVendedores}" rows="10"

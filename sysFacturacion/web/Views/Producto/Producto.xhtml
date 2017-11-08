@@ -8,6 +8,7 @@
     <body>
         <ui:composition template="./../../Plantilla/Plantilla.xhtml">
             <ui:define name="content">
+                <br></br>
                 <h3 class="titulo_gestion"> Gestión de Productos</h3>
                 <p:growl id="message" showDetail="true" />
                 <br></br>
@@ -306,7 +307,7 @@
                 <!-- MODIFICAR PRODUCTO -->
                 <h:form id="frmModificarProducto">
                     <p:dialog id="dgModificarProducto" widgetVar="dialogModificarProducto" resizable="false" showEffect="explode"
-                              hideEffect="explode" modal="true" header="Modificar producto" closable="false" >
+                              hideEffect="explode" modal="true" header="Modificar Producto" closable="false" >
                         <p:messages id="messageModificarProductos"  showDetail="true" autoUpdate="true" closable="true"  /> 
                         <table>
                             <tr>
@@ -662,13 +663,13 @@
                                 </f:setPropertyActionListener> 
                             </p:commandButton> 
                         </p:column> 
-                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{pr.codBarras}" filterMatchMode="exact" headerText="Código de Barras:">
+                        <p:column style="text-align: center;  width: 200px;"  filterBy="#{pr.codBarras}" filterMatchMode="exact" headerText="Código de Barras">
                             <h:outputText value="#{pr.codBarras}"></h:outputText>
                         </p:column>
-                        <p:column style="text-align: center; width: 300px;" filterBy="#{pr.nombre}" filterMatchMode="contains"  headerText="Descripción del Producto:">
+                        <p:column style="text-align: center; width: 300px;" filterBy="#{pr.nombre}" filterMatchMode="contains"  headerText="Descripción del Producto">
                             <h:outputText value="#{pr.nombre}"></h:outputText>
                         </p:column>
-                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockActUni}" filterMatchMode="contains" headerText="Stock actual (U)">
+                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockActUni}" filterMatchMode="contains" headerText="Stock actual">
                             <h:outputText value="#{pr.stockActUni}"></h:outputText>
                         </p:column>
                         <p:column style="text-align: center; width: 130px;" filterBy="#{pr.paquete}" filterMatchMode="contains"  headerText="Descripción Paquete">
@@ -682,7 +683,7 @@
                                 <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
                             </h:outputText>    
                         </p:column>
-                        <p:column style="text-align: center; width: 130px;" filterBy="#{pr.porcentajeDescuento}" filterMatchMode="contains"  headerText="%Descuento Compra">
+                        <p:column style="text-align: center; width: 130px;" filterBy="#{pr.porcentajeDescuento}" filterMatchMode="contains"  headerText="% Descto. Compra">
                             <h:outputText value="#{pr.porcentajeDescuento}"></h:outputText>
                         </p:column>
                         <p:column style="text-align: center; width: 150px;" filterBy="#{pr.precioCompraReal}" filterMatchMode="contains" headerText="Precio Compra Real">
@@ -709,8 +710,11 @@
                         <p:column style="text-align: center; width: 130px;" filterBy="#{pr.porcentajeComision}" filterMatchMode="contains"  headerText="% de Comisión">
                             <h:outputText value="#{pr.porcentajeComision}"></h:outputText>
                         </p:column>
-                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockMinUni}" filterMatchMode="contains" headerText="Stock mínimo (U)">
+                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.stockMinUni}" filterMatchMode="contains" headerText="Stock mínimo">
                             <h:outputText value="#{pr.stockMinUni}"></h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center; width: 140px;" filterBy="#{pr.fechaVencimiento}" filterMatchMode="contains" headerText="Fecha Vencimiento">
+                            <h:outputText value="#{pr.fechaVencimiento}"></h:outputText>
                         </p:column>
                     </p:dataTable>    
                 </h:form> 

@@ -95,17 +95,17 @@ public class usuarioBean implements Serializable {
 
             }
         }
-        
+
         //Mensaje de productos vencidos
         ProductoController ProductoController = new ProductoController();
         Producto pVencido = new Producto();
         pVencido = ProductoController.verificarProductosVencidos();
-        
-        if(pVencido == null){
-        }else{
-              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Existen productos próximos a vencer en el inventario. Consultar reporte"));
+
+        if (pVencido == null) {
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Existen productos próximos a vencer en el inventario. Consultar reporte"));
         }
-        
+
         return btnLogin;
     }
 
@@ -325,6 +325,20 @@ public class usuarioBean implements Serializable {
         } catch (IOException ex) {
             Logger.getLogger(usuarioBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    public void acercaDe() {
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('dialogAcercaDe').show();");
+
+    }
+
+    public String version() {
+
+        String version = Statics.version;
+        return version;
 
     }
 

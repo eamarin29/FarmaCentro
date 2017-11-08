@@ -153,7 +153,7 @@ public class ReporteBean implements Serializable {
     public void aceptarReporte() {
 
         if (this.reporte == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Debe seleccionar un reporte."));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia:", "Debe seleccionar un Reporte."));
         } else {
             if (this.reporte.equals("1")) {
                 //combo de empleados

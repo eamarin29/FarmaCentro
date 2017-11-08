@@ -9,6 +9,7 @@
     <body>
         <ui:composition template="./../../Plantilla/Plantilla.xhtml">
             <ui:define name="content">   
+                <br></br>
                 <h3 class="titulo_gestion"> Gestión de Facturas</h3> 
 
                 <!-- DIALOGO ELIMINAR FACTURA -->     
@@ -17,7 +18,7 @@
                     <p:dialog id="dgEliminarFactura" widgetVar="dialogEliminarFactura" resizable="false" showEffect="explode"
                               hideEffect="explode" modal="true" header="Eliminar factura">
 
-                        <h:outputText value="¿Seguro que desea eliminar esta factura?"></h:outputText>
+                        <h:outputText value="¿Seguro que desea eliminar esta Factura?"></h:outputText>
                         <br></br>
                         <br></br>
                         <p:commandButton id="yes"
@@ -37,11 +38,11 @@
                     <p:dialog id="dgImprimirFactura" widgetVar="dialogImprimirFactura" resizable="false" showEffect="explode"
                               hideEffect="explode" modal="true" header="Imprimir Factura">
 
-                        <h:outputText value="¿Seguro que desea Imprimir esta Factura?"></h:outputText>
+                        <h:outputText value="¿Seguro que desea ver el Reporte de esta Factura?"></h:outputText>
                         <br></br>
                         <br></br>
                         <h:commandLink  action="#{facturasBean.imprimirFacturaSeleccionada()}" target="_blank"  >
-                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                            <p:graphicImage url="../../resources/images/verEnPantalla.png"></p:graphicImage>
                         </h:commandLink>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogImprimirFactura').hide();">
 
@@ -87,14 +88,14 @@
                             <h:outputText value="#{fa.anulada}"></h:outputText>
                         </p:column>
                         <p:column  style="text-align: center;  width: 300px;"  headerText="Acciones">
-                            <p:commandButton title="Imprimir factura" icon="imprimir" 
+                            <p:commandButton title="Imprimir factura" icon="pantalla" 
                                              oncomplete="PF('dialogImprimirFactura').show();" update=":frmImprimirFactura">  
                                 <f:setPropertyActionListener target="#{facturasBean.factura}" value="#{fa}">
                                 </f:setPropertyActionListener> 
                             </p:commandButton> 
                             <p:commandButton action="#{facturasBean.anularFacturaMetodo()}" title="Anular factura" icon="ui-icon-anular"
                                              update="frmMostrarFacturas, frmEliminarFactura:message" >
-                                <p:confirm header="Confirmation" message="¿Está seguro que desea anular esta factura?" icon="ui-icon-alert" />
+                                <p:confirm header="Confirmation" message="¿Está seguro que desea anular esta Factura?" icon="ui-icon-alert" />
                                 <f:setPropertyActionListener target="#{facturasBean.anularFactura}" value="#{fa}">
                                 </f:setPropertyActionListener> 
                             </p:commandButton> 

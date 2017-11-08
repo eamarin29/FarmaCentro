@@ -21,6 +21,7 @@ public class ClienteBean implements Serializable {
     private Cliente clienteViejo;
     private List<Cliente> listaCliente;
     private List<Cliente> filtroClientes;
+    private List<Cliente> filtroClientesFactura;
 
     public ClienteBean() {
     }
@@ -29,6 +30,14 @@ public class ClienteBean implements Serializable {
     public void Init() {
         cliente = new Cliente();
         clienteViejo = new Cliente();
+    }
+
+    public List<Cliente> getFiltroClientesFactura() {
+        return filtroClientesFactura;
+    }
+
+    public void setFiltroClientesFactura(List<Cliente> filtroClientesFactura) {
+        this.filtroClientesFactura = filtroClientesFactura;
     }
 
     public List<Cliente> getFiltroClientes() {

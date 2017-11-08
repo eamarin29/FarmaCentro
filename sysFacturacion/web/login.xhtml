@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Login</title>
+        <title>Login - Sistema de Facturación Web  #{usuarioBean.nombreApp()} </title>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="keywords" content="Proficient Login Form Responsive, Login form web template,Flat Pricing tables,Flat Drop downs  Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
@@ -15,7 +15,7 @@
         <h:outputStylesheet library="css" name="font-awesome.min.css"  />
         <!--estilos -->
         <h:outputStylesheet library="css" name="estilosLogin.css"  />
-        <link rel="icon" type="image/gif" href="resources/images/favicon.gif" /> 
+        <link rel="icon" type="image/gif" href="resources/images/favicon.ico" /> 
     </h:head>
     <f:metadata>
         <f:viewParam name="par" value="#{usuarioBean.cambioContrasena}"/>
@@ -28,6 +28,7 @@
                 <br></br>
                 <img src="resources/images/login.jpg" alt="" class="user-wthree"/>
                 <h:form id="frmLogin">
+                    <p:focus id="focus" context="frmLogin"/>
                     <p:growl id="growl"  sticky="true" showDetail="true" life="3000" />
                     <div class="form-group1-agile">
                         <p:inputText id="username" value="#{usuarioBean.username}" styleClass="txt" placeholder="Usuario" />
@@ -38,14 +39,14 @@
                     <p:commandButton binding="#{usuarioBean.btnLogin}" value="Entrar" update="frmLogin" action="#{usuarioBean.login()}" styleClass="btn"/>
                     <div class="form-group3-agile wthree">
                         <br></br>
-                        <p:commandLink update="frmLogin" action="#{usuarioBean.olvideContrasena}" style="color: white;"> Olvidé - Recordar - Mi contraseña</p:commandLink>
+                        <p:commandLink update="frmLogin" action="#{usuarioBean.olvideContrasena}" style="color: white;"> Olvidé mi Contraseña</p:commandLink>
                         <br></br>
                         <br></br>
                         <p:commandLink update="frmLogin" action="#{usuarioBean.solicitarRegistro()}" style="color: white;"> Solicitar registro</p:commandLink>
                     </div>
                 </h:form>
                 <div class="footer-w3ls">
-                    <p>© #{usuarioBean.añoActual()}  #{usuarioBean.nombreApp()}. All Rights Reserved <br></br> Design by <a href="https://www.facebook.com/EduarAlexanderMarin" target="_blank">Eduar Alexander</a></p>
+                    <p>© #{usuarioBean.añoActual()}  #{usuarioBean.nombreApp()}. Todos los derechos reservados <br></br> Design by <a href="https://www.facebook.com/EduarAlexanderMarin" target="_blank">Eduar Alexander</a></p>
                 </div>	
             </div>
         </div>

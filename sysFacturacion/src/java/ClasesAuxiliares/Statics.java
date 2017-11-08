@@ -19,6 +19,8 @@ public class Statics {
     public static String namebd = "XE";
     public static String usbd = "FACTURACION";
     public static String passbd = "root";
+    public static String version = "1.1 (1 de Diciembre de 2017)";
+    
 
     @SuppressWarnings("StaticNonFinalUsedInInitialization")
     public static String cadenaConexion = "jdbc:"+motor+":thin:@"+host+":"+puertobd+":"+namebd;

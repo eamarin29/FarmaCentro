@@ -7,7 +7,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <body>
         <ui:composition template="./../../Plantilla/Plantilla.xhtml">
-            <ui:define name="content">           
+            <ui:define name="content">     
+                <br></br>
                 <h3 class="titulo_gestion"> Impresión de Reportes</h3>
                 <br></br>
                 <h:form id="frmReportes">
@@ -50,7 +51,7 @@
                         </table>
                         <br></br> 
                         <h:commandLink action="#{reporteBean.imprimirReporte1()}" target="_blank" >
-                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                            <p:graphicImage url="../../resources/images/verEnPantalla.png"></p:graphicImage>
                         </h:commandLink>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte1').hide();">    
                         </p:commandButton> 
@@ -68,7 +69,7 @@
                         <br></br> 
                         <br></br> 
                         <h:commandLink action="#{reporteBean.imprimirReporte2()}" target="_blank" >
-                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                            <p:graphicImage url="../../resources/images/verEnPantalla.png"></p:graphicImage>
                         </h:commandLink>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte2').hide();">    
                         </p:commandButton> 
@@ -101,7 +102,7 @@
                         </table>
                         <br></br> 
                         <h:commandLink action="#{reporteBean.imprimirReporte3()}" target="_blank" >
-                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                            <p:graphicImage url="../../resources/images/verEnPantalla.png"></p:graphicImage>
                         </h:commandLink>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte3').hide();">    
                         </p:commandButton> 
@@ -114,12 +115,12 @@
 
                         <p:messages id="messageReporte4"  showDetail="true" autoUpdate="true" closable="true"  />
 
-                        ¿Está seguro que quiere imprimir el reporte de Productos Vencidos?
+                        ¿Está seguro que quiere ver el reporte de Productos Vencidos?
 
                         <br></br> 
                         <br></br> 
                         <h:commandLink action="#{reporteBean.imprimirReporte4()}" target="_blank" >
-                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                            <p:graphicImage url="../../resources/images/verEnPantalla.png"></p:graphicImage>
                         </h:commandLink>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte4').hide();">    
                         </p:commandButton> 
@@ -132,12 +133,12 @@
 
                         <p:messages id="messageReporte5"  showDetail="true" autoUpdate="true" closable="true"  />
 
-                        ¿Está seguro que quiere imprimir el reporte de Productos Agotados?
+                        ¿Está seguro que desea ver el reporte de Productos Agotados?
 
                         <br></br> 
                         <br></br> 
                         <h:commandLink action="#{reporteBean.imprimirReporte5()}" target="_blank" >
-                            <p:graphicImage url="../../resources/images/imprimir.png"></p:graphicImage>
+                            <p:graphicImage url="../../resources/images/verEnPantalla.png"></p:graphicImage>
                         </h:commandLink>
                         <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogReporte5').hide();">    
                         </p:commandButton> 

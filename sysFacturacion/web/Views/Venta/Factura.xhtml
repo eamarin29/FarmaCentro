@@ -27,7 +27,7 @@
                             <p:column style="text-align: center; width: 250px;" headerText="Descripción del Producto:">
                                 <h:outputText value="#{pr.nombre}"></h:outputText>
                             </p:column>
-                            <p:column style="text-align: center; width: 140px;" headerText="Stock actual (U)">
+                            <p:column style="text-align: center; width: 140px;" headerText="Stock actual">
                                 <h:outputText value="#{pr.stockActUni}"></h:outputText>
                             </p:column>
                             <p:column style="text-align: center; width: 130px;"   headerText="Descripción Paquete">
@@ -48,7 +48,6 @@
                                     <f:setPropertyActionListener target="#{facturaBean.productoSeleccionado}" value="#{pr}">
                                     </f:setPropertyActionListener> 
                                 </p:commandButton>
-
                             </p:column> 
                         </p:dataTable>  
                     </p:dialog>  
@@ -59,15 +58,12 @@
                     <p:dialog id="dlgPedirCantidadProductoSeleccionado" widgetVar="dialogPedirCantidadProductoSeleccionado" resizable="false"
                               showEffect="explode" hideEffect="explode" modal="true" header="Cantidad">
                         <p:messages id="messagePedirCantidadProductoSeleccionado"  showDetail="true" autoUpdate="true" closable="true"  />
-
                         Cantidad: 
                         <p:inputNumber id="cantidad" decimalPlaces="0" binding="#{facturaBean.cantidad}" ></p:inputNumber>
-
                         <p:commandButton title="Seleccionar" icon="ui-icon-yes" 
                                          actionListener="#{facturaBean.seleccionarCantidad()}"
                                          update=":frmMostrarTodosProductos:dlgMostrarTodosProdutos, :frmPedirCantidadProductoSeleccionado:dlgPedirCantidadProductoSeleccionado, :frmPedirCantidadProductoSeleccionado:cantidad, :frmFactura:tablaProductosFactura, :frmFactura:panelGridTotalPagarFactura">    
                         </p:commandButton> 
-
                     </p:dialog>  
                 </h:form> 
 
@@ -76,7 +72,6 @@
                     <p:dialog id="dlgConsultarProductos" widgetVar="dialogConsultarProductos" resizable="false"
                               showEffect="explode" hideEffect="explode" modal="true" header="Consultar Productos">
                         <p:messages id="messageConsultarProductos"  showDetail="true" autoUpdate="true" closable="true"/>
-
                         <p:dataTable id="tablaProductosConsultar" var="prC" value="#{productoBean.listaProductosConsultar}" rows="4"
                                      paginator="true" rowsPerPageTemplate="4,6,10,20"
                                      emptyMessage="No hay Productos registrados hasta el momento."
@@ -85,7 +80,6 @@
                                      scrollable="true"
                                      scrollWidth="97%" style="width: 1270px; height: 400px;"
                                      scrollHeight="97%" >
-
                             <f:facet name="header">
                                 <p:outputPanel>
                                     <h:outputText value="Buscar en cualquier columna: " />
@@ -124,25 +118,33 @@
                             </p:column>
                         </p:dataTable>  
                     </p:dialog>  
-
                 </h:form> 
 
-                <h:form  id="frmFactura">  
-                    <p:growl id="message" showDetail="true" />  
-                    <!--DIALOGO PARA BUSCAR EL CLIENTE  -->
+                <!--DIALOGO PARA BUSCAR EL CLIENTE  -->
+                <h:form id="frmConsultarCliente">
                     <p:dialog id="dlgCliente" widgetVar="dialogBuscarCliente" modal="true" resizable="false" 
                               showEffect="explode" hideEffect="explode" header="Seleccionar cliente" >
                         <p:dataTable id="tablaClientes" paginator="true" var="ct" 
-                                     value="#{clienteBean.listaCliente}" style="width: 1150px;" paginatorPosition="bottom"
+                                     value="#{clienteBean.listaCliente}" rows="3" 
+                                     rowsPerPageTemplate="3,6,12"
                                      emptyMessage="No hay Clientes registrados hasta el momento."
-                                     rowsPerPageTemplate="3,6,12" rows="3">
-                            <p:column  headerText="Código">
+                                     widgetVar="clientesTablaFactura" paginatorPosition="bottom"
+                                     style="width: 1150px;" filteredValue="#{clienteBean.filtroClientes}"
+                                     >
+                            <f:facet name="header">
+                                <p:outputPanel>
+                                    <h:outputText value="Buscar en cualquier columna: " />
+                                    <p:spacer></p:spacer>
+                                    <p:inputText id="globalFilter" onkeyup="PF('clientesTablaFactura').filter()" style="width:150px" placeholder="Buscar..."/>
+                                </p:outputPanel>
+                            </f:facet>
+                            <p:column filterBy="#{ct.codcliente}" headerText="Cédula" filterMatchMode="contains">
                                 <h:outputText value="#{ct.codcliente}"></h:outputText>
                             </p:column>
-                            <p:column headerText="Nombres y Apellidos">
+                            <p:column filterBy="#{ct.nombres} #{ct.apellidos}" filterMatchMode="contains" headerText="Nombres y Apellidos" >
                                 <h:outputText value="#{ct.nombres} #{ct.apellidos}"></h:outputText>
                             </p:column>
-                            <p:column headerText="Dirección">
+                            <p:column filterBy="#{ct.direccion}" filterMatchMode="contains" headerText="Dirección">
                                 <h:outputText value="#{ct.direccion}"></h:outputText>
                             </p:column>
                             <p:column headerText="Acciones">
@@ -157,125 +159,35 @@
                         <p:commandButton title="Cancelar" value="Cancelar" oncomplete="PF('dialogBuscarCliente').hide();">    
                         </p:commandButton> 
                     </p:dialog>
+                </h:form>
 
-                    <!--DIALOGO PARA pedir la cantidad de productos a vender  -->
-                    <p:dialog id="dlgPedirCantidadProductos" widgetVar="dialogPedirCantidadProductos" modal="true" resizable="false" 
-                              showEffect="explode" hideEffect="explode" header="Cantidad y precio Real" >
-
-                        <p:messages id="messageCantidadProductoDialog"  showDetail="true" autoUpdate="true" closable="true"  />
-                        <table>
-                            <tr>
-                                <td>
-                                    <p:outputLabel>Cantidad del producto: </p:outputLabel> 
-                                </td>
-                                <td>
-                                    <p:inputText id="txtCantidadProductoVender" value="#{facturaBean.cantidadProductoDigitado}"></p:inputText> 
-                                </td>
-                            </tr>
-                            <br></br>
-                            <tr>
-                                <td>
-                                    <p:outputLabel>Precio de venta: </p:outputLabel> 
-                                </td>
-                                <td>
-                                    <p:inputNumber id="txtPrecioVentaProductoSeleccionado" value="#{facturaBean.precioReal}"></p:inputNumber> 
-                                </td>
-                            </tr>
-                        </table>
-
-                        <br></br> 
-                        <p:commandButton title="Seleccionar" icon="ui-icon-yes"
-                                         update=":frmFactura:tablaProductosFactura :frmFactura:panelGridTotalPagarFactura :frmFactura:dlgPedirCantidadProductos :frmFactura:messageCantidadProductoDialog"
-                                         actionListener="#{facturaBean.agregarDatosProductoAfactura()}" 
-                                         >    
-                        </p:commandButton> 
-                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogPedirCantidadProductos').hide();">    
-                        </p:commandButton> 
-                    </p:dialog>
-                    <!--DIALOGO PARA pedir la cantidad de productos a vender por TEXT -->
-                    <p:dialog id="dlgPedirCantidadProductosxText" widgetVar="dialogPedirCantidadProductosxText" modal="true" resizable="false" 
-                              showEffect="explode" hideEffect="explode" header="Cantidad y precio Real" >
-                        <p:messages id="messageCantidadProductoText"  showDetail="true" autoUpdate="true" closable="true"  />
-                        <table>
-                            <tr>
-                                <td>
-                                    <p:outputLabel>Cantidad del producto: </p:outputLabel> 
-                                </td>
-                                <td>
-                                    <p:inputText id="txtCantidadProductoVenderxText" value="#{facturaBean.cantidadProductoDigitadoxText}"></p:inputText> 
-                                </td>
-                            </tr>
-                            <br></br>
-                            <tr>
-                                <td>
-                                    <p:outputLabel>Precio de venta: </p:outputLabel> 
-                                </td>
-                                <td>
-                                    <p:inputNumber id="txtPrecioVentaProductoSeleccionadoText" value="#{facturaBean.precioRealText}"></p:inputNumber> 
-                                </td>
-                            </tr>
-                        </table>
-                        <br></br> 
-                        <p:commandButton title="Seleccionar" icon="ui-icon-yes"
-                                         update=":frmFactura:tablaProductosFactura :frmFactura:panelGridTotalPagarFactura :frmFactura:dlgPedirCantidadProductosxText :frmFactura:messageCantidadProductoText :frmFactura:txtPrecioVentaProductoSeleccionadoText"
-                                         actionListener="#{facturaBean.agregarDatosProductoAfacturaPorText()}">    
-                        </p:commandButton> 
-                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogPedirCantidadProductosxText').hide();">    
-                        </p:commandButton> 
-                    </p:dialog>
-                    <!--DIALOGO PARA cofirmar la impresion de la factura  -->
-                    <p:dialog id="dlgImprimir" widgetVar="dialogImprimir" modal="true" resizable="false" 
-                              showEffect="explode" hideEffect="explode" header="¿Desea imprimir la Factura?" >
-                        ¿Desea imprimir la Factura?
-                        <br></br> 
-                        <br></br> 
-                        <p:commandButton title="Seleccionar" icon="ui-icon-yes"
-                                         update=":frmFactura" actionListener="#{facturaBean.verReporte()}"  >    
-                        </p:commandButton> 
-                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar"
-                                         update=":frmFactura" actionListener="#{facturaBean.verReporte()}">    
-                        </p:commandButton> 
-                    </p:dialog>
-                    <!-- DIALOGO ELIMINAR detalle -->  
-                    <p:dialog id="dlgEliminarDetalle" widgetVar="dialogEliminarDetalle" resizable="false" showEffect="explode"
-                              hideEffect="explode" modal="true" header="Eliminar Detalle">
-                        <h:outputText value="¿Seguro que desea eliminar este Detalle?"></h:outputText>
+                <!--DIALOGO PARA ELIMINAR DETALLE  -->
+                <h:form id="frmEliminarDetalle">
+                    <p:dialog id="dlgEliminarDetalle" widgetVar="dialogEliminarDetalle" modal="true" resizable="false" 
+                              showEffect="explode" hideEffect="explode" header="Eliminar Detalle" >
+                        ¿Está seguro que desea eliminar este detalle?
                         <br></br>
                         <br></br>
-                        <p:commandButton id="yes" oncomplete="PF('dialogEliminarDetalle').hide();"
-                                         action="#{facturaBean.eliminarDetalleFactura()}" 
-                                         update=":frmFactura:tablaProductosFactura :frmFactura:dlgEliminarDetalle :frmFactura:panelGridTotalPagarFactura :frmFactura:message"
-                                         title="Eliminar" icon="ui-icon-yes">
-                        </p:commandButton>
-                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogEliminarDetalle').hide();">
-
-                        </p:commandButton>
+                            <p:commandButton title="Seleccionar" icon="ui-icon-yes" 
+                                                 oncomplete="PF('dialogEliminarDetalle').hide();" 
+                                                 update=":frmEliminarDetalle:dlgEliminarDetalle, :frmFactura, :frmMostrarTodosProductos:dlgMostrarTodosProdutos :frmFactura:tablaProductosFactura, :frmFactura:panelGridTotalPagarFactura"
+                                                 actionListener="#{facturaBean.eliminarDetalleFactura()}">    
+                                </p:commandButton> 
+                        <p:commandButton style="margin-left: 300px;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogEliminarDetalle').hide();">    
+                        </p:commandButton> 
                     </p:dialog>
-                    <!-- DIALOGO modificar cantidad -->   
-                    <p:dialog id="dlgModificarCantidad" widgetVar="dialogModificarCantidad" resizable="false"
-                              showEffect="explode" hideEffect="explode" modal="true" header="Modificar cantidad">
-                        <p:messages id="messageCantidadProductoModificar"  showDetail="true" autoUpdate="true" closable="true"  />
-                        Cantidad del producto <p:inputText id="txtCantidadProductoModificar" value="#{facturaBean.cantidadProductoModificar}">
-                        </p:inputText> 
-                        <br></br>
-                        <br></br>
-                        <p:commandButton action="#{facturaBean.modificarCantidadProductoDetalle()}" 
-                                         title="Modificar" icon="ui-icon-yes"
-                                         update=":frmFactura:tablaProductosFactura :frmFactura:dlgModificarCantidad :frmFactura:panelGridTotalPagarFactura :frmFactura:messageCantidadProductoModificar :frmFactura:message" >
-                        </p:commandButton>
-                        <p:commandButton style="float: right;" title="Cancelar" value="Cancelar" oncomplete="PF('dialogModificarCantidad').hide();"> 
-                        </p:commandButton>
-                    </p:dialog>  
+                </h:form>
 
-
+                <h:form  id="frmFactura">  
+                    <p:growl id="message" showDetail="true" />  
                     <!-- PANEL FACTURA -->
-                    <p:panel header="Factura de venta" style="width: 1200px; margin: 0 auto; text-align: center; font-size: 20px;"> 
-                        <!-- HEADER FACTURA-DATOS DEL CLIENTE -->
+                    <p:panel header="Factura de Venta" style="width: 1200px; margin: 0 auto; text-align: center; font-size: 20px;"> 
+                        <!-- HEADER FACTURA - DATOS DEL CLIENTE -->
                         <p:layout id="capaDatosClienteFactura" style="width: 100%; height: 230px;"> 
                             <p:layoutUnit id="datosCliente" position="center" style="padding: 5px; text-align: justify;
                                           font-size: 14px;" >
                                 <h:panelGrid id="gridBuscarDatosCliente" columns="5">
-                                    <p:outputLabel value="Código cliente:  " style="font-weight: bold;"></p:outputLabel>
+                                    <p:outputLabel value="Cliente:" style="font-weight: bold;"></p:outputLabel>
 
                                     <p:inputText id="txtBuscarCliente" value="#{facturaBean.codigoCliente}" 
                                                  size="12" onkeypress="if (event.keyCode === 13) {
@@ -288,7 +200,7 @@
                                     </p:inputText>
                                     <p:spacer></p:spacer>
                                     <p:spacer></p:spacer>
-                                    <p:commandButton oncomplete="PF('dialogBuscarCliente').show();" update=":frmFactura:dlgCliente" 
+                                    <p:commandButton oncomplete="PF('dialogBuscarCliente').show();" update=":frmConsultarCliente:dlgCliente" 
                                                      title="Buscar cliente" icon="buscar"></p:commandButton>
                                 </h:panelGrid>
                                 <p:separator></p:separator>
@@ -306,21 +218,21 @@
                             </p:layoutUnit> 
                             <!-- HEADER FACTURA - INFORMACION DE LA FACTURA -->
                             <p:layoutUnit id="datosFactura" position="east" style="padding: 5px; text-align:  center;
-                                          font-size: 14px;" size="200" > 
+                                          font-size: 10px;" size="300" > 
                                 <h:panelGrid columns="1" style="font-size: 20px; font-weight: bold; margin-top: 30px; margin: 0 auto;">
                                     <p:outputLabel value="Fecha: " style="font-weight: bold;"></p:outputLabel>
-                                    <p:outputLabel value="#{facturaBean.fechaActual}" style="font-weight: bold;" ></p:outputLabel>
+                                    <p:clock class="clock" mode="server"></p:clock>
                                 </h:panelGrid>
                             </p:layoutUnit> 
                         </p:layout>
                         <p:separator></p:separator>
                         <!-- BUSCAR PRODUCTO -->
                         <p:panel id="panel" header="Detalle de la Factura">
-                            <p:focus context="panel"/>
+                            <p:focus id="focus" context="panel"/>
                             <h:panelGrid id="gridBuscarProducto" columns="3" style="font-size: 14px;">
                                 <p:outputLabel value="Código de barras:  "></p:outputLabel>
                                 <p:inputText id="txtBuscarProductoXcodigoBarras"
-                                             value="#{facturaBean.codigoBarras}" size="12"
+                                             value="#{facturaBean.codigoBarras}" size="20"
                                              onkeypress="if (event.keyCode === 13) {
                                                          onchange();
                                                          return false;
@@ -366,21 +278,24 @@
                                        <f:setPropertyActionListener target="#{facturaBean.codBarrasProductoModificarCantidad}"
                                                                     value="#{item.producto.codBarras}">
                                        </f:setPropertyActionListener> 
-                                   </p:commandButton>  
-                                   <p:commandButton title="Eliminar detalle" icon="ui-icon-delete2" 
-                                                    oncomplete="PF('dialogEliminarDetalle').show();"
-                                                    update=":frmFactura:dlgEliminarDetalle">  
-                                       <f:setPropertyActionListener target="#{facturaBean.codProductoEliminarDetalle}"
-                                                                    value="#{item.producto.codigo}">
-                                       </f:setPropertyActionListener> 
-                                   </p:commandButton> -->
+                                   </p:commandButton>   -->
+                                <p:commandButton title="Eliminar detalle" icon="ui-icon-delete2" 
+                                                 oncomplete="PF('dialogEliminarDetalle').show();"
+                                                 update=":frmEliminarDetalle:dlgEliminarDetalle">  
+                                    <f:setPropertyActionListener target="#{facturaBean.productoEliminarDetalle}"
+                                                                 value="#{item.producto}">
+                                    </f:setPropertyActionListener> 
+                                    <f:setPropertyActionListener target="#{facturaBean.cantidadEliminarDetalle}"
+                                                                 value="#{item.cantidad}">
+                                    </f:setPropertyActionListener> 
+                                </p:commandButton>
                             </p:column>
                         </p:dataTable>
                         <br></br>
                         <p:separator/>
                         <!-- PANEL TOTAL FACTURA -->
                         <h:panelGrid id="panelGridTotalPagarFactura" columns="2" style="font-size: 24px; margin: 0 auto;" >
-                            TOTAL A PAGAR    
+                            TOTAL A PAGAR:    
                             <br></br>
                             <p:outputLabel value="#{facturaBean.factura.totalVenta}">
                                 <f:convertNumber type="currency" currencySymbol="$" locale="en_US" />
@@ -398,7 +313,7 @@
                         </h:commandLink>
                     </p:panel> 
                 </h:form> 
-                
+
                 <h:form>  
                     <p:confirmDialog id="dlgConfirmDialog" widgetVar="dialogConfirmarVenta" global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
